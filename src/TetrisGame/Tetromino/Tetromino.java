@@ -4,7 +4,7 @@ import TetrisGame.Move;
 import TetrisGame.Square;
 import javafx.scene.canvas.GraphicsContext;
 
-public abstract class Base {
+public abstract class Tetromino {
     private double x;
     private double y;
 

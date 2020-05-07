@@ -3,7 +3,7 @@ package TetrisGame.Tetromino;
 import TetrisGame.Move;
 import TetrisGame.Square;
 
-public class O extends Base {
+public class O extends Tetromino {
     @Override
     public boolean rotate(Move.Direction direction, Square[][] board) {
         return false;
