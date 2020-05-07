@@ -25,7 +25,7 @@ public class Game {
     public void reset() {
     }
 
-    public boolean lineIsFull(int line){
+    public boolean isLineFull(int line){
         return false;
     }
 
