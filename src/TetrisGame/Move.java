@@ -9,4 +9,9 @@ public class Move {
         }
     }
 
+    public Direction translation;
+    public Direction rotation;
+    public boolean softDrop;
+    public boolean hardDrop;
+    public boolean hold;
 }
