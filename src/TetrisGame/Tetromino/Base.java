@@ -32,7 +32,7 @@ public abstract class Base {
 
     public abstract boolean canRotate(Move.Direction direction, Square[][] board);
 
-    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
+    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Square[][] board){
 
     }
 
