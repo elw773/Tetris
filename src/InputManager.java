@@ -1,16 +1,22 @@
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 public class InputManager {
     private double mouseX;
     private double mouseY;
     private boolean mousePressed;
+    private boolean mouseReleased;
     private boolean mouseClicked;
     private boolean[] keyMap;
     private boolean[] keyClickMap;
     private Canvas canvas;
 
     public InputManager(Canvas canvas){
+        this.canvas = canvas;
+
 
     }
 
@@ -38,11 +44,15 @@ public class InputManager {
         return keyClickMap;
     }
 
-    public boolean isKeyPressed(KeyEvent key) {
+    public boolean isKeyPressed(KeyCode key) {
         return false;
     }
 
-    public boolean isKeyClocked(KeyEvent key) {
+    public boolean isKeyClocked(KeyCode key) {
         return false;
+    }
+
+    public void resetClicks(){
+
     }
 }
