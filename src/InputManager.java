@@ -46,7 +46,7 @@ public class InputManager {
         canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
                                       @Override
                                       public void handle(KeyEvent event) {
-                                          keyPressedMap.put(event.getCode(), Boolean.TRUE);
+                                          keyPressedMap.put(event.getCode(), true);
                                       }
                                   }
         );
@@ -54,7 +54,7 @@ public class InputManager {
         canvas.setOnKeyReleased(new EventHandler<KeyEvent>() {
                                    @Override
                                    public void handle(KeyEvent event) {
-                                       keyReleasedMap.put(event.getCode(), Boolean.TRUE);
+                                       keyReleasedMap.put(event.getCode(), true);
                                    }
                                }
         );
@@ -88,14 +88,35 @@ public class InputManager {
         return false;
     }
 
-    public boolean isKeyClocked(KeyCode key) {
+    public boolean isKeyClicked(KeyCode key) {
         if(keyClickedMap.containsKey(key)){
             return keyClickedMap.get(key);
         }
         return false;
     }
 
+    /**
+     * Re-calculates the clicks that have occurred since the last reset
+     *
+     * Press and release booleans will only be set back to false if a click is registered
+     * A click is when corresponding press and release booleans are true
+     */
     public void resetClicks(){
+        // mouse
+        if(mousePressed && mouseReleased){
+            mouseClicked = true;
+            mousePressed = false;
+            mouseReleased = false;
+        }
 
+        for (KeyCode key:keyPressedMap.keySet()) {
+            if(keyReleasedMap.containsKey(key)){
+                if(keyPressedMap.get(key) && keyReleasedMap.get(key)){
+                    keyClickedMap.put(key, true);
+                    keyPressedMap.put(key, false);
+                    keyReleasedMap.put(key, false);
+                }
+            }
+        }
     }
 }

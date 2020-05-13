@@ -20,6 +20,10 @@ public class Main extends Application {
 
     private Timeline timeline;
     private InputManager inputManager;
+
+    /**
+     * Represents the state of the program, with which menu is shown
+     */
     private enum ProgramState{
         MAIN_MENU, CONTROLS, PLAY, AI
     }
@@ -49,6 +53,9 @@ public class Main extends Application {
         timeline.play();
     }
 
+    /**
+     * Does everything for a single frame of the program
+     */
     public void doFrame(){
 
     }
