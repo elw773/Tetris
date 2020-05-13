@@ -90,7 +90,7 @@ public class InputManager {
 
     public boolean isKeyPressed(KeyCode key) {
         if(keyPressedMap.containsKey(key)){
-            return keyReleasedMap.get(key);
+            return keyPressedMap.get(key);
         }
         return false;
     }
