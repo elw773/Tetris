@@ -81,19 +81,17 @@ public class InputManager {
         return mouseClicked;
     }
 
-    public boolean[] getKeyMap() {
-        return keyMap;
-    }
-
-    public boolean[] getKeyClickMap() {
-        return keyClickMap;
-    }
-
     public boolean isKeyPressed(KeyCode key) {
+        if(keyPressedMap.containsKey(key)){
+            return keyReleasedMap.get(key);
+        }
         return false;
     }
 
     public boolean isKeyClocked(KeyCode key) {
+        if(keyClickedMap.containsKey(key)){
+            return keyClickedMap.get(key);
+        }
         return false;
     }
 
