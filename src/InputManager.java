@@ -10,12 +10,33 @@ public class InputManager {
     private boolean mousePressed;
     private boolean mouseReleased;
     private boolean mouseClicked;
-    private boolean[] keyMap;
-    private boolean[] keyClickMap;
+    private boolean[] keyPressedMap;
+    private boolean[] keyReleasedMap;
+    private boolean[] keyClickedMap;
     private Canvas canvas;
 
     public InputManager(Canvas canvas){
         this.canvas = canvas;
+
+        canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+                 @Override
+                 public void handle(MouseEvent event) {
+                     mousePressed = true;
+                     mouseX = event.getX();
+                     mouseY = event.getY();
+                 }
+             }
+        );
+
+        canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
+                  @Override
+                  public void handle(MouseEvent event) {
+                      mouseReleased = true;
+                      mouseX = event.getX();
+                      mouseY = event.getY();
+                  }
+              }
+        );
 
 
     }
