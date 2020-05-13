@@ -64,7 +64,7 @@ public class Main extends Application {
             System.out.println("x: " + inputManager.getMouseX() + " y: " + inputManager.getMouseY());
         }
 
-        if(inputManager.isKeyPressed(KeyCode.A)){
+        if(inputManager.isKeyClicked(KeyCode.A)){
             System.out.println("A");
         }
     }

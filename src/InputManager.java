@@ -122,9 +122,9 @@ public class InputManager {
                     keyClickedMap.put(key, true);
                     keyPressedMap.put(key, false);
                     keyReleasedMap.put(key, false);
+                } else {
+                    keyClickedMap.put(key, false);
                 }
-            } else {
-                keyClickedMap.put(key, false);
             }
         }
     }
