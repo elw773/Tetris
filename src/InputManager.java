@@ -20,25 +20,45 @@ public class InputManager {
     public InputManager(Canvas canvas){
         this.canvas = canvas;
 
+        //setup EnumMaps
+
+
         canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
-                 @Override
-                 public void handle(MouseEvent event) {
-                     mousePressed = true;
-                     mouseX = event.getX();
-                     mouseY = event.getY();
-                 }
-             }
+                                     @Override
+                                     public void handle(MouseEvent event) {
+                                         mousePressed = true;
+                                         mouseX = event.getX();
+                                         mouseY = event.getY();
+                                     }
+                                 }
         );
 
         canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
-                  @Override
-                  public void handle(MouseEvent event) {
-                      mouseReleased = true;
-                      mouseX = event.getX();
-                      mouseY = event.getY();
-                  }
-              }
+                                      @Override
+                                      public void handle(MouseEvent event) {
+                                          mouseReleased = true;
+                                          mouseX = event.getX();
+                                          mouseY = event.getY();
+                                      }
+                                  }
         );
+
+        canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                                      @Override
+                                      public void handle(KeyEvent event) {
+                                          keyPressedMap.put(event.getCode(), Boolean.TRUE);
+                                      }
+                                  }
+        );
+
+        canvas.setOnKeyReleased(new EventHandler<KeyEvent>() {
+                                   @Override
+                                   public void handle(KeyEvent event) {
+                                       keyReleasedMap.put(event.getCode(), Boolean.TRUE);
+                                   }
+                               }
+        );
+
 
 
 
