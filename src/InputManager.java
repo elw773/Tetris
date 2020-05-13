@@ -108,8 +108,8 @@ public class InputManager {
      */
     public void resetClicks(){
         // mouse
-        if(mousePressed && mouseReleased){
-            mouseClicked = true;
+        mouseClicked = mousePressed && mouseReleased;
+        if(mouseClicked){
             mousePressed = false;
             mouseReleased = false;
         }
@@ -121,6 +121,8 @@ public class InputManager {
                     keyPressedMap.put(key, false);
                     keyReleasedMap.put(key, false);
                 }
+            } else {
+                keyClickedMap.put(key, false);
             }
         }
     }
