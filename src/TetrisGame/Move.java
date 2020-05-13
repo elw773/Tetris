@@ -4,8 +4,12 @@ public class Move {
     public enum Direction{
         LEFT, RIGHT, NONE;
 
-        public int getSign(Direction direction){
-            return 0;
+        public int getSign(){
+            switch (this){
+                case LEFT: return -1;
+                case RIGHT: return 1;
+                default: return 0;
+            }
         }
     }
 

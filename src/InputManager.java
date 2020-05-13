@@ -7,6 +7,10 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.EnumMap;
 
+
+/**
+ * Handles input and mouse events so other classes can query for clicks and presses
+ */
 public class InputManager {
     private double mouseX;
     private double mouseY;
