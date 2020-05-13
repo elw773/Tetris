@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -57,7 +58,15 @@ public class Main extends Application {
      * Does everything for a single frame of the program
      */
     public void doFrame(){
+        inputManager.resetClicks();
 
+        if(inputManager.isMouseClicked()){
+            System.out.println("Mouse");
+        }
+
+        if(inputManager.isKeyPressed(KeyCode.A)){
+            System.out.println("A");
+        }
     }
 
 

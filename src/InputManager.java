@@ -20,6 +20,11 @@ public class InputManager {
     public InputManager(Canvas canvas){
         this.canvas = canvas;
 
+        keyPressedMap = new EnumMap<>(KeyCode.class);
+        keyReleasedMap = new EnumMap<>(KeyCode.class);
+        keyClickedMap = new EnumMap<>(KeyCode.class);
+
+
         //setup EnumMaps
 
 
