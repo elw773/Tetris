@@ -1,4 +1,5 @@
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -15,10 +16,10 @@ public class InputManager {
     private EnumMap<KeyCode, Boolean> keyPressedMap;
     private EnumMap<KeyCode, Boolean> keyReleasedMap;
     private EnumMap<KeyCode, Boolean> keyClickedMap;
-    private Canvas canvas;
+    private Scene scene;
 
-    public InputManager(Canvas canvas){
-        this.canvas = canvas;
+    public InputManager(Scene scene){
+        this.scene = scene;
 
         keyPressedMap = new EnumMap<>(KeyCode.class);
         keyReleasedMap = new EnumMap<>(KeyCode.class);
@@ -28,7 +29,7 @@ public class InputManager {
         //setup EnumMaps
 
 
-        canvas.setOnMousePressed(new EventHandler<MouseEvent>() {
+        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
                                      @Override
                                      public void handle(MouseEvent event) {
                                          mousePressed = true;
@@ -38,7 +39,7 @@ public class InputManager {
                                  }
         );
 
-        canvas.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
                                       @Override
                                       public void handle(MouseEvent event) {
                                           mouseReleased = true;
@@ -48,15 +49,16 @@ public class InputManager {
                                   }
         );
 
-        canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
                                       @Override
                                       public void handle(KeyEvent event) {
                                           keyPressedMap.put(event.getCode(), true);
+                                          System.out.println(event.getCode());
                                       }
                                   }
         );
 
-        canvas.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
                                    @Override
                                    public void handle(KeyEvent event) {
                                        keyReleasedMap.put(event.getCode(), true);

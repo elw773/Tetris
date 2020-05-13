@@ -42,7 +42,7 @@ public class Main extends Application {
         board.getChildren().add(canvas);
         primaryStage.setScene(scene);
 
-        inputManager = new InputManager(canvas);
+        inputManager = new InputManager(scene);
 
         // Create the animation class
         timeline = new Timeline();
@@ -61,7 +61,7 @@ public class Main extends Application {
         inputManager.resetClicks();
 
         if(inputManager.isMouseClicked()){
-            System.out.println("Mouse");
+            System.out.println("x: " + inputManager.getMouseX() + " y: " + inputManager.getMouseY());
         }
 
         if(inputManager.isKeyPressed(KeyCode.A)){
