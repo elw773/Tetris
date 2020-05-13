@@ -4,15 +4,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
+import java.util.EnumMap;
+
 public class InputManager {
     private double mouseX;
     private double mouseY;
     private boolean mousePressed;
     private boolean mouseReleased;
     private boolean mouseClicked;
-    private boolean[] keyPressedMap;
-    private boolean[] keyReleasedMap;
-    private boolean[] keyClickedMap;
+    private EnumMap<KeyCode, Boolean> keyPressedMap;
+    private EnumMap<KeyCode, Boolean> keyReleasedMap;
+    private EnumMap<KeyCode, Boolean> keyClickedMap;
     private Canvas canvas;
 
     public InputManager(Canvas canvas){
@@ -37,6 +39,8 @@ public class InputManager {
                   }
               }
         );
+
+
 
 
     }
