@@ -53,7 +53,6 @@ public class InputManager {
                                       @Override
                                       public void handle(KeyEvent event) {
                                           keyPressedMap.put(event.getCode(), true);
-                                          System.out.println(event.getCode());
                                       }
                                   }
         );
