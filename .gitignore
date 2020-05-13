@@ -4,6 +4,10 @@
 ./Tetris.iws
 ./out/
 
+./workspace.xml
+./usage.statistics.xml
+./tasks.xml
+
 # Compiled class file
 *.class
 
