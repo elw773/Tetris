@@ -19,13 +19,15 @@ public class MovingSquare {
     /**
      * Moves the square in the desired direction, if possible, on the given board
      *
-     * @param direction the desired direction
+     * @param dx the horizontal movement
+     * @param dy the vertical movement
      * @param board the board moving on
      * @return if the tetromino can translate
      */
-    public boolean translate(Move.Direction direction, Square[][] board){
-        if(canTranslate(direction, board)){
-            x += direction.getSign();
+    public boolean translate(int dx, int dy, Square[][] board){
+        if(canTranslate(dx, dy, board)){
+            x += dy;
+            y += dx;
             return true;
         }
         return false;
@@ -34,34 +36,13 @@ public class MovingSquare {
     /**
      * Determines whether the square can be translated in the desired direction on the given board
      *
-     * @param direction the desired direction
+     * @param dx the horizontal movement
+     * @param dy the vertical movement
      * @param board the board moving on
      * @return if the tetromino can translate
      */
-    public boolean canTranslate(Move.Direction direction, Square[][] board){
-        return (board[x+direction.getSign()][y] == Square.NONE);
-    }
-
-    /**
-     * Makes the piece move one down, if it can
-     *
-     * @param board the board for the square to move in
-     * @return true if succesful
-     */
-    public boolean fall(Square[][] board){
-        if(canFall(board)){
-            y++;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param board the board the square is falling on
-     * @return true if it can move one down
-     */
-    public boolean canFall(Square[][] board){
-        return board[x][y+1] == Square.NONE;
+    public boolean canTranslate(int dx, int dy, Square[][] board){
+        return (board[x+dx][y+dy] == Square.NONE);
     }
 
     /**
@@ -72,16 +53,8 @@ public class MovingSquare {
         board[x][y] = this.type;
     }
 
-    public boolean rotate(Move.Direction direction, Square[][] board, double centreX, double centreY){
-        return false;
-    }
-
-    public boolean canRotate(Move.Direction direction, Square[][] board, double centreX, double centreY){
-        return false;
-    }
-
-    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Square[][] board){
-
+    public int[][] rotate(Move.Direction direction, Square[][] board, double centreX, double centreY, int[][] wallKicks){
+        return null;
     }
 
     /**
@@ -90,9 +63,14 @@ public class MovingSquare {
      * @param gy
      * @param squareSize
      * @param gc
+     * @param ghost
      */
-    public void drawAbsolute(double gx, double gy, double squareSize, GraphicsContext gc){
-        Square.draw(gx, gy, squareSize, type, gc);
+    public void drawAbsolute(double gx, double gy, double squareSize, GraphicsContext gc, boolean ghost){
+        if(ghost){
+
+        } else {
+            Square.draw(gx, gy, squareSize, type, gc);
+        }
     }
 
 
@@ -103,7 +81,7 @@ public class MovingSquare {
      * @param squareSize
      * @param gc
      */
-    public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
-        Square.draw(boardGx + (x*squareSize), boardGy + (y*squareSize), squareSize, type, gc);
+    public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, boolean ghost){
+        drawAbsolute(boardGx + (x*squareSize), boardGy + (y*squareSize), squareSize, gc, ghost);
     }
 }
