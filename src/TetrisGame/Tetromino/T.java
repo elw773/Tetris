@@ -1,16 +1,16 @@
 package TetrisGame.Tetromino;
 
 import TetrisGame.Move;
-import TetrisGame.Square;
+import TetrisGame.Mino;
 
 public class T extends Tetromino {
     @Override
-    public boolean rotate(Move.Direction direction, Square[][] board) {
+    public boolean rotate(Move.Direction direction, Mino[][] board) {
         return false;
     }
 
     @Override
-    public boolean canRotate(Move.Direction direction, Square[][] board) {
+    public boolean canRotate(Move.Direction direction, Mino[][] board) {
         return false;
     }
 }

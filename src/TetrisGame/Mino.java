@@ -4,10 +4,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-public enum Square {
+public enum Mino {
     I, J, L, O, S, T, Z, NONE;
 
-    public static void draw(double gx, double gy, double squareSize, Square type, GraphicsContext gc){
+    public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         Paint p;
 
         switch (type){

@@ -1,7 +1,7 @@
 package TetrisGame.Tetromino;
 
 import TetrisGame.Move;
-import TetrisGame.Square;
+import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -12,9 +12,9 @@ import java.util.ArrayList;
 public class MovingSquare {
     private double dx;
     private double dy;
-    private Square type;
+    private Mino type;
 
-    public MovingSquare(Square type){
+    public MovingSquare(Mino type){
         this.type = type;
     }
 
@@ -27,19 +27,19 @@ public class MovingSquare {
      * @param board the board moving on
      * @return if the tetromino can translate
      */
-    public boolean canMove(double newCentreX, double newCentreY, Square[][] board){
-        return (board[Math.rou(newCentreX + dx)][y+dy] == Square.NONE);
+    public boolean canMove(double newCentreX, double newCentreY, Mino[][] board){
+        return (board[Math.rou(newCentreX + dx)][y+dy] == Mino.NONE);
     }
 
     /**
      * Locks this square to the given board
      * @param board the board to lock to
      */
-    public void lock(Square[][] board){
+    public void lock(Mino[][] board){
         board[x][y] = this.type;
     }
 
-    public void calcValidRotationKicks(ArrayList<int[]> wallKicks, Move.Direction direction, Square[][] board, double centreX, double centreY){
+    public void calcValidRotationKicks(ArrayList<int[]> wallKicks, Move.Direction direction, Mino[][] board, double centreX, double centreY){
         double dx = x-centreX;
         double dy = y-centreY;
 
@@ -59,7 +59,7 @@ public class MovingSquare {
         if(ghost){
 
         } else {
-            Square.draw(gx, gy, squareSize, type, gc);
+            Mino.draw(gx, gy, squareSize, type, gc);
         }
     }
 

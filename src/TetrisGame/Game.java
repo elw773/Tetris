@@ -2,12 +2,10 @@ package TetrisGame;
 
 import TetrisGame.Tetromino.Tetromino;
 
-import java.util.Queue;
-
 public class Game {
     private int lockCounter;
     private int dropCounter;
-    private Square[][] board;
+    private Mino[][] board;
     private int score;
     private Tetromino hold;
     private Tetromino currentTetromino;
@@ -36,7 +34,7 @@ public class Game {
         return null;
     }
 
-    public Square[][] getBoard(){
+    public Mino[][] getBoard(){
         return null;
     }
 

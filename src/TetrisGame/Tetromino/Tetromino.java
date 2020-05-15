@@ -1,8 +1,10 @@
 package TetrisGame.Tetromino;
 
 import TetrisGame.Move;
-import TetrisGame.Square;
+import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
+
+import java.util.EnumMap;
 
 public abstract class Tetromino {
     private double x;
@@ -24,7 +26,7 @@ public abstract class Tetromino {
      * @param board the board to move on
      * @return true if succesful
      */
-    public boolean translate(Move.Direction direction, Square[][] board){
+    public boolean translate(Move.Direction direction, Mino[][] board){
         for (MovingSquare square:squares) {
             if(!square.canTranslate(direction, board)){
                 return false;
@@ -43,7 +45,7 @@ public abstract class Tetromino {
      * @param board the board to move on
      * @return true if it can translate
      */
-    public boolean canTranslate(Move.Direction direction, Square[][] board){
+    public boolean canTranslate(Move.Direction direction, Mino[][] board){
         for (MovingSquare square:squares) {
             if(!square.canTranslate(direction, board)){
                 return false;
@@ -57,7 +59,7 @@ public abstract class Tetromino {
      * @param board the board to fall down on
      * @return true if succesful
      */
-    public boolean fall(Square[][] board){
+    public boolean fall(Mino[][] board){
         for (MovingSquare square:squares) {
             if(!square.canFall(board)){
                 return false;
@@ -74,7 +76,7 @@ public abstract class Tetromino {
      * @param board the board to fall down on
      * @return true if it can
      */
-    public boolean canFall(Square[][] board){
+    public boolean canFall(Mino[][] board){
         for (MovingSquare square:squares) {
             if(!square.canFall(board)){
                 return false;
@@ -87,17 +89,17 @@ public abstract class Tetromino {
      * Locks the tetromino onto the given board
      * @param board the board to lock onto
      */
-    public void lock(Square[][] board){
+    public void lock(Mino[][] board){
         for (MovingSquare square:squares) {
             square.lock(board);
         }
     }
 
-    public abstract boolean rotate(Move.Direction direction, Square[][] board);
+    public abstract boolean rotate(Move.Direction direction, Mino[][] board);
 
-    public abstract boolean canRotate(Move.Direction direction, Square[][] board);
+    public abstract boolean canRotate(Move.Direction direction, Mino[][] board);
 
-    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Square[][] board){
+    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
 
     }
 
