@@ -21,7 +21,7 @@ public class Main extends Application {
     }
 
     private Timeline timeline;
-    private InputManager inputManager;
+    public InputManager inputManager;
 
     /**
      * Represents the state of the program, with which menu is shown
