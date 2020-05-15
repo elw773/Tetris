@@ -21,6 +21,6 @@ public class J extends Tetromino {
     }
 
     public J(){
-        super(xOffsets, yOffsets, Mino.I);
+        super(xOffsets, yOffsets, Mino.J);
     }
 }
