@@ -11,13 +11,16 @@ public class Tetromino {
     private int y;
     private MovingSquare[] squares;
     private Orientation orientation;
+    private Mino minoType;
 
     private EnumMap<Orientation, int[]> xOffsets;
     private EnumMap<Orientation, int[]> yOffsets;
 
-    public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets){
+    public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets, Mino minoType){
         this.xOffsets = xOffsets;
         this.yOffsets = yOffsets;
+
+        this.minoType = minoType;
 
         orientation = Orientation.NORTH;
     }
@@ -46,8 +49,8 @@ public class Tetromino {
      */
     public boolean canTranslate(Move.Direction direction, Mino[][] board){
         for (int i = 0; i < 4; i++) {
-            int minoX = xOffsets.get(orientation)[i] + this.x;
-            int minoY = yOffsets.get(orientation)[i] + this.y;
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
             if(board[minoX + direction.getSign()][minoY] != Mino.NONE){
                 return false;
             }
@@ -75,8 +78,8 @@ public class Tetromino {
      */
     public boolean canFall(Mino[][] board){
         for (int i = 0; i < 4; i++) {
-            int minoX = xOffsets.get(orientation)[i] + this.x;
-            int minoY = yOffsets.get(orientation)[i] + this.y;
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
             if(board[minoX][minoY + 1] != Mino.NONE){
                 return false;
             }
@@ -90,9 +93,9 @@ public class Tetromino {
      */
     public void lock(Mino[][] board){
         for (int i = 0; i < 4; i++) {
-            int minoX = xOffsets.get(orientation)[i] + this.x;
-            int minoY = yOffsets.get(orientation)[i] + this.y;
-
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
+            board[minoX][minoY] = this.minoType;
         }
     }
 
@@ -105,7 +108,7 @@ public class Tetromino {
         return yOffsets.get(orientation)[n] + this.y;
     }
 
-    public abstract boolean rotate(Move.Direction direction, Mino[][] board);
+    public boolean rotate(Move.Direction direction, Mino[][] board);
 
     public abstract boolean canRotate(Move.Direction direction, Mino[][] board);
 

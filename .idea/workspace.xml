@@ -89,10 +89,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="227">
-              <caret line="63" column="33" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="33" />
+            <state relative-caret-position="289">
+              <caret line="110" column="68" selection-start-line="110" selection-start-column="68" selection-end-line="110" selection-end-column="68" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2825#2826#0" expanded="true" />
+                <element signature="e#2885#2886#0" expanded="true" />
+                <element signature="e#2915#2916#0" expanded="true" />
+                <element signature="e#2975#2976#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -854,10 +858,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="63" column="33" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="33" />
+        <state relative-caret-position="289">
+          <caret line="110" column="68" selection-start-line="110" selection-start-column="68" selection-end-line="110" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2825#2826#0" expanded="true" />
+            <element signature="e#2885#2886#0" expanded="true" />
+            <element signature="e#2915#2916#0" expanded="true" />
+            <element signature="e#2975#2976#0" expanded="true" />
           </folding>
         </state>
       </provider>
