@@ -2,6 +2,7 @@ package TetrisGame;
 
 import TetrisGame.Tetromino.Tetromino;
 import TetrisGame.Tetromino.TetrominoFactory;
+import javafx.scene.canvas.GraphicsContext;
 
 public class Game {
     private int lockCounter;
@@ -83,5 +84,14 @@ public class Game {
 
     public int getScore(){
         return 0;
+    }
+
+    public void drawBoard(double boardX, double boardY, double height, GraphicsContext gc){
+        double squareSize = height / 20;
+        for (int x = 1; x < 11; x++) {
+            for (int y = 5; y < 25; y++) {
+                Mino.draw(boardX + (x*squareSize), boardY + (y*squareSize), squareSize, board[x][y], gc);
+            }
+        }
     }
 }

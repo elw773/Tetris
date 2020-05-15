@@ -66,6 +66,8 @@ public class Main extends Application {
         if(inputManager.isKeyClicked(KeyCode.A)){
             System.out.println("A");
         }
+
+
     }
 
 
