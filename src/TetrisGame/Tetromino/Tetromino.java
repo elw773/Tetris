@@ -11,7 +11,6 @@ public class Tetromino {
 
     private int x;
     private int y;
-    private MovingSquare[] squares;
     private Orientation orientation;
     private Mino minoType;
 
@@ -242,6 +241,8 @@ public class Tetromino {
      * @param gc
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
-        drawAbsolute(boardGx + (x*squareSize), boardGy + (y*squareSize), squareSize, gc);
+
+            drawAbsolute(boardGx + ((x - 1) * squareSize), boardGy + ((y - 5) * squareSize), squareSize, gc);
+
     }
 }

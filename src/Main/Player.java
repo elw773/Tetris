@@ -5,7 +5,7 @@ import TetrisGame.Move;
 import javafx.scene.input.KeyCode;
 
 public class Player implements MoveGetter {
-    Move move;
+    Move move = new Move();
 
     @Override
     public Move getMove() {
