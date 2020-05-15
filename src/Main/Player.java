@@ -1,7 +1,10 @@
+package Main;
+
+import Main.Main;
 import TetrisGame.Move;
 import javafx.scene.input.KeyCode;
 
-public class Player implements MoveGetter{
+public class Player implements MoveGetter {
     Move move;
 
     @Override
