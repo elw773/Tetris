@@ -76,7 +76,7 @@ public class Main extends Application {
      */
     public void initializeTimeline(){
         KeyFrame kf = new KeyFrame(
-                Duration.seconds(0.005),            // Time between each update
+                Duration.seconds(0.02),            // Time between each update
                 new EventHandler<ActionEvent>() {
                     @Override
                     // This method will be called over and over
