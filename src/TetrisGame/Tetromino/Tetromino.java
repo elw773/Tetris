@@ -82,6 +82,38 @@ public class Tetromino {
     }
 
     /**
+     *
+     * @param x
+     * @param y
+     * @param board
+     * @return
+     */
+    public boolean move(int x, int y, Mino[][] board){
+        if(canMove(x, y, board)){
+            this.x = x;
+            this.y = y;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param board
+     * @return
+     */
+    public boolean canMove(int x, int y, Mino[][] board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            if(board[x + xOffsets.get(orientation)[i]][y + yOffsets.get(orientation)[i]] != Mino.NONE){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Moves the tetromino in the desired direction, if it can
      *
      * @param direction the desired direction
