@@ -3,14 +3,24 @@ package TetrisGame.Tetromino;
 import TetrisGame.Move;
 import TetrisGame.Mino;
 
+import java.util.EnumMap;
+
 public class O extends Tetromino {
-    @Override
-    public boolean rotate(Move.Direction direction, Mino[][] board) {
-        return false;
+    private static int[] northXOffsets = {0,0,1,1};
+    private static int[] northYOffsets = {0,1,0,1};
+
+    private static EnumMap<Orientation, int[]> xOffsets;
+    private static EnumMap<Orientation, int[]> yOffsets;
+
+
+    public static void initialize(){
+        xOffsets = new EnumMap<Orientation, int[]>(Orientation.class);
+        yOffsets = new EnumMap<Orientation, int[]>(Orientation.class);
+        xOffsets.put(Orientation.NORTH, northXOffsets);
+        yOffsets.put(Orientation.NORTH, northYOffsets);
     }
 
-    @Override
-    public boolean canRotate(Move.Direction direction, Mino[][] board) {
-        return false;
+    public O(){
+        super(xOffsets, yOffsets, Mino.I);
     }
 }

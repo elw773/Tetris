@@ -17,7 +17,7 @@ public class Tetromino {
 
     private EnumMap<Orientation, int[]> xOffsets;
     private EnumMap<Orientation, int[]> yOffsets;
-
+/*
     public static EnumMap<Orientation, int[]>[] createOffsets(int[] newXOffsets, int[] newYOffsets){
         EnumMap<Orientation, int[]>[] offsets = new EnumMap[2];
         offsets[0] = new EnumMap<Orientation, int[]>(Orientation.class);
@@ -70,7 +70,7 @@ public class Tetromino {
             xOffsets[i] = newX;
             yOffsets[i] = newY;
         }
-    }
+    }*/
 
     public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets, Mino minoType){
         this.xOffsets = xOffsets;
