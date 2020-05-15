@@ -6,9 +6,9 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.EnumMap;
 
-public abstract class Tetromino {
-    private double x;
-    private double y;
+public class Tetromino {
+    private int x;
+    private int y;
     private MovingSquare[] squares;
 
     private EnumMap<Orientation, int[]> xOffsets;
