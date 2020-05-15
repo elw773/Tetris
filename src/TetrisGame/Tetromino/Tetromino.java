@@ -18,6 +18,60 @@ public class Tetromino {
     private EnumMap<Orientation, int[]> xOffsets;
     private EnumMap<Orientation, int[]> yOffsets;
 
+    public static EnumMap<Orientation, int[]>[] createOffsets(int[] newXOffsets, int[] newYOffsets){
+        EnumMap<Orientation, int[]>[] offsets = new EnumMap[2];
+        offsets[0] = new EnumMap<Orientation, int[]>(Orientation.class);
+        offsets[1] = new EnumMap<Orientation, int[]>(Orientation.class);
+
+
+        int width = 0;
+        for(int n:newXOffsets){
+            if(n > width){
+                width = n;
+            }
+        }
+
+        int height = 0;
+        for(int n:newYOffsets){
+            if(n > height){
+                height = n;
+            }
+        }
+
+        double centreX = width/2.0;
+        double centreY = height/2.0;
+
+        double[] centreXOffset = new double[NUM_MINOS];
+        double[] centreYOffset = new double[NUM_MINOS];
+
+        for (int i = 0; i < NUM_MINOS; i++) {
+            centreXOffset[i] = newXOffsets[i] - centreX;
+            centreYOffset[i] = newYOffsets[i] - centreX;
+        }
+
+        for (Orientation orientation:Orientation.values()) {
+            int[] xOffsets = new int[NUM_MINOS];
+            int[] yOffsets = new int[NUM_MINOS];
+            for (int i = 0; i < NUM_MINOS; i++) {
+                xOffsets[i] = (int)(centreX + centreXOffset[i] + 0.5);
+                yOffsets[i] = (int)(centreY + centreYOffset[i] + 0.5);
+            }
+            offsets[0].put(orientation, xOffsets);
+            offsets[1].put(orientation, yOffsets);
+            rotateOffsets90cw(centreXOffset, centreYOffset);
+        }
+        return offsets;
+    }
+
+    private static void rotateOffsets90cw(double[] xOffsets, double[] yOffsets){
+        for (int i = 0; i < xOffsets.length; i++) {
+            double newX = yOffsets[i] * -1;
+            double newY = xOffsets[i];
+            xOffsets[i] = newX;
+            yOffsets[i] = newY;
+        }
+    }
+
     public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets, Mino minoType){
         this.xOffsets = xOffsets;
         this.yOffsets = yOffsets;
@@ -102,10 +156,20 @@ public class Tetromino {
     }
 
 
+    /**
+     * Gets the x of the nth mino
+     * @param n the mino (0-3)
+     * @return the x coordinate
+     */
     private int getMinoX(int n){
         return xOffsets.get(orientation)[n] + this.x;
     }
 
+    /**
+     * Gets the y of the nth mino
+     * @param n the mino (0-3)
+     * @return the y coordinate
+     */
     private int getMinoY(int n){
         return yOffsets.get(orientation)[n] + this.y;
     }
