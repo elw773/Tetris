@@ -10,6 +10,7 @@ public class Tetromino {
     private int x;
     private int y;
     private MovingSquare[] squares;
+    private Orientation orientation;
 
     private EnumMap<Orientation, int[]> xOffsets;
     private EnumMap<Orientation, int[]> yOffsets;
@@ -17,6 +18,8 @@ public class Tetromino {
     public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets){
         this.xOffsets = xOffsets;
         this.yOffsets = yOffsets;
+
+        orientation = Orientation.NORTH;
     }
 
     /**
@@ -27,15 +30,11 @@ public class Tetromino {
      * @return true if succesful
      */
     public boolean translate(Move.Direction direction, Mino[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canTranslate(direction, board)){
-                return false;
-            }
+        if(canTranslate(direction, board)){
+            this.x += direction.getSign();
+            return true;
         }
-        for (MovingSquare square:squares) {
-            square.translate(direction, board);
-        }
-        return true;
+        return false;
     }
 
     /**
@@ -46,8 +45,10 @@ public class Tetromino {
      * @return true if it can translate
      */
     public boolean canTranslate(Move.Direction direction, Mino[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canTranslate(direction, board)){
+        for (int i = 0; i < 4; i++) {
+            int minoX = xOffsets.get(orientation)[i] + this.x;
+            int minoY = yOffsets.get(orientation)[i] + this.y;
+            if(board[minoX + direction.getSign()][minoY] != Mino.NONE){
                 return false;
             }
         }
@@ -60,15 +61,11 @@ public class Tetromino {
      * @return true if succesful
      */
     public boolean fall(Mino[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canFall(board)){
-                return false;
-            }
+        if(canFall(board)){
+            this.y ++;
+            return true;
         }
-        for (MovingSquare square:squares) {
-            square.fall(board);
-        }
-        return true;
+        return false;
     }
 
     /**
@@ -77,8 +74,10 @@ public class Tetromino {
      * @return true if it can
      */
     public boolean canFall(Mino[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canFall(board)){
+        for (int i = 0; i < 4; i++) {
+            int minoX = xOffsets.get(orientation)[i] + this.x;
+            int minoY = yOffsets.get(orientation)[i] + this.y;
+            if(board[minoX][minoY + 1] != Mino.NONE){
                 return false;
             }
         }
@@ -90,9 +89,20 @@ public class Tetromino {
      * @param board the board to lock onto
      */
     public void lock(Mino[][] board){
-        for (MovingSquare square:squares) {
-            square.lock(board);
+        for (int i = 0; i < 4; i++) {
+            int minoX = xOffsets.get(orientation)[i] + this.x;
+            int minoY = yOffsets.get(orientation)[i] + this.y;
+
         }
+    }
+
+
+    private int getMinoX(int n){
+        return xOffsets.get(orientation)[n] + this.x;
+    }
+
+    private int getMinoY(int n){
+        return yOffsets.get(orientation)[n] + this.y;
     }
 
     public abstract boolean rotate(Move.Direction direction, Mino[][] board);
