@@ -9,6 +9,14 @@ public abstract class Tetromino {
     private double y;
     private MovingSquare[] squares;
 
+    private EnumMap<Orientation, int[]> xOffsets;
+    private EnumMap<Orientation, int[]> yOffsets;
+
+    public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets){
+        this.xOffsets = xOffsets;
+        this.yOffsets = yOffsets;
+    }
+
     /**
      * Moves the tetromino in the desired direction, if it can
      *

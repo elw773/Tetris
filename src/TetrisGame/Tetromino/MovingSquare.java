@@ -4,34 +4,20 @@ import TetrisGame.Move;
 import TetrisGame.Square;
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
+
 /**
  * Represents a square in a moving tetromino
  */
 public class MovingSquare {
-    private int x;
-    private int y;
+    private double dx;
+    private double dy;
     private Square type;
 
     public MovingSquare(Square type){
         this.type = type;
     }
 
-    /**
-     * Moves the square in the desired direction, if possible, on the given board
-     *
-     * @param dx the horizontal movement
-     * @param dy the vertical movement
-     * @param board the board moving on
-     * @return if the tetromino can translate
-     */
-    public boolean translate(int dx, int dy, Square[][] board){
-        if(canTranslate(dx, dy, board)){
-            x += dy;
-            y += dx;
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Determines whether the square can be translated in the desired direction on the given board
@@ -41,8 +27,8 @@ public class MovingSquare {
      * @param board the board moving on
      * @return if the tetromino can translate
      */
-    public boolean canTranslate(int dx, int dy, Square[][] board){
-        return (board[x+dx][y+dy] == Square.NONE);
+    public boolean canMove(double newCentreX, double newCentreY, Square[][] board){
+        return (board[Math.rou(newCentreX + dx)][y+dy] == Square.NONE);
     }
 
     /**
@@ -53,8 +39,12 @@ public class MovingSquare {
         board[x][y] = this.type;
     }
 
-    public int[][] rotate(Move.Direction direction, Square[][] board, double centreX, double centreY, int[][] wallKicks){
-        return null;
+    public void calcValidRotationKicks(ArrayList<int[]> wallKicks, Move.Direction direction, Square[][] board, double centreX, double centreY){
+        double dx = x-centreX;
+        double dy = y-centreY;
+
+        int newX =
+        int newY = -1 * y+dx
     }
 
     /**
