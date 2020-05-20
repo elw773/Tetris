@@ -1,5 +1,6 @@
 package TetrisGame.Tetromino;
 
+import TetrisGame.Game;
 import TetrisGame.Move;
 import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
@@ -329,7 +330,7 @@ public class Tetromino {
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
 
-            drawAbsolute(boardGx + ((x - 1) * squareSize), boardGy + ((y - 5) * squareSize), squareSize, gc);
+            drawAbsolute(boardGx + ((x - Game.LOW_X) * squareSize), boardGy + ((y - Game.LOW_Y) * squareSize), squareSize, gc);
 
     }
 }

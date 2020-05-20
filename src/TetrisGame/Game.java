@@ -8,6 +8,17 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 public class Game {
+    public static final int BOARD_WIDTH = 14;
+    public static final int BOARD_HEIGHT = 28;
+    public static final int PLAYABLE_WIDTH = 10;
+    public static final int PLAYABLE_HEIGHT = 20;
+    public static final int LOW_X = 2;
+    public static final int HIGH_X = 11;
+    public static final int LOW_Y = 6;
+    public static final int HIGH_Y = 25;
+    public static final int SPAWN_X = LOW_X + 3;
+    public static final int SPAWN_Y = LOW_Y - 2;
+
     private int lockCounter;
     private int dropCounter;
     private Mino[][] board;
@@ -47,11 +58,11 @@ public class Game {
     }
 
     public void reset() {
-        board = new Mino[12][26];
+        board = new Mino[BOARD_WIDTH][BOARD_HEIGHT];
 
-        for (int x = 0; x < 12; x++) {
-            for (int y = 0; y < 26; y++) {
-                if(x == 0 || x == 11 || y == 0 || y == 25){
+        for (int x = 0; x < BOARD_WIDTH; x++) {
+            for (int y = 0; y < BOARD_HEIGHT; y++) {
+                if(x < LOW_X || HIGH_X < x || y < LOW_Y || HIGH_Y < y){
                     board[x][y] = Mino.I;
                 } else {
                     board[x][y] = Mino.NONE;
@@ -61,7 +72,7 @@ public class Game {
 
         hold = null;
         currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
-        currentTetromino.move(4,1, board);
+        currentTetromino.move(SPAWN_X,SPAWN_Y, board);
         next = new Tetromino[6];
     }
 
@@ -94,9 +105,9 @@ public class Game {
 
     public void drawBoard(double boardX, double boardY, double height, GraphicsContext gc){
         double squareSize = height / 20;
-        for (int x = 1; x < 11; x++) {
-            for (int y = 5; y < 25; y++) {
-                Mino.draw(boardX + ((x-1)*squareSize), boardY + ((y-5)*squareSize), squareSize, board[x][y], gc);
+        for (int x = LOW_X; x <= HIGH_X; x++) {
+            for (int y = LOW_Y; y <= HIGH_Y; y++) {
+                Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-LOW_Y)*squareSize), squareSize, board[x][y], gc);
             }
         }
         currentTetromino.drawRelative(boardX, boardY, squareSize, gc);
