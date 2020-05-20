@@ -263,15 +263,16 @@ public class Tetromino {
 
 
     public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
-        if(minoType == Mino.O) {
+        if(minoType == Mino.O || direction == Move.Direction.NONE) {
             return true;
         }
 
         for (int xKick:WALL_KICK_VALUES) {
             for(int yKick:WALL_KICK_VALUES){
                 if(canRotate(orientation.rotate(direction), board, xKick, yKick)){
-                    this.move(xKick, yKick, board);
                     orientation = orientation.rotate(direction);
+                    x += xKick;
+                    y += yKick;
                     return true;
                 }
             }
