@@ -104,7 +104,7 @@ public class Game {
     public void lowerLine(int line){
         if(PLAYABLE_Y <= line && line <= PLAYABLE_HEIGHT) {
             for (int x = LOW_X; x <= HIGH_X; x++) {
-                board[x][line + PLAYABLE_Y] = board[x][line + PLAYABLE_Y - 1];
+                board[x][line + PLAYABLE_Y+1] = board[x][line + PLAYABLE_Y];
             }
             lowerLine(line-1);
         }
