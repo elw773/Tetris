@@ -18,7 +18,7 @@ public class Game {
     public static final int PLAYABLE_Y = 8;
     public static final int HIGH_Y = BOARD_HEIGHT - 3;
     public static final int SPAWN_X = LOW_X + 3;
-    public static final int SPAWN_Y = PLAYABLE_Y - 2;
+    public static final int SPAWN_Y = PLAYABLE_Y - 1;
 
     private int lockCounter;
     private int dropCounter;
