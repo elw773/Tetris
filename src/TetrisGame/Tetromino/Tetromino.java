@@ -8,73 +8,109 @@ import java.util.EnumMap;
 
 public class Tetromino {
     public static final int NUM_MINOS = 4;
+    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
+    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
+
+
+    /**
+     * returns the bitmap of the desired tetromino
+     * @param tetrominoType the mino of the desired tetromino
+     * @return the bitmap of the tetromino
+     */
+    private static boolean[][] getBitMap(Mino tetrominoType){
+        switch (tetrominoType){
+            case I: return new boolean[][]{
+                    {false, false, false, false},
+                    { true,  true,  true,  true},
+                    {false, false, false, false},
+                    {false, false, false, false}
+            };
+            case J: return new boolean[][]{
+                    { true, false, false},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case L: return new boolean[][]{
+                    {false, false,  true},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case O: return new boolean[][]{
+                    {true, true},
+                    {true, true}
+            };
+            case S: return new boolean[][]{
+                    {false,  true,  true},
+                    { true,  true, false},
+                    {false, false, false}
+            };
+            case T: return new boolean[][]{
+                    {false,  true, false},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case Z: return new boolean[][]{
+                    { true,  true, false},
+                    {false,  true,  true},
+                    {false, false, false}
+            };
+        }
+        return null;
+    }
+
+    /**
+     * static initialization block initializes the X_OFFSETS and Y_OFFSETS variables and populates them with the
+     * offsets
+     */
+    static{ //https://www.tutorialspoint.com/a-static-initialization-block-in-java
+        X_OFFSETS = new EnumMap<>(Mino.class);
+        Y_OFFSETS = new EnumMap<>(Mino.class);
+        for(Mino type:Mino.values()){
+            if(type != Mino.NONE) {
+                boolean[][] bitmap = getBitMap(type);
+
+                EnumMap<Orientation, int[]> xOffsets = new EnumMap<>(Orientation.class);
+                EnumMap<Orientation, int[]> yOffsets = new EnumMap<>(Orientation.class);
+
+                for (Orientation orientation : Orientation.values()) {
+                    xOffsets.put(orientation, new int[4]);
+                    yOffsets.put(orientation, new int[4]);
+                }
+
+                int i = 0;
+                for (int x = 0; x < bitmap.length; x++) {
+                    for (int y = 0; y < bitmap.length; y++) {
+                        if (bitmap[y][x]) { // x and y are inverted because of the way the bitmaps are hardcoded
+                            //north
+                            xOffsets.get(Orientation.NORTH)[i] = x;
+                            yOffsets.get(Orientation.NORTH)[i] = y;
+                            //east
+                            xOffsets.get(Orientation.EAST)[i] = y;
+                            yOffsets.get(Orientation.EAST)[i] = -x;
+                            //south
+                            xOffsets.get(Orientation.SOUTH)[i] = -x;
+                            yOffsets.get(Orientation.SOUTH)[i] = -y;
+                            //west
+                            xOffsets.get(Orientation.WEST)[i] = -y;
+                            yOffsets.get(Orientation.WEST)[i] = x;
+
+                            i++;
+                        }
+                    }
+                    X_OFFSETS.put(type, xOffsets);
+                    Y_OFFSETS.put(type, yOffsets);
+                }
+            }
+        }
+    }
+
 
     private int x;
     private int y;
     private Orientation orientation;
     private Mino minoType;
 
-    private EnumMap<Orientation, int[]> xOffsets;
-    private EnumMap<Orientation, int[]> yOffsets;
-/*
-    public static EnumMap<Orientation, int[]>[] createOffsets(int[] newXOffsets, int[] newYOffsets){
-        EnumMap<Orientation, int[]>[] offsets = new EnumMap[2];
-        offsets[0] = new EnumMap<Orientation, int[]>(Orientation.class);
-        offsets[1] = new EnumMap<Orientation, int[]>(Orientation.class);
-
-
-        int width = 0;
-        for(int n:newXOffsets){
-            if(n > width){
-                width = n;
-            }
-        }
-
-        int height = 0;
-        for(int n:newYOffsets){
-            if(n > height){
-                height = n;
-            }
-        }
-
-        double centreX = width/2.0;
-        double centreY = height/2.0;
-
-        double[] centreXOffset = new double[NUM_MINOS];
-        double[] centreYOffset = new double[NUM_MINOS];
-
-        for (int i = 0; i < NUM_MINOS; i++) {
-            centreXOffset[i] = newXOffsets[i] - centreX;
-            centreYOffset[i] = newYOffsets[i] - centreX;
-        }
-
-        for (Orientation orientation:Orientation.values()) {
-            int[] xOffsets = new int[NUM_MINOS];
-            int[] yOffsets = new int[NUM_MINOS];
-            for (int i = 0; i < NUM_MINOS; i++) {
-                xOffsets[i] = (int)(centreX + centreXOffset[i] + 0.5);
-                yOffsets[i] = (int)(centreY + centreYOffset[i] + 0.5);
-            }
-            offsets[0].put(orientation, xOffsets);
-            offsets[1].put(orientation, yOffsets);
-            rotateOffsets90cw(centreXOffset, centreYOffset);
-        }
-        return offsets;
-    }
-
-    private static void rotateOffsets90cw(double[] xOffsets, double[] yOffsets){
-        for (int i = 0; i < xOffsets.length; i++) {
-            double newX = yOffsets[i] * -1;
-            double newY = xOffsets[i];
-            xOffsets[i] = newX;
-            yOffsets[i] = newY;
-        }
-    }*/
-
-    public Tetromino(EnumMap<Orientation, int[]> xOffsets, EnumMap<Orientation, int[]> yOffsets, Mino minoType){
-        this.xOffsets = xOffsets;
-        this.yOffsets = yOffsets;
-
+    public Tetromino(Mino minoType){
         this.minoType = minoType;
 
         orientation = Orientation.NORTH;
@@ -105,7 +141,7 @@ public class Tetromino {
      */
     public boolean canMove(int x, int y, Mino[][] board){
         for (int i = 0; i < NUM_MINOS; i++) {
-            if(board[x + xOffsets.get(orientation)[i]][y + yOffsets.get(orientation)[i]] != Mino.NONE){
+            if(board[x + getMinoXOffset(i)][y + getMinoYOffset(i)] != Mino.NONE){
                 return false;
             }
         }
@@ -193,7 +229,7 @@ public class Tetromino {
      * @return the x coordinate
      */
     private int getMinoX(int n){
-        return xOffsets.get(orientation)[n] + this.x;
+        return getMinoXOffset(n) + this.x;
     }
 
     /**
@@ -202,7 +238,25 @@ public class Tetromino {
      * @return the y coordinate
      */
     private int getMinoY(int n){
-        return yOffsets.get(orientation)[n] + this.y;
+        return getMinoYOffset(n) + this.y;
+    }
+
+    /**
+     * Gets the x offset of the nth mino
+     * @param n the mino (0-3)
+     * @return the x offset
+     */
+    private int getMinoXOffset(int n){
+        return X_OFFSETS.get(minoType).get(orientation)[n];
+    }
+
+    /**
+     * Gets the y offset of the nth mino
+     * @param n the mino (0-3)
+     * @return the y offset
+     */
+    private int getMinoYOffset(int n){
+        return Y_OFFSETS.get(minoType).get(orientation)[n];
     }
 
     public boolean rotate(Move.Direction direction, Mino[][] board){
@@ -226,8 +280,8 @@ public class Tetromino {
      */
     public void drawAbsolute(double gx, double gy, double squareSize, GraphicsContext gc){
         for (int i = 0; i < NUM_MINOS; i++) {
-            double x = gx + (xOffsets.get(orientation)[i] * squareSize);
-            double y = gy + (yOffsets.get(orientation)[i] * squareSize);
+            double x = gx + (getMinoXOffset(i) * squareSize);
+            double y = gy + (getMinoYOffset(i) * squareSize);
             Mino.draw(x, y, squareSize, minoType, gc);
         }
     }

@@ -56,13 +56,6 @@ public class Main extends Application {
         primaryStage.show();
 
         timeline.play();
-        I.initialize();
-        J.initialize();
-        L.initialize();
-        O.initialize();
-        S.initialize();
-        T.initialize();
-        Z.initialize();
 
 
         tetrisMenu = new TetrisMenu();

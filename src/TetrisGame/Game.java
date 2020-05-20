@@ -2,7 +2,6 @@ package TetrisGame;
 
 import Graphics.TetrisMenu;
 import TetrisGame.Tetromino.Tetromino;
-import TetrisGame.Tetromino.TetrominoFactory;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -33,7 +32,7 @@ public class Game {
             if(lockCounter > 30){
                 currentTetromino.lock(board);
                 lockCounter = 0;
-                currentTetromino = TetrominoFactory.newTetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
+                currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
                 currentTetromino.move(4,1, board);
             }
             lockCounter ++;
@@ -60,7 +59,7 @@ public class Game {
         }
 
         hold = null;
-        currentTetromino = TetrominoFactory.newTetromino(Mino.O);
+        currentTetromino = new Tetromino(Mino.O);
         currentTetromino.move(4,1, board);
         next = new Tetromino[6];
     }
