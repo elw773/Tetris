@@ -9,14 +9,14 @@ import java.util.Random;
 
 public class Game {
     public static final int BOARD_WIDTH = 14;
-    public static final int BOARD_HEIGHT = 28;
+    public static final int BOARD_HEIGHT = 30;
     public static final int PLAYABLE_WIDTH = 10;
     public static final int PLAYABLE_HEIGHT = 20;
     public static final int LOW_X = 2;
-    public static final int HIGH_X = 11;
+    public static final int HIGH_X = BOARD_WIDTH - 3;
     public static final int LOW_Y = 2;
-    public static final int PLAYABLE_Y = 6;
-    public static final int HIGH_Y = 25;
+    public static final int PLAYABLE_Y = 8;
+    public static final int HIGH_Y = BOARD_HEIGHT - 3;
     public static final int SPAWN_X = LOW_X + 3;
     public static final int SPAWN_Y = PLAYABLE_Y - 2;
 
@@ -27,6 +27,7 @@ public class Game {
     private Tetromino hold;
     private Tetromino currentTetromino;
     private Tetromino[] next;
+    private boolean gameOver;
 
     public Game(){
         reset();
@@ -35,7 +36,7 @@ public class Game {
     public void update(Move move){
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
-            if(dropCounter > 40){
+            if(dropCounter > 40 || (dropCounter > 20 && move.softDrop)){
                 currentTetromino.fall(board);
                 dropCounter = 0;
             }
@@ -43,9 +44,17 @@ public class Game {
         } else {
             if(lockCounter > 30){
                 currentTetromino.lock(board);
+                for (int i = 0; i < PLAYABLE_HEIGHT; i++) {
+                    if(isLineFull(i)){
+                        clearLine(i);
+                    }
+                }
+                //TODO: if tetronimo locked above visible field
                 lockCounter = 0;
                 currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
-                currentTetromino.move(4,1, board);
+                if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
+                    gameOver = true;
+                }
             }
             lockCounter ++;
         }
@@ -59,6 +68,8 @@ public class Game {
     }
 
     public void reset() {
+
+        gameOver = false;
         board = new Mino[BOARD_WIDTH][BOARD_HEIGHT];
 
         for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -78,10 +89,25 @@ public class Game {
     }
 
     public boolean isLineFull(int line){
-        return false;
+        for (int x = LOW_X; x <= HIGH_X; x++) {
+            if(board[x][line+PLAYABLE_Y] == Mino.NONE){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void clearLine(int line){
+        lowerLine(line-1);
+    }
+
+    public void lowerLine(int line){
+        if(PLAYABLE_Y <= line && line <= PLAYABLE_HEIGHT) {
+            for (int x = LOW_X; x <= HIGH_X; x++) {
+                board[x][line + PLAYABLE_Y] = board[x][line + PLAYABLE_Y - 1];
+            }
+            lowerLine(line-1);
+        }
     }
 
     public Tetromino getHold(){
