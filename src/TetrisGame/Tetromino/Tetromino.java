@@ -1,13 +1,152 @@
 package TetrisGame.Tetromino;
 
 import TetrisGame.Move;
-import TetrisGame.Square;
+import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
 
-public abstract class Tetromino {
-    private double x;
-    private double y;
-    private MovingSquare[] squares;
+import java.util.EnumMap;
+
+public class Tetromino {
+    public static final int NUM_MINOS = 4;
+    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
+    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
+
+
+    /**
+     * returns the bitmap of the desired tetromino
+     * @param tetrominoType the mino of the desired tetromino
+     * @return the bitmap of the tetromino
+     */
+    private static boolean[][] getBitMap(Mino tetrominoType){
+        switch (tetrominoType){
+            case I: return new boolean[][]{
+                    {false, false, false, false},
+                    { true,  true,  true,  true},
+                    {false, false, false, false},
+                    {false, false, false, false}
+            };
+            case J: return new boolean[][]{
+                    { true, false, false},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case L: return new boolean[][]{
+                    {false, false,  true},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case O: return new boolean[][]{
+                    {true, true},
+                    {true, true}
+            };
+            case S: return new boolean[][]{
+                    {false,  true,  true},
+                    { true,  true, false},
+                    {false, false, false}
+            };
+            case T: return new boolean[][]{
+                    {false,  true, false},
+                    { true,  true,  true},
+                    {false, false, false}
+            };
+            case Z: return new boolean[][]{
+                    { true,  true, false},
+                    {false,  true,  true},
+                    {false, false, false}
+            };
+        }
+        return null;
+    }
+
+    /**
+     * static initialization block initializes the X_OFFSETS and Y_OFFSETS variables and populates them with the
+     * offsets
+     */
+    static{ //https://www.tutorialspoint.com/a-static-initialization-block-in-java
+        X_OFFSETS = new EnumMap<>(Mino.class);
+        Y_OFFSETS = new EnumMap<>(Mino.class);
+        for(Mino type:Mino.values()){
+            if(type != Mino.NONE) {
+                boolean[][] bitmap = getBitMap(type);
+
+                EnumMap<Orientation, int[]> xOffsets = new EnumMap<>(Orientation.class);
+                EnumMap<Orientation, int[]> yOffsets = new EnumMap<>(Orientation.class);
+
+                for (Orientation orientation : Orientation.values()) {
+                    xOffsets.put(orientation, new int[4]);
+                    yOffsets.put(orientation, new int[4]);
+                }
+
+                int i = 0;
+                for (int x = 0; x < bitmap.length; x++) {
+                    for (int y = 0; y < bitmap.length; y++) {
+                        if (bitmap[y][x]) { // x and y are inverted because of the way the bitmaps are hardcoded
+                            //north
+                            xOffsets.get(Orientation.NORTH)[i] = x;
+                            yOffsets.get(Orientation.NORTH)[i] = y;
+                            //east
+                            xOffsets.get(Orientation.EAST)[i] = y;
+                            yOffsets.get(Orientation.EAST)[i] = -x;
+                            //south
+                            xOffsets.get(Orientation.SOUTH)[i] = -x;
+                            yOffsets.get(Orientation.SOUTH)[i] = -y;
+                            //west
+                            xOffsets.get(Orientation.WEST)[i] = -y;
+                            yOffsets.get(Orientation.WEST)[i] = x;
+
+                            i++;
+                        }
+                    }
+                    X_OFFSETS.put(type, xOffsets);
+                    Y_OFFSETS.put(type, yOffsets);
+                }
+            }
+        }
+    }
+
+
+    private int x;
+    private int y;
+    private Orientation orientation;
+    private Mino minoType;
+
+    public Tetromino(Mino minoType){
+        this.minoType = minoType;
+
+        orientation = Orientation.NORTH;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param board
+     * @return
+     */
+    public boolean move(int x, int y, Mino[][] board){
+        if(canMove(x, y, board)){
+            this.x = x;
+            this.y = y;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @param board
+     * @return
+     */
+    public boolean canMove(int x, int y, Mino[][] board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            if(board[x + getMinoXOffset(i)][y + getMinoYOffset(i)] != Mino.NONE){
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Moves the tetromino in the desired direction, if it can
@@ -16,16 +155,12 @@ public abstract class Tetromino {
      * @param board the board to move on
      * @return true if succesful
      */
-    public boolean translate(Move.Direction direction, Square[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canTranslate(direction, board)){
-                return false;
-            }
+    public boolean translate(Move.Direction direction, Mino[][] board){
+        if(canTranslate(direction, board)){
+            this.x += direction.getSign();
+            return true;
         }
-        for (MovingSquare square:squares) {
-            square.translate(direction, board);
-        }
-        return true;
+        return false;
     }
 
     /**
@@ -35,9 +170,11 @@ public abstract class Tetromino {
      * @param board the board to move on
      * @return true if it can translate
      */
-    public boolean canTranslate(Move.Direction direction, Square[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canTranslate(direction, board)){
+    public boolean canTranslate(Move.Direction direction, Mino[][] board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
+            if(board[minoX + direction.getSign()][minoY] != Mino.NONE){
                 return false;
             }
         }
@@ -49,16 +186,12 @@ public abstract class Tetromino {
      * @param board the board to fall down on
      * @return true if succesful
      */
-    public boolean fall(Square[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canFall(board)){
-                return false;
-            }
+    public boolean fall(Mino[][] board){
+        if(canFall(board)){
+            this.y ++;
+            return true;
         }
-        for (MovingSquare square:squares) {
-            square.fall(board);
-        }
-        return true;
+        return false;
     }
 
     /**
@@ -66,9 +199,11 @@ public abstract class Tetromino {
      * @param board the board to fall down on
      * @return true if it can
      */
-    public boolean canFall(Square[][] board){
-        for (MovingSquare square:squares) {
-            if(!square.canFall(board)){
+    public boolean canFall(Mino[][] board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
+            if(board[minoX][minoY + 1] != Mino.NONE){
                 return false;
             }
         }
@@ -79,17 +214,60 @@ public abstract class Tetromino {
      * Locks the tetromino onto the given board
      * @param board the board to lock onto
      */
-    public void lock(Square[][] board){
-        for (MovingSquare square:squares) {
-            square.lock(board);
+    public void lock(Mino[][] board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
+            board[minoX][minoY] = this.minoType;
         }
     }
 
-    public abstract boolean rotate(Move.Direction direction, Square[][] board);
 
-    public abstract boolean canRotate(Move.Direction direction, Square[][] board);
+    /**
+     * Gets the x of the nth mino
+     * @param n the mino (0-3)
+     * @return the x coordinate
+     */
+    private int getMinoX(int n){
+        return getMinoXOffset(n) + this.x;
+    }
 
-    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Square[][] board){
+    /**
+     * Gets the y of the nth mino
+     * @param n the mino (0-3)
+     * @return the y coordinate
+     */
+    private int getMinoY(int n){
+        return getMinoYOffset(n) + this.y;
+    }
+
+    /**
+     * Gets the x offset of the nth mino
+     * @param n the mino (0-3)
+     * @return the x offset
+     */
+    private int getMinoXOffset(int n){
+        return X_OFFSETS.get(minoType).get(orientation)[n];
+    }
+
+    /**
+     * Gets the y offset of the nth mino
+     * @param n the mino (0-3)
+     * @return the y offset
+     */
+    private int getMinoYOffset(int n){
+        return Y_OFFSETS.get(minoType).get(orientation)[n];
+    }
+
+    public boolean rotate(Move.Direction direction, Mino[][] board){
+        return false;
+    }
+
+    public boolean canRotate(Move.Direction direction, Mino[][] board){
+        return false;
+    }
+
+    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
 
     }
 
@@ -101,8 +279,10 @@ public abstract class Tetromino {
      * @param gc
      */
     public void drawAbsolute(double gx, double gy, double squareSize, GraphicsContext gc){
-        for (MovingSquare square:squares) {
-            square.drawAbsolute(gx, gy, squareSize, gc);
+        for (int i = 0; i < NUM_MINOS; i++) {
+            double x = gx + (getMinoXOffset(i) * squareSize);
+            double y = gy + (getMinoYOffset(i) * squareSize);
+            Mino.draw(x, y, squareSize, minoType, gc);
         }
     }
 
@@ -115,8 +295,8 @@ public abstract class Tetromino {
      * @param gc
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
-        for (MovingSquare square:squares) {
-            square.drawRelative(boardGx, boardGy, squareSize, gc);
-        }
+
+            drawAbsolute(boardGx + ((x - 1) * squareSize), boardGy + ((y - 5) * squareSize), squareSize, gc);
+
     }
 }

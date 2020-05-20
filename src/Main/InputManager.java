@@ -1,3 +1,5 @@
+package Main;
+
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;

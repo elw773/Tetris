@@ -1,16 +1,16 @@
-import TetrisGame.Tetromino.Tetromino;
+package Main;
+
+import Graphics.TetrisMenu;
+import TetrisGame.Tetromino.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -21,7 +21,10 @@ public class Main extends Application {
     }
 
     private Timeline timeline;
-    private InputManager inputManager;
+    public InputManager inputManager;
+
+    private TetrisMenu tetrisMenu;
+    private Canvas canvas;
 
     /**
      * Represents the state of the program, with which menu is shown
@@ -36,7 +39,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Tetris");
 
-        Canvas canvas = new Canvas(700, 800);
+        canvas = new Canvas(700, 800);
 
         Group board = new Group();
         Scene scene = new Scene(board);
@@ -53,12 +56,19 @@ public class Main extends Application {
         primaryStage.show();
 
         timeline.play();
+
+
+        tetrisMenu = new TetrisMenu();
+        tetrisMenu.newGame(new Player());
+
     }
 
     /**
      * Does everything for a single frame of the program
      */
     public void doFrame(){
+        canvas.getGraphicsContext2D().clearRect(0,0,700,800);
+
         inputManager.resetClicks();
 
         if(inputManager.isMouseClicked()){
@@ -68,6 +78,8 @@ public class Main extends Application {
         if(inputManager.isKeyClicked(KeyCode.A)){
             System.out.println("A");
         }
+        tetrisMenu.doFrame(canvas.getGraphicsContext2D());
+
     }
 
 
@@ -76,7 +88,7 @@ public class Main extends Application {
      */
     public void initializeTimeline(){
         KeyFrame kf = new KeyFrame(
-                Duration.seconds(0.005),            // Time between each update
+                Duration.seconds(1.0/60),            // Time between each update
                 new EventHandler<ActionEvent>() {
                     @Override
                     // This method will be called over and over
