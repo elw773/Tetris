@@ -1,6 +1,8 @@
 package TetrisGame.Tetromino;
 
 
+import TetrisGame.Move;
+
 /**
  * Represents the orientation of a tetromino
  */
@@ -28,6 +30,17 @@ public enum Orientation {
             case WEST: return SOUTH;
             case SOUTH: return EAST;
             default: return NORTH;
+        }
+    }
+
+    /**
+     * @return the orientation that is 90 degrees in the given direction from this one
+     */
+    public Orientation rotate(Move.Direction direction){
+        switch (direction){
+            case LEFT: return this.ccw();
+            case RIGHT: return this.cw();
+            default: return this;
         }
     }
 }

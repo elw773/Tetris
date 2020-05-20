@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Renamed">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisGame/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/I.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/J.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/L.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/O.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/S.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/T.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/TetrominoFactory.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Z.java" beforeDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -76,10 +66,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="199">
-              <caret line="57" column="24" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
+            <state relative-caret-position="144">
+              <caret line="91" selection-start-line="91" selection-end-line="91" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2821#2822#0" expanded="true" />
+                <element signature="e#2878#2879#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -97,25 +89,23 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="482">
-              <caret line="277" column="7" lean-forward="true" selection-start-line="277" selection-start-column="7" selection-end-line="277" selection-end-column="7" />
+            <state relative-caret-position="459">
+              <caret line="279" column="8" lean-forward="true" selection-start-line="279" selection-start-column="8" selection-end-line="279" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#6927#6928#0" expanded="true" />
-                <element signature="e#6987#6988#0" expanded="true" />
-                <element signature="e#7134#7135#0" expanded="true" />
-                <element signature="e#7194#7195#0" expanded="true" />
-                <element signature="e#7375#7376#0" expanded="true" />
-                <element signature="e#7450#7451#0" expanded="true" />
-                <element signature="e#7597#7598#0" expanded="true" />
-                <element signature="e#7672#7673#0" expanded="true" />
-                <element signature="e#7892#7893#0" expanded="true" />
-                <element signature="e#7920#7921#0" expanded="true" />
-                <element signature="e#7993#7994#0" expanded="true" />
-                <element signature="e#8021#8022#0" expanded="true" />
+                <element signature="e#7052#7053#0" expanded="true" />
+                <element signature="e#7101#7102#0" expanded="true" />
+                <element signature="e#7248#7249#0" expanded="true" />
+                <element signature="e#7297#7298#0" expanded="true" />
+                <element signature="e#7453#7454#0" expanded="true" />
+                <element signature="e#7519#7520#0" expanded="true" />
+                <element signature="e#7675#7676#0" expanded="true" />
+                <element signature="e#7741#7742#0" expanded="true" />
+                <element signature="e#7912#7913#0" expanded="true" />
+                <element signature="e#7940#7941#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -124,13 +114,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+            <state relative-caret-position="414">
+              <caret line="36" column="86" selection-start-line="36" selection-start-column="86" selection-end-line="36" selection-end-column="86" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Game.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
@@ -142,7 +132,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Mino.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
+            <state relative-caret-position="323">
               <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -235,11 +225,11 @@
         <option value="$PROJECT_DIR$/src/Main/Player.java" />
         <option value="$PROJECT_DIR$/src/TetrisGame/Mino.java" />
         <option value="$PROJECT_DIR$/src/Graphics/TetrisMenu.java" />
-        <option value="$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java" />
-        <option value="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" />
         <option value="$PROJECT_DIR$/src/TetrisGame/Tetromino/TetrominoFactory.java" />
         <option value="$PROJECT_DIR$/src/Main/Main.java" />
         <option value="$PROJECT_DIR$/src/TetrisGame/Game.java" />
+        <option value="$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java" />
+        <option value="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" />
       </list>
     </option>
   </component>
@@ -703,61 +693,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/I.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="33" selection-start-line="7" selection-start-column="33" selection-end-line="25" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/J.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#675#676#0" expanded="true" />
-            <element signature="e#724#725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/S.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/T.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#675#676#0" expanded="true" />
-            <element signature="e#724#725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Z.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="15" lean-forward="true" selection-start-line="22" selection-start-column="15" selection-end-line="22" selection-end-column="15" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#701#702#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/I.java" />
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/J.java" />
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/S.java" />
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/T.java" />
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Z.java" />
     <entry file="file://$PROJECT_DIR$/src/Main/MoveGetter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -766,18 +706,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/MovingSquare.java" />
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/O.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#675#676#0" expanded="true" />
-            <element signature="e#724#725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/O.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_181/javafx-src.zip!/javafx/scene/canvas/Canvas.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -795,28 +724,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/L.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="23" column="40" selection-start-line="23" selection-start-column="40" selection-end-line="23" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#675#676#0" expanded="true" />
-            <element signature="e#724#725#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Mino.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/L.java" />
     <entry file="file://$PROJECT_DIR$/src/TetrisGame/Move.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -834,42 +742,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="482">
-          <caret line="277" column="7" lean-forward="true" selection-start-line="277" selection-start-column="7" selection-end-line="277" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#6927#6928#0" expanded="true" />
-            <element signature="e#6987#6988#0" expanded="true" />
-            <element signature="e#7134#7135#0" expanded="true" />
-            <element signature="e#7194#7195#0" expanded="true" />
-            <element signature="e#7375#7376#0" expanded="true" />
-            <element signature="e#7450#7451#0" expanded="true" />
-            <element signature="e#7597#7598#0" expanded="true" />
-            <element signature="e#7672#7673#0" expanded="true" />
-            <element signature="e#7892#7893#0" expanded="true" />
-            <element signature="e#7920#7921#0" expanded="true" />
-            <element signature="e#7993#7994#0" expanded="true" />
-            <element signature="e#8021#8022#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/TetrominoFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/TetrominoFactory.java" />
     <entry file="file://$PROJECT_DIR$/src/Main/Player.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -882,10 +755,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="199">
-          <caret line="57" column="24" selection-start-line="57" selection-start-column="24" selection-end-line="57" selection-end-column="24" />
+        <state relative-caret-position="144">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2821#2822#0" expanded="true" />
+            <element signature="e#2878#2879#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -894,6 +769,43 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Mino.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="36" column="86" selection-start-line="36" selection-start-column="86" selection-end-line="36" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="279" column="8" lean-forward="true" selection-start-line="279" selection-start-column="8" selection-end-line="279" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7052#7053#0" expanded="true" />
+            <element signature="e#7101#7102#0" expanded="true" />
+            <element signature="e#7248#7249#0" expanded="true" />
+            <element signature="e#7297#7298#0" expanded="true" />
+            <element signature="e#7453#7454#0" expanded="true" />
+            <element signature="e#7519#7520#0" expanded="true" />
+            <element signature="e#7675#7676#0" expanded="true" />
+            <element signature="e#7741#7742#0" expanded="true" />
+            <element signature="e#7912#7913#0" expanded="true" />
+            <element signature="e#7940#7941#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

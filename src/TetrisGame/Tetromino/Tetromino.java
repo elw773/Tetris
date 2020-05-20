@@ -8,6 +8,7 @@ import java.util.EnumMap;
 
 public class Tetromino {
     public static final int NUM_MINOS = 4;
+    public static final int[] WALL_KICK_VALUES = {0, 1, -1, 2, -2};
     private static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
     private static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
 
@@ -78,6 +79,7 @@ public class Tetromino {
                 }
 
                 int i = 0;
+                int S = bitmap.length - 1;
                 for (int x = 0; x < bitmap.length; x++) {
                     for (int y = 0; y < bitmap.length; y++) {
                         if (bitmap[y][x]) { // x and y are inverted because of the way the bitmaps are hardcoded
@@ -85,14 +87,14 @@ public class Tetromino {
                             xOffsets.get(Orientation.NORTH)[i] = x;
                             yOffsets.get(Orientation.NORTH)[i] = y;
                             //east
-                            xOffsets.get(Orientation.EAST)[i] = y;
-                            yOffsets.get(Orientation.EAST)[i] = -x;
+                            xOffsets.get(Orientation.EAST)[i] = S-y;
+                            yOffsets.get(Orientation.EAST)[i] = x;
                             //south
-                            xOffsets.get(Orientation.SOUTH)[i] = -x;
-                            yOffsets.get(Orientation.SOUTH)[i] = -y;
+                            xOffsets.get(Orientation.SOUTH)[i] = S-x;
+                            yOffsets.get(Orientation.SOUTH)[i] = S-y;
                             //west
-                            xOffsets.get(Orientation.WEST)[i] = -y;
-                            yOffsets.get(Orientation.WEST)[i] = x;
+                            xOffsets.get(Orientation.WEST)[i] = y;
+                            yOffsets.get(Orientation.WEST)[i] = S-x;
 
                             i++;
                         }
@@ -259,12 +261,42 @@ public class Tetromino {
         return Y_OFFSETS.get(minoType).get(orientation)[n];
     }
 
-    public boolean rotate(Move.Direction direction, Mino[][] board){
+
+    public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
+        if(minoType == Mino.O) {
+            return true;
+        }
+
+        for (int xKick:WALL_KICK_VALUES) {
+            for(int yKick:WALL_KICK_VALUES){
+                if(canRotate(orientation.rotate(direction), board, xKick, yKick)){
+                    this.move(xKick, yKick, board);
+                    orientation = orientation.rotate(direction);
+                    return true;
+                }
+            }
+        }
         return false;
+        
     }
 
     public boolean canRotate(Move.Direction direction, Mino[][] board){
         return false;
+    }
+
+    private boolean canRotate(Orientation orientation, Mino[][] board, int xKick, int yKick){
+        if(minoType == Mino.O){
+            return true;
+        }
+
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int newX = this.x + xKick + X_OFFSETS.get(minoType).get(orientation)[i];
+            int newY = this.y + yKick + Y_OFFSETS.get(minoType).get(orientation)[i];
+            if(board[newX][newY] != Mino.NONE){
+                return false;
+            }
+        }
+        return true;
     }
 
     public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
