@@ -7,18 +7,34 @@ import javafx.scene.input.KeyCode;
 public class Player implements MoveGetter {
     private Move move = new Move();
     private int translationCounter;
+    private int translationLimit;
 
     @Override
     public Move getMove() {
         InputManager inputManager = Main.getInstance().inputManager;
-        if(inputManager.isKeyPressed(KeyCode.LEFT) && translationCounter > 2){
+        if(inputManager.isKeyPressed(KeyCode.LEFT)){
             move.translation = Move.Direction.LEFT;
-            translationCounter = 0;
-        } else if(inputManager.isKeyPressed(KeyCode.RIGHT) && translationCounter > 2){
+        } else if(inputManager.isKeyPressed(KeyCode.RIGHT)){
             move.translation = Move.Direction.RIGHT;
-            translationCounter = 0;
         } else {
             move.translation = Move.Direction.NONE;
+            translationLimit = 5;
+            translationCounter = 0;
+        }
+
+        if(move.translation != Move.Direction.NONE) {
+            if(translationLimit != 5 || translationCounter != 0){
+                if(translationCounter > translationLimit){
+                    System.out.println("GO");
+                    translationLimit = 2;
+                    translationCounter = 0;
+                } else {
+                    System.out.println("wait");
+                    move.translation = Move.Direction.NONE;
+                }
+            } else {
+                System.out.println("First");
+            }
             translationCounter ++;
         }
 
