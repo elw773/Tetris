@@ -59,6 +59,10 @@ public class Game {
             lockCounter ++;
         }
 
+        if(move.hardDrop){
+            while(currentTetromino.fall(board)){ }
+        }
+
         currentTetromino.translate(move.translation, board);
         currentTetromino.rotate(move.rotation, board);
     }

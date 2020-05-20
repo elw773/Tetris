@@ -25,15 +25,11 @@ public class Player implements MoveGetter {
         if(move.translation != Move.Direction.NONE) {
             if(translationLimit != 5 || translationCounter != 0){
                 if(translationCounter > translationLimit){
-                    System.out.println("GO");
                     translationLimit = 2;
                     translationCounter = 0;
                 } else {
-                    System.out.println("wait");
                     move.translation = Move.Direction.NONE;
                 }
-            } else {
-                System.out.println("First");
             }
             translationCounter ++;
         }
@@ -47,6 +43,7 @@ public class Player implements MoveGetter {
         }
 
         move.softDrop = inputManager.isKeyPressed(KeyCode.DOWN);
+        move.hardDrop = inputManager.isKeyClicked(KeyCode.SPACE);
 
         return move;
     }
