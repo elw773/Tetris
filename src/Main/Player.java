@@ -5,17 +5,21 @@ import TetrisGame.Move;
 import javafx.scene.input.KeyCode;
 
 public class Player implements MoveGetter {
-    Move move = new Move();
+    private Move move = new Move();
+    private int translationCounter;
 
     @Override
     public Move getMove() {
         InputManager inputManager = Main.getInstance().inputManager;
-        if(inputManager.isKeyClicked(KeyCode.LEFT)){
+        if(inputManager.isKeyPressed(KeyCode.LEFT) && translationCounter > 2){
             move.translation = Move.Direction.LEFT;
-        } else if(inputManager.isKeyClicked(KeyCode.RIGHT)){
+            translationCounter = 0;
+        } else if(inputManager.isKeyPressed(KeyCode.RIGHT) && translationCounter > 2){
             move.translation = Move.Direction.RIGHT;
+            translationCounter = 0;
         } else {
             move.translation = Move.Direction.NONE;
+            translationCounter ++;
         }
 
         if(inputManager.isKeyClicked(KeyCode.UP) || inputManager.isKeyClicked(KeyCode.X)){
