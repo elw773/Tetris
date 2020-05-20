@@ -7,6 +7,15 @@ import javafx.scene.paint.Paint;
 public enum Mino {
     I, J, L, O, S, T, Z, NONE;
 
+    public static void drawGhost(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
+        gc.setFill(getMid(type));
+
+        gc.fillRect(gx, gy, squareSize, squareSize);
+
+
+        gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
+    }
+
     public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
 

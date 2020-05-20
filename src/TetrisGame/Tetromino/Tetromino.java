@@ -302,7 +302,16 @@ public class Tetromino {
     }
 
     public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
-
+        int fallDist = 0;
+        while(canMove(x, y+fallDist, board)){
+            fallDist ++;
+        }
+        fallDist --; // we are one farther than we can go
+        for (int i = 0; i < NUM_MINOS; i++) {
+            double x = boardGx + ((getMinoXOffset(i) + this.x - Game.LOW_X) * squareSize);
+            double y = boardGy + ((getMinoYOffset(i) + this.y + fallDist - Game.PLAYABLE_Y) * squareSize);
+            Mino.drawGhost(x, y, squareSize, minoType, gc);
+        }
     }
 
     /**

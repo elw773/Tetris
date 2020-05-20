@@ -141,6 +141,8 @@ public class Game {
                 Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-PLAYABLE_Y)*squareSize), squareSize, board[x][y], gc);
             }
         }
+        currentTetromino.drawGhostRelative(boardX, boardY, squareSize, gc, board);
+
         currentTetromino.drawRelative(boardX, boardY, squareSize, gc);
 
         gc.clearRect(boardX, boardY-1000, squareSize*10, 1000);
