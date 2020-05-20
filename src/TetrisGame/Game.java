@@ -39,6 +39,7 @@ public class Game {
         }
 
         currentTetromino.translate(move.translation, board);
+        currentTetromino.rotate(move.rotation, board);
     }
 
     public boolean gameIsOver(){
@@ -59,7 +60,7 @@ public class Game {
         }
 
         hold = null;
-        currentTetromino = new Tetromino(Mino.O);
+        currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
         currentTetromino.move(4,1, board);
         next = new Tetromino[6];
     }

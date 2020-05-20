@@ -17,6 +17,15 @@ public class Player implements MoveGetter {
         } else {
             move.translation = Move.Direction.NONE;
         }
+
+        if(inputManager.isKeyClicked(KeyCode.UP) || inputManager.isKeyClicked(KeyCode.X)){
+            move.rotation = Move.Direction.RIGHT;
+        } else if(inputManager.isKeyClicked(KeyCode.CONTROL) || inputManager.isKeyClicked(KeyCode.Z)){
+            move.rotation = Move.Direction.LEFT;
+        } else {
+            move.rotation = Move.Direction.NONE;
+        }
+
         return move;
     }
 }

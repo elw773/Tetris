@@ -1,5 +1,7 @@
 package TetrisGame;
 
+import TetrisGame.Tetromino.Orientation;
+
 public class Move {
     public enum Direction{
         LEFT, RIGHT, NONE;
@@ -13,8 +15,8 @@ public class Move {
         }
     }
 
-    public Direction translation;
-    public Direction rotation;
+    public Direction translation = Direction.NONE;
+    public Direction rotation = Direction.NONE;
     public boolean softDrop;
     public boolean hardDrop;
     public boolean hold;

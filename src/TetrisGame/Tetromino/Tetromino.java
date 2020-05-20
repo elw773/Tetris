@@ -277,7 +277,7 @@ public class Tetromino {
             }
         }
         return false;
-        
+
     }
 
     public boolean canRotate(Move.Direction direction, Mino[][] board){
