@@ -14,10 +14,11 @@ public class Game {
     public static final int PLAYABLE_HEIGHT = 20;
     public static final int LOW_X = 2;
     public static final int HIGH_X = 11;
-    public static final int LOW_Y = 6;
+    public static final int LOW_Y = 2;
+    public static final int PLAYABLE_Y = 6;
     public static final int HIGH_Y = 25;
     public static final int SPAWN_X = LOW_X + 3;
-    public static final int SPAWN_Y = LOW_Y - 2;
+    public static final int SPAWN_Y = PLAYABLE_Y - 2;
 
     private int lockCounter;
     private int dropCounter;
@@ -106,8 +107,8 @@ public class Game {
     public void drawBoard(double boardX, double boardY, double height, GraphicsContext gc){
         double squareSize = height / 20;
         for (int x = LOW_X; x <= HIGH_X; x++) {
-            for (int y = LOW_Y; y <= HIGH_Y; y++) {
-                Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-LOW_Y)*squareSize), squareSize, board[x][y], gc);
+            for (int y = PLAYABLE_Y; y <= HIGH_Y; y++) {
+                Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-PLAYABLE_Y)*squareSize), squareSize, board[x][y], gc);
             }
         }
         currentTetromino.drawRelative(boardX, boardY, squareSize, gc);

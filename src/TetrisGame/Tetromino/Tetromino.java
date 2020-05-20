@@ -330,7 +330,7 @@ public class Tetromino {
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
 
-            drawAbsolute(boardGx + ((x - Game.LOW_X) * squareSize), boardGy + ((y - Game.LOW_Y) * squareSize), squareSize, gc);
+            drawAbsolute(boardGx + ((x - Game.LOW_X) * squareSize), boardGy + ((y - Game.PLAYABLE_Y) * squareSize), squareSize, gc);
 
     }
 }
