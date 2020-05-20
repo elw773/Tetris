@@ -36,13 +36,13 @@ public class Game {
     public void update(Move move){
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
-            if(dropCounter > 40 || (dropCounter > 20 && move.softDrop)){
+            if(dropCounter > 40 || (dropCounter > 1 && move.softDrop)){
                 currentTetromino.fall(board);
                 dropCounter = 0;
             }
             dropCounter ++;
         } else {
-            if(lockCounter > 30){
+            if(lockCounter > 40){
                 currentTetromino.lock(board);
                 for (int i = 0; i < PLAYABLE_HEIGHT; i++) {
                     if(isLineFull(i)){

@@ -26,6 +26,8 @@ public class Player implements MoveGetter {
             move.rotation = Move.Direction.NONE;
         }
 
+        move.softDrop = inputManager.isKeyPressed(KeyCode.DOWN);
+
         return move;
     }
 }
