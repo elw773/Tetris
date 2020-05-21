@@ -5,6 +5,7 @@ import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.Iterator;
 import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -133,7 +134,8 @@ public class Game {
     }
 
     public Tetromino[] getNext(){
-        return null;
+        return next.toArray(new Tetromino[0]);
+
     }
 
     public int getScore(){
@@ -160,5 +162,22 @@ public class Game {
         gc.fillRect(boardX + squareSize * 10,boardY,1, squareSize * 20);
 
 
+    }
+
+    public void drawNext(double gx, double gy, double height, GraphicsContext gc){
+        double squareSize = height / 20;
+        double width = squareSize * 6;
+
+
+        gc.setFill(Color.BLACK);
+        gc.fillRect(gx, gy, width, height);
+        gc.setFill(Color.WHITE);
+        gc.fillRect(gx+1, gy+1, width-2, height-2);
+
+
+        Tetromino[] next = getNext();
+        for (int i = 0; i < next.length; i++) {
+            next[i].drawAbsolute(gx + squareSize, gy + squareSize + (squareSize * i * 3), squareSize, gc);
+        }
     }
 }

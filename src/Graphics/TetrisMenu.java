@@ -17,5 +17,6 @@ public class TetrisMenu {
     public void doFrame(GraphicsContext gc){
         game.update(moveGetter.getMove());
         game.drawBoard(200,200,500,gc);
+        game.drawNext(500, 200, 300, gc);
     }
 }
