@@ -10,8 +10,7 @@ public enum Mino {
     public static void drawGhost(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
 
-        gc.fillRect(gx, gy, squareSize, squareSize);
-
+        gc.fillRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
 
         gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
     }
@@ -19,11 +18,11 @@ public enum Mino {
     public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
 
-        gc.fillRect(gx, gy, squareSize, squareSize);
+        gc.fillRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
 
         gc.setFill(getDark(type));
 
-        gc.fillRect(gx+1, gy+1, squareSize-2, squareSize-2);
+        gc.fillRect(gx+2, gy+2, squareSize-4, squareSize-4);
     }
 
     private static Paint getDark(Mino type){

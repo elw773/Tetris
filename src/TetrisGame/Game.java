@@ -5,7 +5,9 @@ import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
     public static final int BOARD_WIDTH = 14;
@@ -26,7 +28,7 @@ public class Game {
     private int score;
     private Tetromino hold;
     private Tetromino currentTetromino;
-    private Tetromino[] next;
+    private ArrayBlockingQueue<Tetromino> next;
     private boolean gameOver;
 
     public Game(){
@@ -51,7 +53,8 @@ public class Game {
                 }
                 //TODO: if tetronimo locked above visible field
                 lockCounter = 0;
-                currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
+                currentTetromino = next.remove();
+                next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
                 if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
                     gameOver = true;
                 }
@@ -87,9 +90,12 @@ public class Game {
         }
 
         hold = null;
+        next = new ArrayBlockingQueue<>(6);
+        while(next.remainingCapacity() > 0){
+            next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
+        }
         currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
         currentTetromino.move(SPAWN_X,SPAWN_Y, board);
-        next = new Tetromino[6];
     }
 
     public boolean isLineFull(int line){

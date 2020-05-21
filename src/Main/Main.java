@@ -1,7 +1,6 @@
 package Main;
 
 import Graphics.TetrisMenu;
-import TetrisGame.Tetromino.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -82,7 +81,7 @@ public class Main extends Application {
 
     }
 
-
+    long frameStart;
     /**
      * Initializes the timeline to animate the game
      */
@@ -95,7 +94,14 @@ public class Main extends Application {
                     // It defines the transitions as things move
                     // This is where you would handle collisions, updates and drawing
                     public void handle(ActionEvent event) {
+                        if(System.currentTimeMillis() - frameStart > 18) {
+                            System.err.println("Frame time: " + (System.currentTimeMillis() - frameStart));
+                        } else {
+                            System.out.println("Frame time: " + (System.currentTimeMillis() - frameStart));
+                        }
+                        frameStart = System.currentTimeMillis();
                         doFrame();
+
                     }
                 });
         // Start the animation
