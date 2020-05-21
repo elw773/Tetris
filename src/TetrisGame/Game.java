@@ -56,7 +56,7 @@ public class Game {
                 //TODO: if tetronimo locked above visible field
                 lockCounter = 0;
                 currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
+                next.add(new Tetromino(Mino.getRandomMino()));
                 if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
                     gameOver = true;
                 }
@@ -74,7 +74,7 @@ public class Game {
 
             if(currentTetromino == null){
                 currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
+                next.add(new Tetromino(Mino.getRandomMino()));
                 if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
                     gameOver = true;
                 }
@@ -109,9 +109,9 @@ public class Game {
         hold = null;
         next = new ArrayBlockingQueue<>(6);
         while(next.remainingCapacity() > 0){
-            next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
+            next.add(new Tetromino(Mino.getRandomMino()));
         }
-        currentTetromino = new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]);
+        currentTetromino = new Tetromino(Mino.getRandomMino());
         currentTetromino.move(SPAWN_X,SPAWN_Y, board);
     }
 

@@ -4,8 +4,40 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.Random;
+
 public enum Mino {
     I, J, L, O, S, T, Z, NONE;
+
+    private static Mino[] bag;
+    private static int i;
+    public static Mino getRandomMino(){
+        if(i > 7){
+            shuffleBag();
+            i = 0;
+        }
+        return bag[i++];
+    }
+    private static Random random;
+
+    private static void shuffleBag(){
+        Mino temp;
+        for (int j = bag.length - 1; j > 0; j--) {
+            int k = random.nextInt(bag.length);
+            temp = bag[k];
+            bag[k] = bag[j];
+            bag[j] = temp;
+        }
+    }
+
+    static{
+        random = new Random();
+        bag = new Mino[7];
+        for (int j = 0; j < Mino.values().length - 1; j++) { // skip the last value
+            bag[j] = Mino.values()[j];
+        }
+        shuffleBag();
+    }
 
     public static void drawGhost(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
