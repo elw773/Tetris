@@ -95,9 +95,9 @@ public class Main extends Application {
                     // This is where you would handle collisions, updates and drawing
                     public void handle(ActionEvent event) {
                         if(System.currentTimeMillis() - frameStart > 18) {
-                            System.err.println("Frame time: " + (System.currentTimeMillis() - frameStart));
+                            //System.err.println("Frame time: " + (System.currentTimeMillis() - frameStart));
                         } else {
-                            System.out.println("Frame time: " + (System.currentTimeMillis() - frameStart));
+                            //System.out.println("Frame time: " + (System.currentTimeMillis() - frameStart));
                         }
                         frameStart = System.currentTimeMillis();
                         doFrame();

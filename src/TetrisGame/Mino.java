@@ -11,8 +11,8 @@ public enum Mino {
 
     private static Mino[] bag;
     private static int i;
-    public static Mino getRandomMino(){
-        if(i > 7){
+    public static Mino getNextRandom(){
+        if(i > 6){
             shuffleBag();
             i = 0;
         }
@@ -21,6 +21,7 @@ public enum Mino {
     private static Random random;
 
     private static void shuffleBag(){
+        System.out.println("Shuffling");
         Mino temp;
         for (int j = bag.length - 1; j > 0; j--) {
             int k = random.nextInt(bag.length);

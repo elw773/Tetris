@@ -1,14 +1,10 @@
 package TetrisGame;
 
-import Graphics.TetrisMenu;
 import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import java.util.Iterator;
-import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
@@ -56,7 +52,7 @@ public class Game {
                 //TODO: if tetronimo locked above visible field
                 lockCounter = 0;
                 currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.getRandomMino()));
+                next.add(new Tetromino(Mino.getNextRandom()));
                 if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
                     gameOver = true;
                 }
@@ -74,7 +70,7 @@ public class Game {
 
             if(currentTetromino == null){
                 currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.getRandomMino()));
+                next.add(new Tetromino(Mino.getNextRandom()));
                 if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
                     gameOver = true;
                 }
@@ -109,9 +105,9 @@ public class Game {
         hold = null;
         next = new ArrayBlockingQueue<>(6);
         while(next.remainingCapacity() > 0){
-            next.add(new Tetromino(Mino.getRandomMino()));
+            next.add(new Tetromino(Mino.getNextRandom()));
         }
-        currentTetromino = new Tetromino(Mino.getRandomMino());
+        currentTetromino = new Tetromino(Mino.getNextRandom());
         currentTetromino.move(SPAWN_X,SPAWN_Y, board);
     }
 
