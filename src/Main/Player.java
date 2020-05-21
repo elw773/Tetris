@@ -44,6 +44,7 @@ public class Player implements MoveGetter {
 
         move.softDrop = inputManager.isKeyPressed(KeyCode.DOWN);
         move.hardDrop = inputManager.isKeyClicked(KeyCode.SPACE);
+        move.hold = inputManager.isKeyClicked(KeyCode.C) || inputManager.isKeyClicked(KeyCode.SHIFT);
 
         return move;
     }

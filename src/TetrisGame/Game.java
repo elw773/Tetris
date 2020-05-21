@@ -66,6 +66,19 @@ public class Game {
         if(move.hardDrop){
             while(currentTetromino.fall(board)){ }
         }
+        if(move.hold){
+            Tetromino temp = currentTetromino;
+            currentTetromino = hold;
+            hold = temp;
+            currentTetromino.move(SPAWN_X, SPAWN_Y, board);
+            if(currentTetromino == null){
+                currentTetromino = next.remove();
+                next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
+                if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
+                    gameOver = true;
+                }
+            }
+        }
 
         currentTetromino.translate(move.translation, board);
         currentTetromino.rotate(move.rotation, board);
