@@ -1,6 +1,7 @@
 package TetrisGame;
 
 import Graphics.TetrisMenu;
+import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -70,7 +71,7 @@ public class Game {
             Tetromino temp = currentTetromino;
             currentTetromino = hold;
             hold = temp;
-            currentTetromino.move(SPAWN_X, SPAWN_Y, board);
+
             if(currentTetromino == null){
                 currentTetromino = next.remove();
                 next.add(new Tetromino(Mino.values()[new Random().nextInt(Mino.values().length-1)]));
@@ -78,6 +79,8 @@ public class Game {
                     gameOver = true;
                 }
             }
+            hold.setOrientation(Orientation.NORTH);
+            currentTetromino.move(SPAWN_X, SPAWN_Y, board);
         }
 
         currentTetromino.translate(move.translation, board);
@@ -191,6 +194,21 @@ public class Game {
         Tetromino[] next = getNext();
         for (int i = 0; i < next.length; i++) {
             next[i].drawAbsolute(gx + squareSize, gy + squareSize + (squareSize * i * 3), squareSize, gc);
+        }
+    }
+
+    public void drawHold(double gx, double gy, double height, GraphicsContext gc){
+        double squareSize = height / 4;
+        double width = squareSize * 6;
+
+
+        gc.setFill(Color.BLACK);
+        gc.fillRect(gx, gy, width, height);
+        gc.setFill(Color.WHITE);
+        gc.fillRect(gx+1, gy+1, width-2, height-2);
+
+        if(hold != null){
+            hold.drawAbsolute(gx + squareSize, gy + squareSize, squareSize, gc);
         }
     }
 }

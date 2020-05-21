@@ -18,5 +18,6 @@ public class TetrisMenu {
         game.update(moveGetter.getMove());
         game.drawBoard(200,200,500,gc);
         game.drawNext(500, 200, 300, gc);
+        game.drawHold(50, 200, 70, gc);
     }
 }

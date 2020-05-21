@@ -262,6 +262,10 @@ public class Tetromino {
         return Y_OFFSETS.get(minoType).get(orientation)[n];
     }
 
+    public void setOrientation(Orientation orientation){
+        this.orientation = orientation;
+    }
+
 
     public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
         if(minoType == Mino.O || direction == Move.Direction.NONE) {
