@@ -18,7 +18,7 @@ public class Game {
     public static final int PLAYABLE_Y = 8;
     public static final int HIGH_Y = BOARD_HEIGHT - 3;
     public static final int SPAWN_X = LOW_X + 3;
-    public static final int SPAWN_Y = PLAYABLE_Y - 1;
+    public static final int SPAWN_Y = PLAYABLE_Y - 2;
 
     private static final int LOCK_DELAY = 30;
     private int lockCounter;
@@ -39,8 +39,10 @@ public class Game {
 
     public void update(Move move){
         doMoves(move);
-        doFall();
-        doLock();
+        boolean canFall = doFall();
+        if(!canFall) {
+            doLock();
+        }
         score();
 
         if(currentTetromino.canFall(board)){
@@ -158,7 +160,10 @@ public class Game {
 
     private void doLock(){
         if(lockCounter > LOCK_DELAY){
+            gameOver = !currentTetromino.lock(board);
 
+            clearLines();
+            nextTetromino();
         }
     }
 

@@ -216,13 +216,19 @@ public class Tetromino {
     /**
      * Locks the tetromino onto the given board
      * @param board the board to lock onto
+     * @return false if the piece locked comletely above the visible portion of the screen
      */
-    public void lock(Mino[][] board){
+    public boolean lock(Mino[][] board){
+        boolean valid = true;
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
             board[minoX][minoY] = this.minoType;
+            if(minoY < Game.PLAYABLE_Y){
+                valid = false;
+            }
         }
+        return valid;
     }
 
     public int getHeight(){
