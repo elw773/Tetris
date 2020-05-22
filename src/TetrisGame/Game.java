@@ -24,6 +24,7 @@ public class Game {
     private int dropCounter;
     private Mino[][] board;
     private int score;
+    private int level;
     private Tetromino hold;
     private Tetromino currentTetromino;
     private ArrayBlockingQueue<Tetromino> next;
@@ -38,6 +39,7 @@ public class Game {
         // lock if needed
         // clear lines
         // do moves
+        // check for t spin
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
             if(dropCounter > 40 || (dropCounter > 1 && move.softDrop)){
@@ -86,6 +88,32 @@ public class Game {
 
         currentTetromino.translate(move.translation, board);
         currentTetromino.rotate(move.rotation, board);
+    }
+
+
+
+    private void doPlayerMovements(Move move){
+
+    }
+
+    private boolean isTSpin(){
+        return false;
+    }
+
+    private int clearLines(){
+
+    }
+
+    private boolean doFall(){
+
+    }
+
+    private void lock(){
+
+    }
+
+    private void nextTetromino(){
+
     }
 
     public boolean gameIsOver(){
