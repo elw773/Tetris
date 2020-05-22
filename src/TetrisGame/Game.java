@@ -34,6 +34,10 @@ public class Game {
     }
 
     public void update(Move move){
+        // make it fall
+        // lock if needed
+        // clear lines
+        // do moves
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
             if(dropCounter > 40 || (dropCounter > 1 && move.softDrop)){
@@ -46,6 +50,7 @@ public class Game {
                 currentTetromino.lock(board);
                 for (int i = 0; i < PLAYABLE_HEIGHT; i++) {
                     if(isLineFull(i)){
+                        System.out.println("Clearing " + i);
                         clearLine(i);
                     }
                 }
@@ -154,8 +159,9 @@ public class Game {
         return 0;
     }
 
-    public void drawBoard(double boardX, double boardY, double height, GraphicsContext gc){
-        double squareSize = height / 20;
+    public void drawBoard(double boardX, double boardY, double width, GraphicsContext gc){
+        double squareSize = width / 10;
+        double height = width * 2;
         for (int x = LOW_X; x <= HIGH_X; x++) {
             for (int y = PLAYABLE_Y; y <= HIGH_Y; y++) {
                 Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-PLAYABLE_Y)*squareSize), squareSize, board[x][y], gc);
@@ -176,9 +182,9 @@ public class Game {
 
     }
 
-    public void drawNext(double gx, double gy, double height, GraphicsContext gc){
-        double squareSize = height / 20;
-        double width = squareSize * 6;
+    public void drawNext(double gx, double gy, double width, GraphicsContext gc){
+        double squareSize = width / 6;
+        double height = squareSize * 20;
 
 
         gc.setFill(Color.BLACK);
@@ -193,9 +199,9 @@ public class Game {
         }
     }
 
-    public void drawHold(double gx, double gy, double height, GraphicsContext gc){
-        double squareSize = height / 4;
-        double width = squareSize * 6;
+    public void drawHold(double gx, double gy, double width, GraphicsContext gc){
+        double squareSize = width / 6;
+        double height = squareSize * 4;
 
 
         gc.setFill(Color.BLACK);

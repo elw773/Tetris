@@ -9,7 +9,7 @@ import java.util.EnumMap;
 
 public class Tetromino {
     public static final int NUM_MINOS = 4;
-    public static final int[] WALL_KICK_VALUES = {0, 1, -1, 2, -2};
+    public static final int[] WALL_KICK_VALUES = {0, 1, 2, -1, -2};
     private static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
     private static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
 
@@ -272,13 +272,15 @@ public class Tetromino {
             return true;
         }
 
-        for (int xKick:WALL_KICK_VALUES) {
-            for(int yKick:WALL_KICK_VALUES){
+        for (int yKick:WALL_KICK_VALUES) {
+            for(int xKick:WALL_KICK_VALUES){
                 if(canRotate(orientation.rotate(direction), board, xKick, yKick)){
                     orientation = orientation.rotate(direction);
                     x += xKick;
                     y += yKick;
                     return true;
+                } else {
+                    System.out.println(minoType + " x: " + xKick + " y: " + yKick + " failed " + (x-Game.LOW_X) + " " + (y-Game.PLAYABLE_Y) + " " + orientation);
                 }
             }
         }
