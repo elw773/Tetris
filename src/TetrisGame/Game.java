@@ -168,7 +168,11 @@ public class Game {
     }
 
     private void nextTetromino(){
-
+        currentTetromino = next.remove();
+        next.add(new Tetromino(Mino.getNextRandom()));
+        if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
+            gameOver = true;
+        }
     }
 
     public boolean gameIsOver(){
