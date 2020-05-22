@@ -29,20 +29,22 @@ public class Game {
     private Tetromino currentTetromino;
     private ArrayBlockingQueue<Tetromino> next;
     private boolean gameOver;
+    private boolean held;
 
     public Game(){
         reset();
     }
 
     public void update(Move move){
-        // make it fall
-        // lock if needed
-        // clear lines
-        // do moves
-        // check for t spin
+        doMoves(move);
+        doFall();
+        doLock();
+        clearLines();
+        score();
+
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
-            if(dropCounter > 40 || (dropCounter > 1 && move.softDrop)){
+            if(dropCounter > 40 || (move.softDrop)){
                 currentTetromino.fall(board);
                 dropCounter = 0;
             }
@@ -90,25 +92,51 @@ public class Game {
         currentTetromino.rotate(move.rotation, board);
     }
 
+    private void score(){
+
+    }
 
 
-    private void doPlayerMovements(Move move){
+    private void doMoves(Move move){
+        // soft drop
+        if(move.softDrop) {
+            currentTetromino.fall(board);
+        } else if(move.hardDrop){ // hard drop
+            while(currentTetromino.fall(board)){ }
+        }
+        // translate
+        currentTetromino.translate(move.translation, board);
+        // rotate
+        currentTetromino.rotate(move.rotation, board);
+        // hold
+        if(move.hold && !held){
+            held = true;
+            Tetromino temp = currentTetromino;
+            currentTetromino = hold;
+            hold = temp;
 
+            if(currentTetromino == null){
+                nextTetromino();
+            }
+
+            hold.setOrientation(Orientation.NORTH);
+            hold.move(SPAWN_X, SPAWN_Y, board);
+        }
     }
 
     private boolean isTSpin(){
         return false;
     }
 
-    private int clearLines(){
+    private void clearLines(){
 
     }
 
     private boolean doFall(){
-
+        return currentTetromino.fall(board);
     }
 
-    private void lock(){
+    private void doLock(){
 
     }
 
