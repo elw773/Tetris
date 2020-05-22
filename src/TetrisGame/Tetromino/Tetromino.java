@@ -225,6 +225,18 @@ public class Tetromino {
         }
     }
 
+    public int getHeight(){
+        return getBitMap(minoType).length;
+    }
+
+    public int getY(){
+        return y;
+    }
+
+    public int getX(){
+        return x;
+    }
+
 
     /**
      * Gets the x of the nth mino

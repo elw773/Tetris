@@ -20,6 +20,7 @@ public class Game {
     public static final int SPAWN_X = LOW_X + 3;
     public static final int SPAWN_Y = PLAYABLE_Y - 1;
 
+    private static final int LOCK_DELAY = 30;
     private int lockCounter;
     private int dropCounter;
     private Mino[][] board;
@@ -30,6 +31,7 @@ public class Game {
     private ArrayBlockingQueue<Tetromino> next;
     private boolean gameOver;
     private boolean held;
+    private int clearedLines;
 
     public Game(){
         reset();
@@ -39,7 +41,6 @@ public class Game {
         doMoves(move);
         doFall();
         doLock();
-        clearLines();
         score();
 
         if(currentTetromino.canFall(board)){
@@ -100,9 +101,9 @@ public class Game {
     private void doMoves(Move move){
         // soft drop
         if(move.softDrop) {
-            currentTetromino.fall(board);
+            fall();
         } else if(move.hardDrop){ // hard drop
-            while(currentTetromino.fall(board)){ }
+            while(fall()){ }
         }
         // translate
         currentTetromino.translate(move.translation, board);
@@ -122,6 +123,20 @@ public class Game {
             hold.setOrientation(Orientation.NORTH);
             hold.move(SPAWN_X, SPAWN_Y, board);
         }
+
+        // reset lock delay
+        if(move.translation != Move.Direction.NONE && move.rotation != Move.Direction.NONE){
+            lockCounter = 0;
+        }
+    }
+
+    private boolean fall(){
+        if(currentTetromino.fall(board)){
+            lockCounter = 0;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private boolean isTSpin(){
@@ -129,7 +144,12 @@ public class Game {
     }
 
     private void clearLines(){
-
+        for (int y = currentTetromino.getY(); y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
+            if(isLineFull(y)){
+                clearLine(y);
+                clearedLines ++;
+            }
+        }
     }
 
     private boolean doFall(){
@@ -137,7 +157,9 @@ public class Game {
     }
 
     private void doLock(){
+        if(lockCounter > LOCK_DELAY){
 
+        }
     }
 
     private void nextTetromino(){
@@ -172,9 +194,9 @@ public class Game {
         currentTetromino.move(SPAWN_X,SPAWN_Y, board);
     }
 
-    public boolean isLineFull(int line){
+    public boolean isLineFull(int y){
         for (int x = LOW_X; x <= HIGH_X; x++) {
-            if(board[x][line+PLAYABLE_Y] == Mino.NONE){
+            if(board[x][y] == Mino.NONE){
                 return false;
             }
         }
