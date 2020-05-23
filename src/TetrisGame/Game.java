@@ -28,7 +28,7 @@ public class Game {
     private int dropCounter;
     private Mino[][] board;
     private int score = 0;
-    private int level = 1;
+    private int level = 0;
     private Tetromino hold;
     private Tetromino currentTetromino;
     private ArrayBlockingQueue<Tetromino> next;
@@ -70,7 +70,7 @@ public class Game {
     }
 
     private void doLevelUp(){
-        if(totalClearedLines > level * 10){
+        if(totalClearedLines > (level+1) * 10){
             level ++;
         }
     }
@@ -216,12 +216,12 @@ public class Game {
             newPoints = newPoints / 2;
             System.out.println("BACK 2 BACK");
         } else if(combo){
-            score += comboCount * 50 * level;
+            score += comboCount * 50 * (level + 1);
             System.out.println(comboCount + " Combo!");
         }
-        score += newPoints * level;
-        System.out.println("Level: " + level + "\tScore: " + score);
-
+        score += newPoints * (level + 1);
+        System.out.println("Level: " + level + "\tScore: " + score + "\t Lines: " + totalClearedLines);
+        doLevelUp();
 
         combo = clearedLines > 0;
         clearedLines = 0;
