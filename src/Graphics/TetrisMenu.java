@@ -35,10 +35,10 @@ public class TetrisMenu {
         totalTime += (System.currentTimeMillis() - start);
         double average = (double)totalTime/numUpdates;
 
-        System.out.printf("Average: %.4f \t gameAvg: %.4f \n", average, gameAvg);
+       // System.out.printf("Average: %.4f \t gameAvg: %.4f \n", average, gameAvg);
 
         if((System.currentTimeMillis() - start) > 1){
-            System.err.println("Frame took " + (System.currentTimeMillis() - start));
+           // System.err.println("Frame took " + (System.currentTimeMillis() - start));
         }
     }
 }

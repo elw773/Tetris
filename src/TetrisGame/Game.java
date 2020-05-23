@@ -38,6 +38,12 @@ public class Game {
     private long totalGameTime = 0;
     private long numUpdates = 0;
 
+    private boolean tSpin;
+    private boolean miniTSpin;
+    private boolean backToBack;
+    private int comboCount;
+    private boolean combo;
+
     public Game(){
         reset();
     }
@@ -50,7 +56,7 @@ public class Game {
         if(!canFall) {
             doLock();
         }
-        score();
+        defaultScore(move);
         numUpdates ++;
         totalGameTime += (System.currentTimeMillis() - start);
         double average = (double)totalGameTime/numUpdates;
@@ -59,61 +65,66 @@ public class Game {
           //  System.err.println("Game took " + (System.currentTimeMillis() - start));
         }
 
-
-        /*
-
-        if(currentTetromino.canFall(board)){
-            lockCounter = 0;
-            if(dropCounter > 40 || (move.softDrop)){
-                currentTetromino.fall(board);
-                dropCounter = 0;
-            }
-            dropCounter ++;
-        } else {
-            if(lockCounter > 40){
-                currentTetromino.lock(board);
-                for (int i = 0; i < PLAYABLE_HEIGHT; i++) {
-                    if(isLineFull(i)){
-                        System.out.println("Clearing " + i);
-                        clearLine(i);
-                    }
-                }
-                //TODO: if tetronimo locked above visible field
-                lockCounter = 0;
-                currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.getNextRandom()));
-                if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
-                    gameOver = true;
-                }
-            }
-            lockCounter ++;
-        }
-
-        if(move.hardDrop){
-            while(currentTetromino.fall(board)){ }
-        }
-        if(move.hold){
-            Tetromino temp = currentTetromino;
-            currentTetromino = hold;
-            hold = temp;
-
-            if(currentTetromino == null){
-                currentTetromino = next.remove();
-                next.add(new Tetromino(Mino.getNextRandom()));
-                if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
-                    gameOver = true;
-                }
-            }
-            hold.setOrientation(Orientation.NORTH);
-            currentTetromino.move(SPAWN_X, SPAWN_Y, board);
-        }
-
-        currentTetromino.translate(move.translation, board);
-        currentTetromino.rotate(move.rotation, board);*/
     }
 
-    private void score(){
+    private void defaultScore(Move move){
+        if(move.hardDrop){
+            score += dropCounter * 2;
+        } else if (move.softDrop){
+            score += dropCounter;
+        }
+    }
 
+    private void lockScore(){
+        //TODO: check t spins
+
+        if(clearedLines == 0){
+            combo = false;
+            comboCount = 0;
+        } else {
+            comboCount += clearedLines;
+        }
+
+        int newPoints = 0;
+
+        if(tSpin){
+            switch (clearedLines){
+                case 0: newPoints += 400; break;
+                case 1: newPoints += 800; break;
+                case 2: newPoints += 1200; break;
+                case 3: newPoints += 1600; break;
+            }
+        } else if(miniTSpin){
+            switch (clearedLines){
+                case 0: newPoints += 100; break;
+                case 1: newPoints += 200; break;
+                case 2: newPoints += 400; break;
+            }
+        } else {
+            switch (clearedLines){
+                case 1: newPoints += 100; break;
+                case 2: newPoints += 300; break;
+                case 3: newPoints += 500; break;
+                case 4: newPoints += 800; break;
+            }
+        }
+
+        boolean difficult = ((tSpin || miniTSpin) && clearedLines > 0) || clearedLines == 4;
+
+        if(backToBack && difficult){
+            newPoints = newPoints * 3;
+            newPoints = newPoints / 2;
+            System.out.println("BACK 2 BACK");
+        } else if(combo){
+            score += comboCount * 50 * level;
+            System.out.println("Combo! " + comboCount);
+        }
+        score += newPoints * level;
+
+
+        combo = clearedLines > 0;
+        dropCounter = 0;
+        clearedLines = 0;
     }
 
 
@@ -154,6 +165,7 @@ public class Game {
     private boolean fall(){
         if(currentTetromino.fall(board)){
             lockCounter = 0;
+            dropCounter ++;
             return true;
         } else {
             return false;
@@ -192,6 +204,7 @@ public class Game {
             lockCounter = 0;
             clearLines();
             nextTetromino();
+            lockScore();
         } else {
             lockCounter ++;
         }
@@ -277,7 +290,7 @@ public class Game {
     }
 
     public int getScore(){
-        return 0;
+        return score;
     }
 
     public void drawBoard(double boardX, double boardY, double width, GraphicsContext gc){

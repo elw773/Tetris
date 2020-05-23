@@ -98,6 +98,10 @@ public class Tetromino {
                             yOffsets.get(Orientation.WEST)[i] = S-x;
 
                             i++;
+                            /*
+                            Ascending:  Average: 0.0994 	 gameAvg: 0.0056
+                            Descending: Average: 0.1139 	 gameAvg: 0.0042
+                             */
                         }
                     }
                     X_OFFSETS.put(type, xOffsets);

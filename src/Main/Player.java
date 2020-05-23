@@ -42,6 +42,7 @@ public class Player implements MoveGetter {
             move.rotation = Move.Direction.NONE;
         }
 
+
         move.softDrop = inputManager.isKeyPressed(KeyCode.DOWN);
         move.hardDrop = inputManager.isKeyClicked(KeyCode.SPACE);
         move.hold = inputManager.isKeyClicked(KeyCode.C) || inputManager.isKeyClicked(KeyCode.SHIFT);
