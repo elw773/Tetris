@@ -337,6 +337,10 @@ public class Tetromino {
         return true;
     }
 
+    public Orientation getOrientation(){
+        return orientation;
+    }
+
     public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
         int fallDist = 0;
         while(canMove(x, y+fallDist, board)){

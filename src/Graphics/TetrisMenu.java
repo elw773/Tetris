@@ -20,25 +20,30 @@ public class TetrisMenu {
     }
 
     public void doFrame(GraphicsContext gc){
-        long start = System.currentTimeMillis();
-        numUpdates ++;
 
-        game.update(moveGetter.getMove());
+        if(game.gameIsOver()){
+            System.out.println("GAME_OVER");
+        } else {
+            long start = System.currentTimeMillis();
+            numUpdates ++;
 
-        totalGameTime += (System.currentTimeMillis() - start);
-        double gameAvg = (double)totalGameTime/numUpdates;
+            game.update(moveGetter.getMove());
 
-        game.drawBoard(200,100,300,gc);
-        game.drawNext(550, 100, 100, gc);
-        game.drawHold(50, 100, 100, gc);
+            totalGameTime += (System.currentTimeMillis() - start);
+            double gameAvg = (double)totalGameTime/numUpdates;
 
-        totalTime += (System.currentTimeMillis() - start);
-        double average = (double)totalTime/numUpdates;
+            game.drawBoard(200,100,300,gc);
+            game.drawNext(550, 100, 100, gc);
+            game.drawHold(50, 100, 100, gc);
 
-       // System.out.printf("Average: %.4f \t gameAvg: %.4f \n", average, gameAvg);
+            totalTime += (System.currentTimeMillis() - start);
+            double average = (double)totalTime/numUpdates;
 
-        if((System.currentTimeMillis() - start) > 1){
-           // System.err.println("Frame took " + (System.currentTimeMillis() - start));
+            // System.out.printf("Average: %.4f \t gameAvg: %.4f \n", average, gameAvg);
+
+            if((System.currentTimeMillis() - start) > 1){
+                // System.err.println("Frame took " + (System.currentTimeMillis() - start));
+            }
         }
     }
 }
