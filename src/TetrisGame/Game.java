@@ -23,7 +23,6 @@ public class Game {
 
     private static final int LOCK_DELAY = 30;
     private int lockCounter;
-    private double dropRate = 0.03;
     private double dropGoal = 0;
     private int dropActual = 0;
     private int dropCounter;
@@ -36,6 +35,7 @@ public class Game {
     private boolean gameOver;
     private boolean held;
     private int clearedLines;
+    private int totalClearedLines;
     private long totalGameTime = 0;
     private long numUpdates = 0;
     private boolean lastMoveWasRotate;
@@ -67,6 +67,48 @@ public class Game {
 
     public Game(){
         reset();
+    }
+
+    private void doLevelUp(){
+        if(totalClearedLines > level * 10){
+            level ++;
+        }
+    }
+
+    private double getDropRate(){
+        int framesPerCell;
+        if(level == 0) {
+            framesPerCell = 48;
+        } if(level == 1){
+            framesPerCell = 43;
+        } else  if(level == 2){
+            framesPerCell = 38;
+        } else  if(level == 3){
+            framesPerCell = 33;
+        } else  if(level == 4){
+            framesPerCell = 28;
+        } else  if(level == 5){
+            framesPerCell = 23;
+        } else  if(level == 6){
+            framesPerCell = 18;
+        } else  if(level == 7){
+            framesPerCell = 13;
+        } else  if(level == 8){
+            framesPerCell = 8;
+        } else  if(level == 9){
+            framesPerCell = 6;
+        } else  if(level <= 12){
+            framesPerCell = 5;
+        } else  if(level <= 15){
+            framesPerCell = 4;
+        } else  if(level <= 18){
+            framesPerCell = 3;
+        } else  if(level <= 28){
+            framesPerCell = 2;
+        } else {
+            framesPerCell = 1;
+        }
+        return 1.0/framesPerCell;
     }
 
     public void update(Move move){
@@ -108,19 +150,19 @@ public class Game {
 
             int pointerCorners = 0;
 
-            if(board[x+tSpinCornerX.get(orientation)][y+tSpinCornerY.get(orientation)] != Mino.NONE){
+            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation), y+tSpinCornerY.get(orientation), board)){
                 pointerCorners += 1;
             }
-            if(board[x+tSpinCornerX.get(orientation.cw())][y+tSpinCornerY.get(orientation.cw())] != Mino.NONE){
+            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.cw()), y+tSpinCornerY.get(orientation.cw()), board)){
                 pointerCorners += 1;
             }
 
             int otherCorners = 0;
 
-            if(board[x+tSpinCornerX.get(orientation.ccw())][y+tSpinCornerY.get(orientation.ccw())] != Mino.NONE){
+            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.ccw()), y+tSpinCornerY.get(orientation.ccw()), board)){
                 otherCorners += 1;
             }
-            if(board[x+tSpinCornerX.get(orientation.ccw().ccw())][y+tSpinCornerY.get(orientation.ccw().ccw())] != Mino.NONE){
+            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.ccw().ccw()), y+tSpinCornerY.get(orientation.ccw().ccw()), board)){
                 otherCorners += 1;
             }
 
@@ -135,7 +177,6 @@ public class Game {
     }
 
     private void lockScore(){
-        checkTSpins();
 
         if(clearedLines == 0){
             combo = false;
@@ -148,25 +189,23 @@ public class Game {
 
         if(tSpin){
             switch (clearedLines){
-                case 0: newPoints += 400; break;
-                case 1: newPoints += 800; break;
-                case 2: newPoints += 1200; break;
-                case 3: newPoints += 1600; break;
+                case 0: newPoints += 400; System.out.println("T-spin"); break;
+                case 1: newPoints += 800; System.out.println("T-spin Single"); break;
+                case 2: newPoints += 1200; System.out.println("T-spin Double"); break;
+                case 3: newPoints += 1600; System.out.println("T-spin Triple"); break;
             }
-            System.out.println("T-spin");
         } else if(miniTSpin){
             switch (clearedLines){
-                case 0: newPoints += 100; break;
-                case 1: newPoints += 200; break;
-                case 2: newPoints += 400; break;
+                case 0: newPoints += 100; System.out.println("Mini T-spin"); break;
+                case 1: newPoints += 200; System.out.println("Mini T-spin Single"); break;
+                case 2: newPoints += 400; System.out.println("Mini T-spin Double"); break;
             }
-            System.out.println("Mini T-spin");
         } else {
             switch (clearedLines){
                 case 1: newPoints += 100; break;
                 case 2: newPoints += 300; break;
                 case 3: newPoints += 500; break;
-                case 4: newPoints += 800; break;
+                case 4: newPoints += 800; System.out.println("Tetris"); break;
             }
         }
 
@@ -178,10 +217,10 @@ public class Game {
             System.out.println("BACK 2 BACK");
         } else if(combo){
             score += comboCount * 50 * level;
-            System.out.println("Combo! " + comboCount);
+            System.out.println(comboCount + " Combo!");
         }
         score += newPoints * level;
-        System.out.println("Score: " + score);
+        System.out.println("Level: " + level + "\tScore: " + score);
 
 
         combo = clearedLines > 0;
@@ -246,6 +285,7 @@ public class Game {
             if(isLineFull(y)){
                 clearLine(y);
                 clearedLines ++;
+                totalClearedLines ++;
             }
         }
         //System.out.println("Line clearing took " + (System.currentTimeMillis() - start));
@@ -253,7 +293,7 @@ public class Game {
 
     private boolean doFall(){
         if(currentTetromino.canFall(board)){
-            dropGoal += dropRate;
+            dropGoal += getDropRate();
             while(dropActual < (int) dropGoal && fall()){
                 dropActual ++;
             }
@@ -265,9 +305,9 @@ public class Game {
         if(lockCounter > LOCK_DELAY){
             gameOver = !currentTetromino.lock(board);
             lockCounter = 0;
-            lockScore();
+            checkTSpins();
             clearLines();
-
+            lockScore();
 
             nextTetromino();
         } else {
