@@ -117,7 +117,8 @@ public class Game {
         }
 
         // rotate
-        if(move.translation != Move.Direction.NONE && currentTetromino.rotate(move.rotation, board) && currentTetromino.getMinoType() != Mino.O){
+
+        if(move.rotation != Move.Direction.NONE && currentTetromino.rotate(move.rotation, board) && currentTetromino.getMinoType() != Mino.O){
             lockCounter = 0;
         }
         // hold
@@ -152,6 +153,7 @@ public class Game {
 
     private void clearLines(){
         for (int y = currentTetromino.getY(); y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
+            System.out.println("checking line: " + y);
             if(isLineFull(y)){
                 clearLine(y);
                 clearedLines ++;
@@ -211,6 +213,7 @@ public class Game {
         }
 
         hold = null;
+        held = false;
         next = new ArrayBlockingQueue<>(6);
         while(next.remainingCapacity() > 0){
             next.add(new Tetromino(Mino.getNextRandom()));
@@ -233,9 +236,9 @@ public class Game {
     }
 
     public void lowerLine(int line){
-        if(PLAYABLE_Y <= line && line <= PLAYABLE_HEIGHT) {
+        if(PLAYABLE_Y <= line && line <= HIGH_Y) {
             for (int x = LOW_X; x <= HIGH_X; x++) {
-                board[x][line + PLAYABLE_Y+1] = board[x][line + PLAYABLE_Y];
+                board[x][line + 1] = board[x][line];
             }
             lowerLine(line-1);
         }

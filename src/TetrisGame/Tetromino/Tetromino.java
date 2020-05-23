@@ -144,11 +144,16 @@ public class Tetromino {
      */
     public boolean canMove(int x, int y, Mino[][] board){
         for (int i = 0; i < NUM_MINOS; i++) {
+
             if(board[x + getMinoXOffset(i)][y + getMinoYOffset(i)] != Mino.NONE){
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean isAvailable(int x, int y, Mino[][] board){
+        return x < board.length && y < board[x].length && board[x][y] != Mino.NONE;
     }
 
     /**

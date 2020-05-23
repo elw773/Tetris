@@ -94,13 +94,14 @@ public class Main extends Application {
                     // It defines the transitions as things move
                     // This is where you would handle collisions, updates and drawing
                     public void handle(ActionEvent event) {
+
+                        frameStart = System.currentTimeMillis();
+                        doFrame();
                         if(System.currentTimeMillis() - frameStart > 18) {
                             //System.err.println("Frame time: " + (System.currentTimeMillis() - frameStart));
                         } else {
                             //System.out.println("Frame time: " + (System.currentTimeMillis() - frameStart));
                         }
-                        frameStart = System.currentTimeMillis();
-                        doFrame();
 
                     }
                 });
