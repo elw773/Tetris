@@ -117,7 +117,7 @@ public class Game {
         }
 
         // rotate
-        if(move.translation != Move.Direction.NONE && currentTetromino.rotate(move.rotation, board)){
+        if(move.translation != Move.Direction.NONE && currentTetromino.rotate(move.rotation, board) && currentTetromino.getMinoType() != Mino.O){
             lockCounter = 0;
         }
         // hold

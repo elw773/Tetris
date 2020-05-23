@@ -284,6 +284,9 @@ public class Tetromino {
         this.orientation = orientation;
     }
 
+    public Mino getMinoType(){
+        return minoType;
+    }
 
     public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
         if(minoType == Mino.O ||  direction == Move.Direction.NONE){
