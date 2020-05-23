@@ -145,15 +145,15 @@ public class Tetromino {
     public boolean canMove(int x, int y, Mino[][] board){
         for (int i = 0; i < NUM_MINOS; i++) {
 
-            if(board[x + getMinoXOffset(i)][y + getMinoYOffset(i)] != Mino.NONE){
+            if(notAvailable(x + getMinoXOffset(i), y + getMinoYOffset(i), board)){
                 return false;
             }
         }
         return true;
     }
 
-    public boolean isAvailable(int x, int y, Mino[][] board){
-        return x < board.length && y < board[x].length && board[x][y] != Mino.NONE;
+    private boolean notAvailable(int x, int y, Mino[][] board){
+        return -1 >= x || x >= board.length || -1 >= y || y >= board[x].length || board[x][y] != Mino.NONE;
     }
 
     /**
@@ -182,7 +182,7 @@ public class Tetromino {
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
-            if(board[minoX + direction.getSign()][minoY] != Mino.NONE){
+            if(notAvailable(minoX + direction.getSign(), minoY, board)){
                 return false;
             }
         }
@@ -211,7 +211,7 @@ public class Tetromino {
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
-            if(board[minoX][minoY + 1] != Mino.NONE){
+            if(notAvailable(minoX, minoY + 1, board)){
                 return false;
             }
         }
@@ -306,7 +306,7 @@ public class Tetromino {
                     y += yKick;
                     return true;
                 } else {
-                    System.out.println(minoType + " x: " + xKick + " y: " + yKick + " failed " + (x-Game.LOW_X) + " " + (y-Game.PLAYABLE_Y) + " " + orientation);
+                    //System.out.println(minoType + " x: " + xKick + " y: " + yKick + " failed " + (x-Game.LOW_X) + " " + (y-Game.PLAYABLE_Y) + " " + orientation);
                 }
             }
         }
@@ -326,7 +326,7 @@ public class Tetromino {
         for (int i = 0; i < NUM_MINOS; i++) {
             int newX = this.x + xKick + X_OFFSETS.get(minoType).get(orientation)[i];
             int newY = this.y + yKick + Y_OFFSETS.get(minoType).get(orientation)[i];
-            if(board[newX][newY] != Mino.NONE){
+            if(notAvailable(newX, newY, board)){
                 return false;
             }
         }

@@ -70,13 +70,6 @@ public class Main extends Application {
 
         inputManager.resetClicks();
 
-        if(inputManager.isMouseClicked()){
-            System.out.println("x: " + inputManager.getMouseX() + " y: " + inputManager.getMouseY());
-        }
-
-        if(inputManager.isKeyClicked(KeyCode.A)){
-            System.out.println("A");
-        }
         tetrisMenu.doFrame(canvas.getGraphicsContext2D());
 
     }
@@ -97,7 +90,7 @@ public class Main extends Application {
 
                         frameStart = System.currentTimeMillis();
                         doFrame();
-                        if(System.currentTimeMillis() - frameStart > 18) {
+                        if(System.currentTimeMillis() - frameStart > 2) {
                             //System.err.println("Frame time: " + (System.currentTimeMillis() - frameStart));
                         } else {
                             //System.out.println("Frame time: " + (System.currentTimeMillis() - frameStart));

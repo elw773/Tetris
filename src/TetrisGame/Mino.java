@@ -21,7 +21,7 @@ public enum Mino {
     private static Random random;
 
     private static void shuffleBag(){
-        System.out.println("Shuffling");
+        //System.out.println("Shuffling");
         Mino temp;
         for (int j = bag.length - 1; j > 0; j--) {
             int k = random.nextInt(bag.length);

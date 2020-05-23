@@ -8,15 +8,15 @@ import javafx.scene.paint.Color;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
-    public static final int BOARD_WIDTH = 14;
-    public static final int BOARD_HEIGHT = 30;
+    public static final int BOARD_WIDTH = 10;
+    public static final int BOARD_HEIGHT = 26;
     public static final int PLAYABLE_WIDTH = 10;
     public static final int PLAYABLE_HEIGHT = 20;
-    public static final int LOW_X = 2;
-    public static final int HIGH_X = BOARD_WIDTH - 3;
-    public static final int LOW_Y = 2;
-    public static final int PLAYABLE_Y = 8;
-    public static final int HIGH_Y = BOARD_HEIGHT - 3;
+    public static final int LOW_X = 0;
+    public static final int HIGH_X = BOARD_WIDTH - 1;
+    public static final int LOW_Y = 0;
+    public static final int PLAYABLE_Y = 6;
+    public static final int HIGH_Y = BOARD_HEIGHT - 1;
     public static final int SPAWN_X = LOW_X + 3;
     public static final int SPAWN_Y = PLAYABLE_Y - 2;
 
@@ -35,18 +35,31 @@ public class Game {
     private boolean gameOver;
     private boolean held;
     private int clearedLines;
+    private long totalGameTime = 0;
+    private long numUpdates = 0;
 
     public Game(){
         reset();
     }
 
     public void update(Move move){
+        long start = System.currentTimeMillis();
+
         doMoves(move);
         boolean canFall = doFall();
         if(!canFall) {
             doLock();
         }
         score();
+        numUpdates ++;
+        totalGameTime += (System.currentTimeMillis() - start);
+        double average = (double)totalGameTime/numUpdates;
+        //System.out.println("Game: " + average);
+        if((System.currentTimeMillis() - start) > 1){
+          //  System.err.println("Game took " + (System.currentTimeMillis() - start));
+        }
+
+
         /*
 
         if(currentTetromino.canFall(board)){
@@ -109,7 +122,7 @@ public class Game {
         if(move.softDrop) {
             fall();
         } else if(move.hardDrop){ // hard drop
-            while(fall()){ }
+            dropGoal += 20.0;
         }
         // translate
         if(move.translation != Move.Direction.NONE && currentTetromino.translate(move.translation, board)){
@@ -152,13 +165,15 @@ public class Game {
     }
 
     private void clearLines(){
-        for (int y = currentTetromino.getY(); y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
-            System.out.println("checking line: " + y);
+        //long start = System.currentTimeMillis();
+        for (int y = currentTetromino.getY(); -1 < y && y < BOARD_HEIGHT && y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
+          //  System.out.println("checking line: " + y);
             if(isLineFull(y)){
                 clearLine(y);
                 clearedLines ++;
             }
         }
+        //System.out.println("Line clearing took " + (System.currentTimeMillis() - start));
     }
 
     private boolean doFall(){
@@ -236,7 +251,7 @@ public class Game {
     }
 
     public void lowerLine(int line){
-        if(PLAYABLE_Y <= line && line <= HIGH_Y) {
+        if(PLAYABLE_Y <= line && line < HIGH_Y) {
             for (int x = LOW_X; x <= HIGH_X; x++) {
                 board[x][line + 1] = board[x][line];
             }
