@@ -79,7 +79,7 @@ public class Game {
         int framesPerCell;
         if(level == 0) {
             framesPerCell = 48;
-        } if(level == 1){
+        } else if(level == 1){
             framesPerCell = 43;
         } else  if(level == 2){
             framesPerCell = 38;

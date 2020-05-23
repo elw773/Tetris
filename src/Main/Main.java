@@ -1,5 +1,6 @@
 package Main;
 
+import Graphics.MainMenu;
 import Graphics.TetrisMenu;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -23,13 +25,31 @@ public class Main extends Application {
     public InputManager inputManager;
 
     private TetrisMenu tetrisMenu;
+    private MainMenu mainMenu;
     private Canvas canvas;
+    private ProgramState programState;
 
     /**
      * Represents the state of the program, with which menu is shown
      */
     private enum ProgramState{
         MAIN_MENU, CONTROLS, PLAY, AI
+    }
+
+    private void mainMenu(){
+        programState = ProgramState.MAIN_MENU;
+    }
+
+    private void controls(){
+        programState = ProgramState.CONTROLS;
+    }
+
+    private void play(){
+        programState = ProgramState.PLAY;
+    }
+
+    private void ai(){
+        programState = ProgramState.AI;
     }
 
     @Override
@@ -55,10 +75,13 @@ public class Main extends Application {
         primaryStage.show();
 
         timeline.play();
+        programState = ProgramState.MAIN_MENU;
 
 
         tetrisMenu = new TetrisMenu();
         tetrisMenu.newGame(new Player());
+
+        mainMenu = new MainMenu();
 
     }
 
@@ -70,7 +93,13 @@ public class Main extends Application {
 
         inputManager.resetClicks();
 
-        tetrisMenu.doFrame(canvas.getGraphicsContext2D());
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        switch (programState){
+            case MAIN_MENU: mainMenu.doFrame(gc); break;
+            case PLAY: tetrisMenu.doFrame(gc); break;
+        }
+
 
     }
 
