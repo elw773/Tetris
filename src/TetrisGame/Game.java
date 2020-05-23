@@ -22,6 +22,9 @@ public class Game {
 
     private static final int LOCK_DELAY = 30;
     private int lockCounter;
+    private double dropRate = 0.03;
+    private double dropGoal = 0;
+    private int dropActual = 0;
     private int dropCounter;
     private Mino[][] board;
     private int score;
@@ -44,6 +47,7 @@ public class Game {
             doLock();
         }
         score();
+        /*
 
         if(currentTetromino.canFall(board)){
             lockCounter = 0;
@@ -92,7 +96,7 @@ public class Game {
         }
 
         currentTetromino.translate(move.translation, board);
-        currentTetromino.rotate(move.rotation, board);
+        currentTetromino.rotate(move.rotation, board);*/
     }
 
     private void score(){
@@ -108,9 +112,14 @@ public class Game {
             while(fall()){ }
         }
         // translate
-        currentTetromino.translate(move.translation, board);
+        if(move.translation != Move.Direction.NONE && currentTetromino.translate(move.translation, board)){
+            lockCounter = 0;
+        }
+
         // rotate
-        currentTetromino.rotate(move.rotation, board);
+        if(move.translation != Move.Direction.NONE && currentTetromino.rotate(move.rotation, board)){
+            lockCounter = 0;
+        }
         // hold
         if(move.hold && !held){
             held = true;
@@ -126,10 +135,6 @@ public class Game {
             hold.move(SPAWN_X, SPAWN_Y, board);
         }
 
-        // reset lock delay
-        if(move.translation != Move.Direction.NONE && move.rotation != Move.Direction.NONE){
-            lockCounter = 0;
-        }
     }
 
     private boolean fall(){
@@ -155,21 +160,32 @@ public class Game {
     }
 
     private boolean doFall(){
-        return currentTetromino.fall(board);
+        if(currentTetromino.canFall(board)){
+            dropGoal += dropRate;
+            while(dropActual < (int) dropGoal && currentTetromino.fall(board)){
+                dropActual ++;
+            }
+        }
+        return currentTetromino.canFall(board);
     }
 
     private void doLock(){
         if(lockCounter > LOCK_DELAY){
             gameOver = !currentTetromino.lock(board);
-
+            lockCounter = 0;
             clearLines();
             nextTetromino();
+        } else {
+            lockCounter ++;
         }
     }
 
     private void nextTetromino(){
         currentTetromino = next.remove();
         next.add(new Tetromino(Mino.getNextRandom()));
+        held = false;
+        dropGoal = 0;
+        dropActual = 0;
         if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
             gameOver = true;
         }

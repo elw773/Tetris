@@ -286,7 +286,7 @@ public class Tetromino {
 
 
     public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
-        if(minoType == Mino.O || direction == Move.Direction.NONE) {
+        if(minoType == Mino.O ||  direction == Move.Direction.NONE){
             return true;
         }
 
