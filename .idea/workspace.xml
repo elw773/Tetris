@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="Finished nextTetromino method">
-      <change beforePath="$PROJECT_DIR$/src/Graphics/TetrisMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Graphics/TetrisMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TetrisGame/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisGame/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java" afterDir="false" />
     </list>
@@ -79,14 +78,15 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="340" selection-start-line="340" selection-end-line="340" />
+            <state relative-caret-position="219">
+              <caret line="156" column="5" lean-forward="true" selection-start-line="156" selection-start-column="5" selection-end-line="156" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#7629#7630#0" expanded="true" />
                 <element signature="e#7653#7654#0" expanded="true" />
                 <element signature="e#7677#7678#0" expanded="true" />
                 <element signature="e#7701#7702#0" expanded="true" />
+                <element signature="e#10377#10378#0" expanded="true" />
                 <element signature="e#10411#10412#0" expanded="true" />
               </folding>
             </state>
@@ -147,24 +147,24 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/TetrisGame/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="267" column="24" selection-start-line="267" selection-start-column="24" selection-end-line="267" selection-end-column="24" />
+            <state relative-caret-position="202">
+              <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1654#1655#0" expanded="true" />
                 <element signature="e#1677#1678#0" expanded="true" />
-                <element signature="e#8658#8659#0" expanded="true" />
-                <element signature="e#8689#8690#0" expanded="true" />
-                <element signature="e#9699#9700#0" expanded="true" />
-                <element signature="e#9732#9733#0" expanded="true" />
-                <element signature="e#10019#10020#0" expanded="true" />
-                <element signature="e#10046#10047#0" expanded="true" />
-                <element signature="e#10079#10080#0" expanded="true" />
-                <element signature="e#10106#10107#0" expanded="true" />
-                <element signature="e#10151#10152#0" expanded="true" />
-                <element signature="e#10178#10179#0" expanded="true" />
-                <element signature="e#10295#10296#0" expanded="true" />
-                <element signature="e#10323#10324#0" expanded="true" />
+                <element signature="e#9691#9692#0" expanded="true" />
+                <element signature="e#9722#9723#0" expanded="true" />
+                <element signature="e#10732#10733#0" expanded="true" />
+                <element signature="e#10765#10766#0" expanded="true" />
+                <element signature="e#11052#11053#0" expanded="true" />
+                <element signature="e#11079#11080#0" expanded="true" />
+                <element signature="e#11112#11113#0" expanded="true" />
+                <element signature="e#11139#11140#0" expanded="true" />
+                <element signature="e#11184#11185#0" expanded="true" />
+                <element signature="e#11211#11212#0" expanded="true" />
+                <element signature="e#11328#11329#0" expanded="true" />
+                <element signature="e#11356#11357#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -204,6 +204,10 @@
       <find>score</find>
       <find>doMoves</find>
       <find>lastMove</find>
+      <find>notA</find>
+      <find>check</find>
+      <find>clearedLines ++</find>
+      <find>dropRate</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -882,21 +886,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="340" selection-start-line="340" selection-end-line="340" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7629#7630#0" expanded="true" />
-            <element signature="e#7653#7654#0" expanded="true" />
-            <element signature="e#7677#7678#0" expanded="true" />
-            <element signature="e#7701#7702#0" expanded="true" />
-            <element signature="e#10411#10412#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Orientation.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -904,26 +893,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/TetrisGame/Tetromino/Tetromino.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="156" column="5" lean-forward="true" selection-start-line="156" selection-start-column="5" selection-end-line="156" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7629#7630#0" expanded="true" />
+            <element signature="e#7653#7654#0" expanded="true" />
+            <element signature="e#7677#7678#0" expanded="true" />
+            <element signature="e#7701#7702#0" expanded="true" />
+            <element signature="e#10377#10378#0" expanded="true" />
+            <element signature="e#10411#10412#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/TetrisGame/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="267" column="24" selection-start-line="267" selection-start-column="24" selection-end-line="267" selection-end-column="24" />
+        <state relative-caret-position="202">
+          <caret line="307" column="26" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1654#1655#0" expanded="true" />
             <element signature="e#1677#1678#0" expanded="true" />
-            <element signature="e#8658#8659#0" expanded="true" />
-            <element signature="e#8689#8690#0" expanded="true" />
-            <element signature="e#9699#9700#0" expanded="true" />
-            <element signature="e#9732#9733#0" expanded="true" />
-            <element signature="e#10019#10020#0" expanded="true" />
-            <element signature="e#10046#10047#0" expanded="true" />
-            <element signature="e#10079#10080#0" expanded="true" />
-            <element signature="e#10106#10107#0" expanded="true" />
-            <element signature="e#10151#10152#0" expanded="true" />
-            <element signature="e#10178#10179#0" expanded="true" />
-            <element signature="e#10295#10296#0" expanded="true" />
-            <element signature="e#10323#10324#0" expanded="true" />
+            <element signature="e#9691#9692#0" expanded="true" />
+            <element signature="e#9722#9723#0" expanded="true" />
+            <element signature="e#10732#10733#0" expanded="true" />
+            <element signature="e#10765#10766#0" expanded="true" />
+            <element signature="e#11052#11053#0" expanded="true" />
+            <element signature="e#11079#11080#0" expanded="true" />
+            <element signature="e#11112#11113#0" expanded="true" />
+            <element signature="e#11139#11140#0" expanded="true" />
+            <element signature="e#11184#11185#0" expanded="true" />
+            <element signature="e#11211#11212#0" expanded="true" />
+            <element signature="e#11328#11329#0" expanded="true" />
+            <element signature="e#11356#11357#0" expanded="true" />
           </folding>
         </state>
       </provider>

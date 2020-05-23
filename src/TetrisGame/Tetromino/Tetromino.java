@@ -156,7 +156,7 @@ public class Tetromino {
         return true;
     }
 
-    private boolean notAvailable(int x, int y, Mino[][] board){
+    public static boolean notAvailable(int x, int y, Mino[][] board){
         return -1 >= x || x >= board.length || -1 >= y || y >= board[x].length || board[x][y] != Mino.NONE;
     }
 
