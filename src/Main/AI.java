@@ -1,6 +1,5 @@
 package Main;
 
-import TetrisGame.Board;
 import TetrisGame.Game;
 import TetrisGame.Mino;
 import TetrisGame.Move;
@@ -187,23 +186,24 @@ public class AI implements MoveGetter {
         }
 
         double[] start = {0,0,0,0,0};
-        double[] steps = {0.5,0.5,0.5,0.5,0.5};
-        ArrayList<double[]> best = new ArrayList<>();
-        findBestInRange(start, steps, 2, best, 0);
+        double[] steps = {0.25,0.25,0.25,0.25,0.25};
+
+        BestArray best = new BestArray(5);
+        findBestInRange(start, steps, 4, best, 0);
         System.out.println("Done");
 
-        for(double[] params:best){
+        for(Pair<Integer, double[]> attempt: best){
             System.out.print("Best: ");
-            for(double d:params){
+            for(double d:attempt.getValue()){
                 System.out.print(d + " ");
             }
-            System.out.print(bestScore + "\n");
+            System.out.print(attempt.getKey() + "\n");
         }
     }
 
     static int bestScore;
 
-    static void findBestInRange(double[] start, double steps[], int n, ArrayList<double[]> best, int i){
+    static void findBestInRange(double[] start, double steps[], int n, BestArray best, int i){
         if(i < start.length){
             double original = start[i];
             for (int j = 0; j < n; j++) {
@@ -215,21 +215,10 @@ public class AI implements MoveGetter {
                 start[i] -= steps[i];
                 findBestInRange(start, steps, n, best, i+1);
             }
+            start[i] = original;
         } else {
             int score = attempt(start);
-            if(score > bestScore) {
-                bestScore = score;
-                best.clear();
-                best.add(start.clone());
-
-                System.out.print("New Best: ");
-                for (double d : start) {
-                    System.out.print(d + " ");
-                }
-                System.out.print(score + "\n");
-            } else if(score == bestScore){
-                best.add(start.clone());
-            }
+            best.addNewAttempt(score, start);
         }
     }
 
@@ -261,5 +250,34 @@ public class AI implements MoveGetter {
 
     public static void main(String[] args) {
         train();
+    }
+
+    private static class BestArray extends ArrayList<Pair<Integer, double[]>>{
+        int capacity;
+        BestArray(int capacity){
+            super();
+            this.capacity = capacity;
+        }
+
+        public void addNewAttempt(int score, double[] params){
+            if(this.size() < capacity){
+                this.add(new Pair<>(score, params.clone()));
+            } else {
+                if(score >= this.get(0).getKey()){
+                    this.remove(0);
+                    int i = 0;
+                    while(i < this.size() && score > this.get(i).getKey()){
+                        i++;
+                    }
+                    this.add(i, new Pair<>(score, params.clone()));
+
+                    System.out.print("New: ");
+                    for(double d:params){
+                        System.out.print(d + " ");
+                    }
+                    System.out.print(score + "\n");
+                }
+            }
+        }
     }
 }
