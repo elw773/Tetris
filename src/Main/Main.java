@@ -45,6 +45,7 @@ public class Main extends Application {
     }
 
     public void play(){
+        tetrisMenu.newGame(new Player());
         programState = ProgramState.PLAY;
     }
 
@@ -79,7 +80,6 @@ public class Main extends Application {
 
 
         tetrisMenu = new TetrisMenu();
-        tetrisMenu.newGame(new Player());
 
         mainMenu = new MainMenu();
 

@@ -16,6 +16,7 @@ public class TetrisMenu {
 
 
     public void newGame(MoveGetter moveGetter){
+        this.game = new Game();
         this.moveGetter = moveGetter;
     }
 
