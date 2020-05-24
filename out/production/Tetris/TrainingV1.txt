@@ -1,0 +1,11 @@
+double[] start = {0,0,0,0,0};
+double[] steps = {0.5,0.5,0.5,0.5,0.5};
+
+BestArray best = new BestArray(5);
+
+
+findBestInRange(start, steps, 2, best, 0); // average of 3, max of 2000
+findBestInRangeDeeper(steps, 0.25, 2, best, 5);
+
+
+

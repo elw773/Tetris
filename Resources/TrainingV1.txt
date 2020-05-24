@@ -1,0 +1,15 @@
+double[] start = {0,0,0,0,0};
+double[] steps = {0.5,0.5,0.5,0.5,0.5};
+
+BestArray best = new BestArray(5);
+
+
+findBestInRange(start, steps, 2, best, 0); // average of 3, max of 2000
+findBestInRangeDeeper(steps, 0.25, 2, best, 5);
+
+
+private static double kHeight = 0.67578125;
+private static double kClears = 0.669921875;
+private static double kEdges = 0.173828125;
+private static double kWells = -0.181640625;
+private static double kHoles = -0.919921875;

@@ -21,11 +21,11 @@ public class AI implements MoveGetter {
 
     private HashMap<Double, Pair<Orientation, Integer>> moves;
 
-    private static double kHeight = 0.5;
-    private static double kClears = 0.75;
-    private static double kEdges = 0.25;
-    private static double kWells = -0.25;
-    private static double kHoles = -1.0;
+    private static double kHeight = 0.67578125;
+    private static double kClears = 0.669921875;
+    private static double kEdges = 0.173828125;
+    private static double kWells = -0.181640625;
+    private static double kHoles = -0.919921875;
 
 
     public AI(Game game){
@@ -186,6 +186,7 @@ public class AI implements MoveGetter {
             trainingMinos[i] = Mino.toMino(minos[i]);
         }*/
 
+        /*
         double[] start = {0,0,0,0,0};
         double[] steps = {0.5,0.5,0.5,0.5,0.5};
 
@@ -193,7 +194,15 @@ public class AI implements MoveGetter {
 
 
         findBestInRange(start, steps, 2, best, 0);
-        findBestInRangeDeeper(steps, 2, best, 5);
+        findBestInRangeDeeper(steps, 0.25, 2, best, 5);*/
+        double[] start = AI.start;
+        double[] steps = AI.steps;
+
+        BestArray best = new BestArray(bestCapacity);
+
+
+        findBestInRange(start, steps, firstN, best, 0);
+        findBestInRangeDeeper(steps, stepScale, secondN, best, depth);
 
         for(Pair<Integer, double[]> attempt: best){
             System.out.print("Best: ");
@@ -202,34 +211,64 @@ public class AI implements MoveGetter {
             }
             System.out.print(attempt.getKey() + "\n");
         }
+        System.out.println(numGames + " Games");
     }
 
-    static void findBestInRangeDeeper(double steps[],  int n, BestArray best, int depth){
-        System.out.println("Deeper");
+    static double[] start = {0,0,0,0,0};
+    static double[] steps = {0.2,0.2,0.2,0.2,0.2};
+    static int firstN = 5;
+    static int bestCapacity = 10;
+    static double stepScale = 0.4;
+    static int secondN = 2;
+    static int depth = 7;
+    static int nAttempts = 5;
+    private static int MAX_MINOS = 5000;
+    static long numGames = 0;
+
+
+    static void findBestInRangeDeeper(double steps[],  double stepScale, int n, BestArray best, int depth){
         if(depth > 0) {
+
             for (int i = 0; i < steps.length; i++) {
-                steps[i] = steps[i]/(n);
+                steps[i] = steps[i] * stepScale;
             }
+
             double[][] starts = new double[best.size()][];
             for (int i = 0; i < best.size(); i++) {
                 starts[i] = best.get(i).getValue();
             }
+            System.out.println(numGames + " Games \n\nDepth: " + depth);
+            for(Pair<Integer, double[]> attempt: best){
+                System.out.print("Best: ");
+                for(double d:attempt.getValue()){
+                    System.out.print(d + " ");
+                }
+                System.out.print(attempt.getKey() + "\n");
+            }
 
             for (int i = 0; i < starts.length; i++) {
+
+
                 findBestInRange(starts[i], steps, n, best, 0);
             }
 
-            findBestInRangeDeeper(steps, n, best, depth-1);
+            findBestInRangeDeeper(steps, stepScale, n, best, depth-1);
         }
     }
 
     static void findBestInRange(double[] start, double steps[], int n, BestArray best, int i){
+        if(i == 0){
+            System.out.print("\nSearching ");
+            for(double d:start){
+                System.out.print(d + " ");
+            }
+            System.out.print(" +-" + steps[0]*2 + " (steps of " + steps[0] + ")\n");
+        }
         if(i < start.length){
             double original = start[i];
-            findBestInRange(start, steps, n, best, i+1);
             for (int j = 0; j < n; j++) {
                 start[i] += steps[i];
-                if(start[i] < 1){
+                if(start[i] <= 1){
                     findBestInRange(start, steps, n, best, i + 1);
                 } else {
                     break;
@@ -240,7 +279,7 @@ public class AI implements MoveGetter {
 
                 start[i] -= steps[i];
 
-                if(start[i] > -1) {
+                if(start[i] >= -1) {
                     findBestInRange(start, steps, n, best, i + 1);
                 } else {
                     break;
@@ -248,12 +287,14 @@ public class AI implements MoveGetter {
             }
             start[i] = original;
         } else {
-            int score = attempt(start, 5);
+
+
+            int score = attempt(start, nAttempts);
             best.addNewAttempt(score, start);
         }
     }
 
-    private static int MAX_MINOS = 2000;
+
 
     static int attempt(double[] params, int n){
         int totalScore = 0;
@@ -283,6 +324,7 @@ public class AI implements MoveGetter {
 
             }
         }
+        numGames ++;
         //System.out.println("Score " + game.getScore() + " Level " + game.getLevel());
         return minoCounter;
     }
@@ -310,7 +352,7 @@ public class AI implements MoveGetter {
                     }
                     this.add(i, new Pair<>(score, params.clone()));
 
-                    System.out.print("New: ");
+                    System.out.print("Game " + numGames + " : ");
                     for(double d:params){
                         System.out.print(d + " ");
                     }
