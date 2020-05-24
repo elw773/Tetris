@@ -11,22 +11,49 @@ public class Board {
         HEIGHT = height+buffer;
         BUFFER = buffer;
         FIRST_VISIBLE_Y = buffer;
-        SPAWN_X = (WIDTH - 4) / 2;
-        SPAWN_Y = FIRST_VISIBLE_Y - 2;
+        SPAWN_X = (width - 4) / 2;
+        SPAWN_Y = buffer - 2;
 
 
         board = new Mino[WIDTH][HEIGHT];
+
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                board[x][y] = Mino.NONE;
+            }
+        }
     }
 
-    public Mino getMino(int x, int y){
-        return board[x][y];
+    public Mino get(int x, int y){
+        if(validX(x) && validY(y)){
+            return board[x][y];
+        }
+        return Mino.O;
+    }
+
+    public void set(int x, int y, Mino mino){
+        if(validX(x) && validY(y)){
+            board[x][y] = mino;
+        }
     }
 
     public boolean isOpen(int x, int y){
-        return (0 <= x && x < WIDTH) && (0 <= y && y < HEIGHT) && board[x][y] == Mino.NONE;
+        return validX(x) && validY(y) && board[x][y] == Mino.NONE;
     }
 
     public boolean notOpen(int x, int y){
         return (x < 0 || WIDTH <= x) || (y < 0 || HEIGHT <= y) || board[x][y] != Mino.NONE;
+    }
+
+    public boolean validY(int y){
+        return (0 <= y && y < HEIGHT);
+    }
+
+    public boolean validX(int x){
+        return (0 <= x && x < WIDTH);
+    }
+
+    public int toVisibleY(int y){
+        return y - FIRST_VISIBLE_Y;
     }
 }

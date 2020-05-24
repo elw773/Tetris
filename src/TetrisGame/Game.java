@@ -10,23 +10,15 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
     public static final int BOARD_WIDTH = 10;
-    public static final int BOARD_HEIGHT = 26;
-    public static final int PLAYABLE_WIDTH = 10;
-    public static final int PLAYABLE_HEIGHT = 20;
-    public static final int LOW_X = 0;
-    public static final int HIGH_X = BOARD_WIDTH - 1;
-    public static final int LOW_Y = 0;
-    public static final int PLAYABLE_Y = 6;
-    public static final int HIGH_Y = BOARD_HEIGHT - 1;
-    public static final int SPAWN_X = LOW_X + 3;
-    public static final int SPAWN_Y = PLAYABLE_Y - 2;
+    public static final int BOARD_HEIGHT = 20;
+    public static final int BOARD_BUFFER = 6;
 
     private static final int LOCK_DELAY = 30;
     private int lockCounter;
     private double dropGoal = 0;
     private int dropActual = 0;
     private int dropCounter;
-    private Mino[][] board;
+    private Board board;
     private int score = 0;
     private int level = 1;
     private Tetromino hold;
@@ -150,19 +142,19 @@ public class Game {
 
             int pointerCorners = 0;
 
-            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation), y+tSpinCornerY.get(orientation), board)){
+            if(!board.isOpen(x+tSpinCornerX.get(orientation), y+tSpinCornerY.get(orientation))){
                 pointerCorners += 1;
             }
-            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.cw()), y+tSpinCornerY.get(orientation.cw()), board)){
+            if(!board.isOpen(x+tSpinCornerX.get(orientation.cw()), y+tSpinCornerY.get(orientation.cw()))){
                 pointerCorners += 1;
             }
 
             int otherCorners = 0;
 
-            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.ccw()), y+tSpinCornerY.get(orientation.ccw()), board)){
+            if(!board.isOpen(x+tSpinCornerX.get(orientation.ccw()), y+tSpinCornerY.get(orientation.ccw()))){
                 otherCorners += 1;
             }
-            if(Tetromino.notAvailable(x+tSpinCornerX.get(orientation.ccw().ccw()), y+tSpinCornerY.get(orientation.ccw().ccw()), board)){
+            if(!board.isOpen(x+tSpinCornerX.get(orientation.ccw().ccw()), y+tSpinCornerY.get(orientation.ccw().ccw()))){
                 otherCorners += 1;
             }
 
@@ -268,7 +260,7 @@ public class Game {
             }
 
             hold.setOrientation(Orientation.NORTH);
-            hold.move(SPAWN_X, SPAWN_Y, board);
+            hold.move(board.SPAWN_X, board.SPAWN_Y, board);
         }
 
     }
@@ -329,7 +321,7 @@ public class Game {
         dropGoal = 0;
         dropActual = 0;
         lastMoveWasRotate = false;
-        if(!currentTetromino.move(SPAWN_X,SPAWN_Y, board)){
+        if(!currentTetromino.move(board.SPAWN_X,board.SPAWN_Y, board)){
             gameOver = true;
         }
     }
@@ -340,17 +332,7 @@ public class Game {
 
     public void reset(int level) {
         // reset board
-        board = new Mino[BOARD_WIDTH][BOARD_HEIGHT];
-
-        for (int x = 0; x < BOARD_WIDTH; x++) {
-            for (int y = 0; y < BOARD_HEIGHT; y++) {
-                if(x < LOW_X || HIGH_X < x || y < LOW_Y || HIGH_Y < y){
-                    board[x][y] = Mino.I;
-                } else {
-                    board[x][y] = Mino.NONE;
-                }
-            }
-        }
+        board = new Board(BOARD_WIDTH, BOARD_HEIGHT, BOARD_BUFFER);
 
         //reset vars
         lockCounter = 0;
@@ -381,8 +363,8 @@ public class Game {
     }
 
     public boolean isLineFull(int y){
-        for (int x = LOW_X; x <= HIGH_X; x++) {
-            if(board[x][y] == Mino.NONE){
+        for (int x = 0; x < board.WIDTH; x++) {
+            if(!board.isOpen(x, y)){
                 return false;
             }
         }
@@ -394,9 +376,9 @@ public class Game {
     }
 
     public void lowerLine(int line){
-        if(LOW_Y <= line && line < HIGH_Y) {
-            for (int x = LOW_X; x <= HIGH_X; x++) {
-                board[x][line + 1] = board[x][line];
+        if(board.validY(line)) {
+            for (int x = 0; x < board.WIDTH; x++) {
+                board.set(x, line+1, board.get(x,line));
             }
             lowerLine(line-1);
         }
@@ -426,14 +408,14 @@ public class Game {
     public void drawBoard(double boardX, double boardY, double width, GraphicsContext gc){
         double squareSize = width / 10;
         double height = width * 2;
-        for (int x = LOW_X; x <= HIGH_X; x++) {
-            for (int y = PLAYABLE_Y; y <= HIGH_Y; y++) {
-                Mino.draw(boardX + ((x-LOW_X)*squareSize), boardY + ((y-PLAYABLE_Y)*squareSize), squareSize, board[x][y], gc);
+        for (int x = 0; x < board.WIDTH; x++) {
+            for (int y = board.FIRST_VISIBLE_Y; y < board.HEIGHT; y++) {
+                Mino.draw(boardX + ((x)*squareSize), boardY + (board.toVisibleY(y)*squareSize), squareSize, board.get(x, y), gc);
             }
         }
         currentTetromino.drawGhostRelative(boardX, boardY, squareSize, gc, board);
 
-        currentTetromino.drawRelative(boardX, boardY, squareSize, gc);
+        currentTetromino.drawRelative(boardX, boardY, squareSize, board, gc);
 
         gc.clearRect(boardX, boardY-1000, squareSize*10, 1000);
 

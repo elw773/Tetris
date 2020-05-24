@@ -1,11 +1,13 @@
 package TetrisGame.Tetromino;
 
+import TetrisGame.Board;
 import TetrisGame.Game;
 import TetrisGame.Move;
 import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.EnumMap;
+import java.util.function.BinaryOperator;
 
 public class Tetromino {
     public static final int NUM_MINOS = 4;
@@ -130,7 +132,7 @@ public class Tetromino {
      * @param board
      * @return
      */
-    public boolean move(int x, int y, Mino[][] board){
+    public boolean move(int x, int y, Board board){
         if(canMove(x, y, board)){
             this.x = x;
             this.y = y;
@@ -146,19 +148,16 @@ public class Tetromino {
      * @param board
      * @return
      */
-    public boolean canMove(int x, int y, Mino[][] board){
+    public boolean canMove(int x, int y, Board board){
         for (int i = 0; i < NUM_MINOS; i++) {
 
-            if(notAvailable(x + getMinoXOffset(i), y + getMinoYOffset(i), board)){
+            if(!board.isOpen(x + getMinoXOffset(i), y + getMinoYOffset(i))){
                 return false;
             }
         }
         return true;
     }
 
-    public static boolean notAvailable(int x, int y, Mino[][] board){
-        return -1 >= x || x >= board.length || -1 >= y || y >= board[x].length || board[x][y] != Mino.NONE;
-    }
 
     /**
      * Moves the tetromino in the desired direction, if it can
@@ -167,7 +166,7 @@ public class Tetromino {
      * @param board the board to move on
      * @return true if succesful
      */
-    public boolean translate(Move.Direction direction, Mino[][] board){
+    public boolean translate(Move.Direction direction, Board board){
         if(canTranslate(direction, board)){
             this.x += direction.getSign();
             return true;
@@ -182,11 +181,11 @@ public class Tetromino {
      * @param board the board to move on
      * @return true if it can translate
      */
-    public boolean canTranslate(Move.Direction direction, Mino[][] board){
+    public boolean canTranslate(Move.Direction direction, Board board){
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
-            if(notAvailable(minoX + direction.getSign(), minoY, board)){
+            if(!board.isOpen(minoX + direction.getSign(), minoY)){
                 return false;
             }
         }
@@ -198,7 +197,7 @@ public class Tetromino {
      * @param board the board to fall down on
      * @return true if succesful
      */
-    public boolean fall(Mino[][] board){
+    public boolean fall(Board board){
         if(canFall(board)){
             this.y ++;
             return true;
@@ -211,11 +210,11 @@ public class Tetromino {
      * @param board the board to fall down on
      * @return true if it can
      */
-    public boolean canFall(Mino[][] board){
+    public boolean canFall(Board board){
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
-            if(notAvailable(minoX, minoY + 1, board)){
+            if(!board.isOpen(minoX, minoY + 1)){
                 return false;
             }
         }
@@ -227,13 +226,13 @@ public class Tetromino {
      * @param board the board to lock onto
      * @return false if the piece locked comletely above the visible portion of the screen
      */
-    public boolean lock(Mino[][] board){
+    public boolean lock(Board board){
         boolean valid = false;
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
-            board[minoX][minoY] = this.minoType;
-            if(minoY >= Game.PLAYABLE_Y){
+            board.set(minoX, minoY, minoType);
+            if(minoY >= board.FIRST_VISIBLE_Y){
                 valid = true;
             }
         }
@@ -297,7 +296,7 @@ public class Tetromino {
         return minoType;
     }
 
-    public boolean rotate(Move.Direction direction, Mino[][] board){ //https://tetris.fandom.com/wiki/SRS
+    public boolean rotate(Move.Direction direction, Board board){ //https://tetris.fandom.com/wiki/SRS
         if(minoType == Mino.O ||  direction == Move.Direction.NONE){
             return true;
         }
@@ -318,11 +317,8 @@ public class Tetromino {
 
     }
 
-    public boolean canRotate(Move.Direction direction, Mino[][] board){
-        return false;
-    }
 
-    private boolean canRotate(Orientation orientation, Mino[][] board, int xKick, int yKick){
+    private boolean canRotate(Orientation orientation, Board board, int xKick, int yKick){
         if(minoType == Mino.O){
             return true;
         }
@@ -330,7 +326,7 @@ public class Tetromino {
         for (int i = 0; i < NUM_MINOS; i++) {
             int newX = this.x + xKick + X_OFFSETS.get(minoType).get(orientation)[i];
             int newY = this.y + yKick + Y_OFFSETS.get(minoType).get(orientation)[i];
-            if(notAvailable(newX, newY, board)){
+            if(!board.isOpen(newX, newY)){
                 return false;
             }
         }
@@ -341,15 +337,15 @@ public class Tetromino {
         return orientation;
     }
 
-    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Mino[][] board){
+    public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Board board){
         int fallDist = 0;
         while(canMove(x, y+fallDist, board)){
             fallDist ++;
         }
         fallDist --; // we are one farther than we can go
         for (int i = 0; i < NUM_MINOS; i++) {
-            double x = boardGx + ((getMinoXOffset(i) + this.x - Game.LOW_X) * squareSize);
-            double y = boardGy + ((getMinoYOffset(i) + this.y + fallDist - Game.PLAYABLE_Y) * squareSize);
+            double x = boardGx + ((getMinoXOffset(i) + this.x) * squareSize);
+            double y = boardGy + (board.toVisibleY(getMinoYOffset(i) + this.y + fallDist) * squareSize);
             Mino.drawGhost(x, y, squareSize, minoType, gc);
         }
     }
@@ -377,9 +373,9 @@ public class Tetromino {
      * @param squareSize
      * @param gc
      */
-    public void drawRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc){
+    public void drawRelative(double boardGx, double boardGy, double squareSize, Board board, GraphicsContext gc){
 
-            drawAbsolute(boardGx + ((x - Game.LOW_X) * squareSize), boardGy + ((y - Game.PLAYABLE_Y) * squareSize), squareSize, gc);
+            drawAbsolute(boardGx + ((x) * squareSize), boardGy + (board.toVisibleY(y) * squareSize), squareSize, gc);
 
     }
 }
