@@ -58,7 +58,7 @@ public enum Mino {
         gc.fillRect(gx+2, gy+2, squareSize-4, squareSize-4);
     }
 
-    public static Paint getDark(Mino type){
+    public static Color getDark(Mino type){
         switch (type){
             case I: return Color.web("#70d7c3");
             case J: return Color.web("#75bae8");
@@ -71,7 +71,7 @@ public enum Mino {
         }
     }
 
-    public static Paint getMid(Mino type){
+    public static Color getMid(Mino type){
         switch (type){
             case I: return Color.web("#98e2d4");
             case J: return Color.web("#a1d0ef");
@@ -84,7 +84,7 @@ public enum Mino {
         }
     }
 
-    public static Paint getLight(Mino type){
+    public static Color getLight(Mino type){
         switch (type){
             case I: return Color.web("#c0eee4");
             case J: return Color.web("#cde6f7");

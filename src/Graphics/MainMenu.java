@@ -1,5 +1,6 @@
 package Graphics;
 
+import Main.Main;
 import TetrisGame.Mino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -8,16 +9,25 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
 public class MainMenu {
-    private Button playButton;
+    private Button[] buttons;
 
     public MainMenu(){
-        playButton = new Button(250,100,200,100,10,40,"PLAY", Color.GREENYELLOW, null);
+        buttons = new Button[3];
+
+        buttons[0] = new Button(200,350,300,100,10,40,"PLAY", Mino.getMid(Mino.S), ()->Main.getInstance().play());
+        buttons[1] = new Button(200,500,300,100,10,40,"AI", Mino.getMid(Mino.I), ()->Main.getInstance().ai());
+        buttons[2] = new Button(200, 650, 300, 100, 10, 40, "CONTROLS", Mino.getMid(Mino.L), ()->Main.getInstance().controls());
 
     }
 
     public void doFrame(GraphicsContext gc){
-        //playButton.show(gc);
-        drawTetrisLogo(200,100,300,gc);
+        drawTetrisLogo(162.5,50,375,gc);
+        for(Button button:buttons){
+            button.show(gc);
+            button.isClicled();
+            button.hide();
+        }
+
     }
 
     public void drawTetrisLogo(double x, double y, double width, GraphicsContext gc){

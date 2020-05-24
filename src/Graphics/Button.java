@@ -27,7 +27,7 @@ public class Button {
     }
 
     public static Color toTextColor(Color color){
-        return Color.hsb(color.getHue(), color.getSaturation()*0.8, 1-color.getBrightness());
+        return Color.hsb(color.getHue(), color.getSaturation()*0.8, color.getBrightness()*0.5);
     }
 
     public Button(double x, double y, double width, double height, double outlineSize, double fontSize, String text, Color color, Runnable runnable){

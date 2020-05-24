@@ -36,19 +36,19 @@ public class Main extends Application {
         MAIN_MENU, CONTROLS, PLAY, AI
     }
 
-    private void mainMenu(){
+    public void mainMenu(){
         programState = ProgramState.MAIN_MENU;
     }
 
-    private void controls(){
+    public void controls(){
         programState = ProgramState.CONTROLS;
     }
 
-    private void play(){
+    public void play(){
         programState = ProgramState.PLAY;
     }
 
-    private void ai(){
+    public void ai(){
         programState = ProgramState.AI;
     }
 
