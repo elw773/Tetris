@@ -228,13 +228,13 @@ public class Tetromino {
      * @return false if the piece locked comletely above the visible portion of the screen
      */
     public boolean lock(Mino[][] board){
-        boolean valid = true;
+        boolean valid = false;
         for (int i = 0; i < NUM_MINOS; i++) {
             int minoX = getMinoX(i);
             int minoY = getMinoY(i);
             board[minoX][minoY] = this.minoType;
-            if(minoY < Game.PLAYABLE_Y){
-                valid = false;
+            if(minoY >= Game.PLAYABLE_Y){
+                valid = true;
             }
         }
         return valid;
