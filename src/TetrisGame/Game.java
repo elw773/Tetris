@@ -223,6 +223,13 @@ public class Game {
         System.out.println("Level: " + level + "\tScore: " + score + "\t Lines: " + totalClearedLines);
         doLevelUp();
 
+        if(difficult){
+            backToBack = true;
+        } else if(clearedLines > 0){
+            backToBack = false;
+        }
+
+
         combo = clearedLines > 0;
         clearedLines = 0;
         tSpin = false;
