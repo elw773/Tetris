@@ -26,14 +26,12 @@ public enum Mino {
     private static Mino[] bag;
     private static int i;
     public static Mino getNextRandom(){
-        //TODO: Revert this
-        return AI.getNextTrainingMino();
-/*
+
         if(i > 6){
             shuffleBag();
             i = 0;
         }
-        return bag[i++];*/
+        return bag[i++];
     }
     private static Random random;
 

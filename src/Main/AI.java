@@ -21,11 +21,11 @@ public class AI implements MoveGetter {
 
     private HashMap<Double, Pair<Orientation, Integer>> moves;
 
-    private static double kHeight = 0.7;
-    private static double kClears = 1;
-    private static double kEdges = 0.1;
-    private static double kWells = -0.1;
-    private static double kHoles = -0.3;
+    private static double kHeight = 0.5;
+    private static double kClears = 0.75;
+    private static double kEdges = 0.25;
+    private static double kWells = -0.25;
+    private static double kHoles = -1.0;
 
 
     public AI(Game game){
@@ -170,6 +170,7 @@ public class AI implements MoveGetter {
     }
 
     static void train(){
+        /*
         System.out.println();
         Scanner scanner = null;
         try {
@@ -183,12 +184,14 @@ public class AI implements MoveGetter {
         trainingMinos = new Mino[minos.length];
         for (int i = 0; i < minos.length; i++) {
             trainingMinos[i] = Mino.toMino(minos[i]);
-        }
+        }*/
 
         double[] start = {0,0,0,0,0};
         double[] steps = {0.25,0.25,0.25,0.25,0.25};
 
         BestArray best = new BestArray(5);
+
+
         findBestInRange(start, steps, 4, best, 0);
         System.out.println("Done");
 
@@ -202,6 +205,7 @@ public class AI implements MoveGetter {
     }
 
     static int bestScore;
+
 
     static void findBestInRange(double[] start, double steps[], int n, BestArray best, int i){
         if(i < start.length){
@@ -217,21 +221,22 @@ public class AI implements MoveGetter {
             }
             start[i] = original;
         } else {
-            int score = attempt(start);
+            int score = attempt(start, 5);
             best.addNewAttempt(score, start);
         }
     }
 
-    private static int minoCounter;
-    private static Mino[] trainingMinos;
+    private static int MAX_MINOS = 2000;
 
-    public static Mino getNextTrainingMino(){
-        return trainingMinos[minoCounter++];
+    static int attempt(double[] params, int n){
+        int totalScore = 0;
+        for (int i = 0; i < n; i++) {
+            totalScore += attempt(params);
+        }
+        return totalScore/n;
     }
 
-
     static int attempt(double[] params){
-        minoCounter = 0;
         kHeight = params[0];
         kClears = params[1];
         kEdges = params[2];
@@ -241,8 +246,15 @@ public class AI implements MoveGetter {
         Game game = new Game();
         AI ai = new AI(game);
 
-        while(!game.gameIsOver() && minoCounter < trainingMinos.length){
+        Tetromino prevTetromino = game.getCurrentTetromino();
+        int minoCounter = 0;
+        while(!game.gameIsOver() && minoCounter < MAX_MINOS){
             game.update(ai.getMove());
+            if(game.getCurrentTetromino() != prevTetromino){
+                minoCounter ++;
+                prevTetromino = game.getCurrentTetromino();
+
+            }
         }
         //System.out.println("Score " + game.getScore() + " Level " + game.getLevel());
         return minoCounter;
@@ -270,12 +282,6 @@ public class AI implements MoveGetter {
                         i++;
                     }
                     this.add(i, new Pair<>(score, params.clone()));
-
-                    System.out.print("New: ");
-                    for(double d:params){
-                        System.out.print(d + " ");
-                    }
-                    System.out.print(score + "\n");
                 }
             }
         }
