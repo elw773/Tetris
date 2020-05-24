@@ -195,12 +195,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Main/AI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="229">
-              <caret line="199" column="45" lean-forward="true" selection-start-line="199" selection-start-column="45" selection-end-line="199" selection-end-column="45" />
+            <state relative-caret-position="-34">
+              <caret line="201" column="13" lean-forward="true" selection-start-line="201" selection-start-column="13" selection-end-line="201" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#9732#9733#0" expanded="true" />
-                <element signature="e#9755#9756#0" expanded="true" />
+                <element signature="e#9974#9975#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1031,12 +1030,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Main/AI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="199" column="45" lean-forward="true" selection-start-line="199" selection-start-column="45" selection-end-line="199" selection-end-column="45" />
+        <state relative-caret-position="-34">
+          <caret line="201" column="13" lean-forward="true" selection-start-line="201" selection-start-column="13" selection-end-line="201" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#9732#9733#0" expanded="true" />
-            <element signature="e#9755#9756#0" expanded="true" />
+            <element signature="e#9974#9975#0" expanded="true" />
           </folding>
         </state>
       </provider>

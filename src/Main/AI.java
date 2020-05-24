@@ -187,13 +187,13 @@ public class AI implements MoveGetter {
         }*/
 
         double[] start = {0,0,0,0,0};
-        double[] steps = {1,1,1,1,1};
+        double[] steps = {0.5,0.5,0.5,0.5,0.5};
 
         BestArray best = new BestArray(5);
 
 
-        findBestInRange(start, steps, 1, best, 0);
-        findBestInRangeDeeper(steps, 1, best, 5);
+        findBestInRange(start, steps, 2, best, 0);
+        findBestInRangeDeeper(steps, 2, best, 5);
 
         for(Pair<Integer, double[]> attempt: best){
             System.out.print("Best: ");
@@ -205,9 +205,10 @@ public class AI implements MoveGetter {
     }
 
     static void findBestInRangeDeeper(double steps[],  int n, BestArray best, int depth){
+        System.out.println("Deeper");
         if(depth > 0) {
             for (int i = 0; i < steps.length; i++) {
-                steps[i] = steps[i]/(n*2);
+                steps[i] = steps[i]/(n);
             }
             double[][] starts = new double[best.size()][];
             for (int i = 0; i < best.size(); i++) {
