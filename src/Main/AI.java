@@ -187,13 +187,13 @@ public class AI implements MoveGetter {
         }*/
 
         double[] start = {0,0,0,0,0};
-        double[] steps = {0.25,0.25,0.25,0.25,0.25};
+        double[] steps = {1,1,1,1,1};
 
         BestArray best = new BestArray(5);
 
 
-        findBestInRange(start, steps, 4, best, 0);
-        System.out.println("Done");
+        findBestInRange(start, steps, 1, best, 0);
+        findBestInRangeDeeper(steps, 1, best, 5);
 
         for(Pair<Integer, double[]> attempt: best){
             System.out.print("Best: ");
@@ -204,20 +204,46 @@ public class AI implements MoveGetter {
         }
     }
 
-    static int bestScore;
+    static void findBestInRangeDeeper(double steps[],  int n, BestArray best, int depth){
+        if(depth > 0) {
+            for (int i = 0; i < steps.length; i++) {
+                steps[i] = steps[i]/(n*2);
+            }
+            double[][] starts = new double[best.size()][];
+            for (int i = 0; i < best.size(); i++) {
+                starts[i] = best.get(i).getValue();
+            }
 
+            for (int i = 0; i < starts.length; i++) {
+                findBestInRange(starts[i], steps, n, best, 0);
+            }
+
+            findBestInRangeDeeper(steps, n, best, depth-1);
+        }
+    }
 
     static void findBestInRange(double[] start, double steps[], int n, BestArray best, int i){
         if(i < start.length){
             double original = start[i];
+            findBestInRange(start, steps, n, best, i+1);
             for (int j = 0; j < n; j++) {
                 start[i] += steps[i];
-                findBestInRange(start, steps, n, best, i+1);
+                if(start[i] < 1){
+                    findBestInRange(start, steps, n, best, i + 1);
+                } else {
+                    break;
+                }
             }
             start[i] = original;
             for (int j = 0; j < n; j++) {
+
                 start[i] -= steps[i];
-                findBestInRange(start, steps, n, best, i+1);
+
+                if(start[i] > -1) {
+                    findBestInRange(start, steps, n, best, i + 1);
+                } else {
+                    break;
+                }
             }
             start[i] = original;
         } else {
@@ -282,6 +308,12 @@ public class AI implements MoveGetter {
                         i++;
                     }
                     this.add(i, new Pair<>(score, params.clone()));
+
+                    System.out.print("New: ");
+                    for(double d:params){
+                        System.out.print(d + " ");
+                    }
+                    System.out.print(score + "\n");
                 }
             }
         }
