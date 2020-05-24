@@ -9,10 +9,7 @@ import TetrisGame.Tetromino.Tetromino;
 import javafx.util.Pair;
 
 import java.io.FileInputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class AI implements MoveGetter {
     private Move move;
@@ -25,11 +22,11 @@ public class AI implements MoveGetter {
 
     private HashMap<Double, Pair<Orientation, Integer>> moves;
 
-    private static double kHeight = 1;
-    private static double kClears = 0;
-    private static double kEdges = 0;
-    private static double kWells = -1;
-    private static double kHoles = -1;
+    private static double kHeight = 0.7;
+    private static double kClears = 1;
+    private static double kEdges = 0.1;
+    private static double kWells = -0.1;
+    private static double kHoles = -0.3;
 
 
     public AI(Game game){
@@ -45,9 +42,8 @@ public class AI implements MoveGetter {
 
         for(Orientation orientation: Orientation.values()){
             for (int x = -2; x < game.getBoard().WIDTH-2; x++) {
-                for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT-2; y++) {
-                    if(!currentTetromino.canMove(x, y, orientation, game.getBoard())){
-                        y--;
+                for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT; y++) {
+                    if(!currentTetromino.canMove(x, y+1, orientation, game.getBoard()) && currentTetromino.canMove(x, y, orientation, game.getBoard())){
                         for (int i = 0; i < Tetromino.NUM_MINOS; i++) {
                             int minoX = Tetromino.X_OFFSETS.get(currentMinoType).get(orientation)[i] + x;
                             int minoY = Tetromino.Y_OFFSETS.get(currentMinoType).get(orientation)[i] + y;
@@ -65,7 +61,7 @@ public class AI implements MoveGetter {
             }
         }
 
-        double bestMove = -1000.0;
+        double bestMove = Double.NEGATIVE_INFINITY;
         for (Map.Entry<Double, Pair<Orientation, Integer>> move : moves.entrySet()){
             if(move.getKey() > bestMove){
                 bestMove = move.getKey();
@@ -118,7 +114,6 @@ public class AI implements MoveGetter {
             }
             if(fullRow){
                 clears ++;
-                System.out.println("clear");
             }
             //System.out.print("\n");
         }
@@ -176,6 +171,7 @@ public class AI implements MoveGetter {
     }
 
     static void train(){
+        System.out.println();
         Scanner scanner = null;
         try {
             scanner = new Scanner(new FileInputStream("Resources/trainingMinos.txt"));
@@ -190,8 +186,51 @@ public class AI implements MoveGetter {
             trainingMinos[i] = Mino.toMino(minos[i]);
         }
 
-        //do attempts
-        System.out.println(attempt(new double[]{7, 10, 1, -1, -3}));
+        double[] start = {0,0,0,0,0};
+        double[] steps = {0.5,0.5,0.5,0.5,0.5};
+        ArrayList<double[]> best = new ArrayList<>();
+        findBestInRange(start, steps, 2, best, 0);
+        System.out.println("Done");
+
+        for(double[] params:best){
+            System.out.print("Best: ");
+            for(double d:params){
+                System.out.print(d + " ");
+            }
+            System.out.print(bestScore + "\n");
+        }
+    }
+
+    static int bestScore;
+
+    static void findBestInRange(double[] start, double steps[], int n, ArrayList<double[]> best, int i){
+        if(i < start.length){
+            double original = start[i];
+            for (int j = 0; j < n; j++) {
+                start[i] += steps[i];
+                findBestInRange(start, steps, n, best, i+1);
+            }
+            start[i] = original;
+            for (int j = 0; j < n; j++) {
+                start[i] -= steps[i];
+                findBestInRange(start, steps, n, best, i+1);
+            }
+        } else {
+            int score = attempt(start);
+            if(score > bestScore) {
+                bestScore = score;
+                best.clear();
+                best.add(start.clone());
+
+                System.out.print("New Best: ");
+                for (double d : start) {
+                    System.out.print(d + " ");
+                }
+                System.out.print(score + "\n");
+            } else if(score == bestScore){
+                best.add(start.clone());
+            }
+        }
     }
 
     private static int minoCounter;
@@ -216,6 +255,7 @@ public class AI implements MoveGetter {
         while(!game.gameIsOver() && minoCounter < trainingMinos.length){
             game.update(ai.getMove());
         }
+        //System.out.println("Score " + game.getScore() + " Level " + game.getLevel());
         return minoCounter;
     }
 
