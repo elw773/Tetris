@@ -12,8 +12,8 @@ import java.util.function.BinaryOperator;
 public class Tetromino {
     public static final int NUM_MINOS = 4;
     public static final int[] WALL_KICK_VALUES = {0, 1, 2, -1, -2};
-    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
-    private static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
+    public static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
+    public static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
 
 
     /**
@@ -317,20 +317,24 @@ public class Tetromino {
 
     }
 
+    public boolean canMove(int x, int y, Orientation orientation, Board board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int newX = x + X_OFFSETS.get(minoType).get(orientation)[i];
+            int newY = y + Y_OFFSETS.get(minoType).get(orientation)[i];
+            if(!board.isOpen(newX, newY)){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     private boolean canRotate(Orientation orientation, Board board, int xKick, int yKick){
         if(minoType == Mino.O){
             return true;
         }
 
-        for (int i = 0; i < NUM_MINOS; i++) {
-            int newX = this.x + xKick + X_OFFSETS.get(minoType).get(orientation)[i];
-            int newY = this.y + yKick + Y_OFFSETS.get(minoType).get(orientation)[i];
-            if(!board.isOpen(newX, newY)){
-                return false;
-            }
-        }
-        return true;
+        return canMove(x + xKick, y + yKick, orientation, board);
     }
 
     public Orientation getOrientation(){
@@ -344,8 +348,8 @@ public class Tetromino {
         }
         fallDist --; // we are one farther than we can go
         for (int i = 0; i < NUM_MINOS; i++) {
-            double x = boardGx + ((getMinoXOffset(i) + this.x) * squareSize);
-            double y = boardGy + (board.toVisibleY(getMinoYOffset(i) + this.y + fallDist) * squareSize);
+            double x = board.toGraphicX(boardGx, (getMinoXOffset(i) + this.x), squareSize);
+            double y = board.toGraphicY(boardGy, (getMinoYOffset(i) + this.y + fallDist), squareSize);
             Mino.drawGhost(x, y, squareSize, minoType, gc);
         }
     }
@@ -375,7 +379,7 @@ public class Tetromino {
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, Board board, GraphicsContext gc){
 
-            drawAbsolute(boardGx + ((x) * squareSize), boardGy + (board.toVisibleY(y) * squareSize), squareSize, gc);
+            drawAbsolute(board.toGraphicX(boardGx, x, squareSize), board.toGraphicY(boardGy, y, squareSize), squareSize, gc);
 
     }
 }

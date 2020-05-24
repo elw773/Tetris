@@ -53,7 +53,15 @@ public class Board {
         return (0 <= x && x < WIDTH);
     }
 
-    public int toVisibleY(int y){
-        return y - FIRST_VISIBLE_Y;
+    public double toGraphicX(double boardX, int x, double squareSize){
+        return boardX + (x * squareSize);
+    }
+
+    public double toGraphicY(double boardY, int y, double squareSize){
+        return boardY + ((y-FIRST_VISIBLE_Y) * squareSize);
+    }
+
+    public Mino[][] getBoard() {
+        return board;
     }
 }

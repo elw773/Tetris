@@ -279,8 +279,8 @@ public class Game {
 
     private void clearLines(){
         //long start = System.currentTimeMillis();
-        for (int y = currentTetromino.getY(); -1 < y && y < BOARD_HEIGHT && y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
-          //  System.out.println("checking line: " + y);
+        for (int y = currentTetromino.getY(); board.validY(y) && y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
+            //System.out.println("checking line: " + y);
             if(isLineFull(y)){
                 clearLine(y);
                 clearedLines ++;
@@ -364,7 +364,7 @@ public class Game {
 
     public boolean isLineFull(int y){
         for (int x = 0; x < board.WIDTH; x++) {
-            if(!board.isOpen(x, y)){
+            if(board.isOpen(x, y)){
                 return false;
             }
         }
@@ -385,15 +385,15 @@ public class Game {
     }
 
     public Tetromino getHold(){
-        return null;
+        return hold;
     }
 
-    public Mino[][] getBoard(){
-        return null;
+    public Board getBoard(){
+        return board;
     }
 
     public Tetromino getCurrentTetromino(){
-        return null;
+        return currentTetromino;
     }
 
     public Tetromino[] getNext(){
@@ -410,7 +410,7 @@ public class Game {
         double height = width * 2;
         for (int x = 0; x < board.WIDTH; x++) {
             for (int y = board.FIRST_VISIBLE_Y; y < board.HEIGHT; y++) {
-                Mino.draw(boardX + ((x)*squareSize), boardY + (board.toVisibleY(y)*squareSize), squareSize, board.get(x, y), gc);
+                Mino.draw(board.toGraphicX(boardX, x, squareSize), board.toGraphicY(boardY, y, squareSize), squareSize, board.get(x, y), gc);
             }
         }
         currentTetromino.drawGhostRelative(boardX, boardY, squareSize, gc, board);

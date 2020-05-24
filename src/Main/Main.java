@@ -2,6 +2,7 @@ package Main;
 
 import Graphics.MainMenu;
 import Graphics.TetrisMenu;
+import TetrisGame.Game;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -45,11 +46,13 @@ public class Main extends Application {
     }
 
     public void play(){
-        tetrisMenu.newGame(new Player());
+        tetrisMenu.newGame(new Game(), new Player());
         programState = ProgramState.PLAY;
     }
 
     public void ai(){
+        Game game = new Game();
+        tetrisMenu.newGame(game, new AI(game));
         programState = ProgramState.AI;
     }
 
@@ -98,6 +101,7 @@ public class Main extends Application {
         switch (programState){
             case MAIN_MENU: mainMenu.doFrame(gc); break;
             case PLAY: tetrisMenu.doFrame(gc); break;
+            case AI: tetrisMenu.doFrame(gc); break;
         }
 
 
