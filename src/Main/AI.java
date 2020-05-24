@@ -25,11 +25,12 @@ public class AI implements MoveGetter {
 
     private HashMap<Double, Pair<Orientation, Integer>> moves;
 
-    private static double kHeight = 0.7;
-    private static double kClears = 1;
-    private static double kEdges = 0.1;
-    private static double kHoles = -0.1;
-    private static double kWells = -0.3;
+    private static double kHeight = 1;
+    private static double kClears = 0;
+    private static double kEdges = 0;
+    private static double kWells = -1;
+    private static double kHoles = -1;
+
 
     public AI(Game game){
         this.game = game;
@@ -44,8 +45,9 @@ public class AI implements MoveGetter {
 
         for(Orientation orientation: Orientation.values()){
             for (int x = -2; x < game.getBoard().WIDTH-2; x++) {
-                for (int y = game.getBoard().HEIGHT-2; y >= game.getBoard().FIRST_VISIBLE_Y; y--) {
-                    if(currentTetromino.canMove(x, y, orientation, game.getBoard())){
+                for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT-2; y++) {
+                    if(!currentTetromino.canMove(x, y, orientation, game.getBoard())){
+                        y--;
                         for (int i = 0; i < Tetromino.NUM_MINOS; i++) {
                             int minoX = Tetromino.X_OFFSETS.get(currentMinoType).get(orientation)[i] + x;
                             int minoY = Tetromino.Y_OFFSETS.get(currentMinoType).get(orientation)[i] + y;
@@ -116,6 +118,7 @@ public class AI implements MoveGetter {
             }
             if(fullRow){
                 clears ++;
+                System.out.println("clear");
             }
             //System.out.print("\n");
         }
@@ -204,8 +207,8 @@ public class AI implements MoveGetter {
         kHeight = params[0];
         kClears = params[1];
         kEdges = params[2];
-        kHoles = params[3];
-        kWells = params[4];
+        kWells = params[3];
+        kHoles = params[4];
 
         Game game = new Game();
         AI ai = new AI(game);
