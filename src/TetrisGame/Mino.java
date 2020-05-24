@@ -1,5 +1,6 @@
 package TetrisGame;
 
+import Main.AI;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -9,14 +10,30 @@ import java.util.Random;
 public enum Mino {
     I, J, L, O, S, T, Z, NONE;
 
+    public static Mino toMino(String str){
+        switch (str){
+            case "I": return I;
+            case "J": return J;
+            case "L": return L;
+            case "O": return O;
+            case "S": return S;
+            case "T": return T;
+            case "Z": return Z;
+            default: return NONE;
+        }
+    }
+
     private static Mino[] bag;
     private static int i;
     public static Mino getNextRandom(){
+        //TODO: Revert this
+        return AI.getNextTrainingMino();
+        /*
         if(i > 6){
             shuffleBag();
             i = 0;
         }
-        return bag[i++];
+        return bag[i++];*/
     }
     private static Random random;
 

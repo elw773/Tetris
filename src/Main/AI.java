@@ -8,9 +8,11 @@ import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.util.Pair;
 
+import java.io.FileInputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Scanner;
 
 public class AI implements MoveGetter {
     private Move move;
@@ -22,6 +24,12 @@ public class AI implements MoveGetter {
     private int goalX;
 
     private HashMap<Double, Pair<Orientation, Integer>> moves;
+
+    private static double kHeight = 0.7;
+    private static double kClears = 1;
+    private static double kEdges = 0.1;
+    private static double kHoles = -0.1;
+    private static double kWells = -0.3;
 
     public AI(Game game){
         this.game = game;
@@ -79,7 +87,7 @@ public class AI implements MoveGetter {
 
                     if(height == -1) {
                         height = y;
-                        //System.out.print("@");
+                       // System.out.print("@");
                     } else {
                         //System.out.print("#");
                     }
@@ -92,7 +100,7 @@ public class AI implements MoveGetter {
                     boolean right = !isOpen(x+1, y, board);
                     boolean topRight = !isOpen(x+1, y-1, board);
                     boolean bottom = !isOpen(x, y+1, board);
-                   if(top && bottom){
+                   if(top){
                        holes ++;
                        //System.out.print("H");
                    } else if(left && right){
@@ -109,12 +117,12 @@ public class AI implements MoveGetter {
             if(fullRow){
                 clears ++;
             }
-            System.out.print("\n");
+            //System.out.print("\n");
         }
 
-        System.out.println(height + " " + clears + " " + edges + " " + wells + " " + holes);
-
-        return 0;
+        //System.out.println(height + " " + clears + " " + edges + " " + wells + " " + holes);
+        double score = (height * kHeight) + (clears * kClears) + (edges * kEdges) + (wells * kWells) + ((holes) * kHoles);
+        return score;
     }
 
     private boolean isOpen(int x, int y, Mino[][] board){
@@ -122,7 +130,7 @@ public class AI implements MoveGetter {
     }
 
     @Override
-    public Move getMove() {
+    public Move getMove() {/*
         Mino[][] board = {
                 {Mino.NONE, Mino.NONE, Mino.NONE, Mino.NONE, Mino.NONE, Mino.O, Mino.NONE},
                 {Mino.NONE, Mino.NONE, Mino.NONE, Mino.O, Mino.O, Mino.O, Mino.O},
@@ -133,10 +141,10 @@ public class AI implements MoveGetter {
                 {Mino.NONE, Mino.NONE, Mino.NONE, Mino.NONE, Mino.O, Mino.O, Mino.NONE}
 
         };
-        scoreMove(board);
+        scoreMove(board);*/
         if(game.getCurrentTetromino() != currentTetromino){
             currentTetromino = game.getCurrentTetromino();
-            //findBestMove();
+            findBestMove();
         }
 
 
@@ -162,5 +170,53 @@ public class AI implements MoveGetter {
         move.hold = false;
 
         return move;
+    }
+
+    static void train(){
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new FileInputStream("Resources/trainingMinos.txt"));
+        } catch(Exception e){
+
+        }
+        String str = scanner.nextLine();
+        String[] minos = str.split(",");
+
+        trainingMinos = new Mino[minos.length];
+        for (int i = 0; i < minos.length; i++) {
+            trainingMinos[i] = Mino.toMino(minos[i]);
+        }
+
+        //do attempts
+        System.out.println(attempt(new double[]{7, 10, 1, -1, -3}));
+    }
+
+    private static int minoCounter;
+    private static Mino[] trainingMinos;
+
+    public static Mino getNextTrainingMino(){
+        return trainingMinos[minoCounter++];
+    }
+
+
+    static int attempt(double[] params){
+        minoCounter = 0;
+        kHeight = params[0];
+        kClears = params[1];
+        kEdges = params[2];
+        kHoles = params[3];
+        kWells = params[4];
+
+        Game game = new Game();
+        AI ai = new AI(game);
+
+        while(!game.gameIsOver() && minoCounter < trainingMinos.length){
+            game.update(ai.getMove());
+        }
+        return minoCounter;
+    }
+
+    public static void main(String[] args) {
+        train();
     }
 }

@@ -1,5 +1,6 @@
 package TetrisGame;
 
+import Main.AI;
 import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
@@ -181,23 +182,23 @@ public class Game {
 
         if(tSpin){
             switch (clearedLines){
-                case 0: newPoints += 400; System.out.println("T-spin"); break;
-                case 1: newPoints += 800; System.out.println("T-spin Single"); break;
-                case 2: newPoints += 1200; System.out.println("T-spin Double"); break;
-                case 3: newPoints += 1600; System.out.println("T-spin Triple"); break;
+                case 0: newPoints += 400; //System.out.println("T-spin"); break;
+                case 1: newPoints += 800; //System.out.println("T-spin Single"); break;
+                case 2: newPoints += 1200; //System.out.println("T-spin Double"); break;
+                case 3: newPoints += 1600; //System.out.println("T-spin Triple"); break;
             }
         } else if(miniTSpin){
             switch (clearedLines){
-                case 0: newPoints += 100; System.out.println("Mini T-spin"); break;
-                case 1: newPoints += 200; System.out.println("Mini T-spin Single"); break;
-                case 2: newPoints += 400; System.out.println("Mini T-spin Double"); break;
+                case 0: newPoints += 100; //System.out.println("Mini T-spin"); break;
+                case 1: newPoints += 200;// System.out.println("Mini T-spin Single"); break;
+                case 2: newPoints += 400; //System.out.println("Mini T-spin Double"); break;
             }
         } else {
             switch (clearedLines){
                 case 1: newPoints += 100; break;
                 case 2: newPoints += 300; break;
                 case 3: newPoints += 500; break;
-                case 4: newPoints += 800; System.out.println("Tetris"); break;
+                case 4: newPoints += 800; //System.out.println("Tetris"); break;
             }
         }
 
@@ -206,13 +207,13 @@ public class Game {
         if(backToBack && difficult){
             newPoints = newPoints * 3;
             newPoints = newPoints / 2;
-            System.out.println("BACK 2 BACK");
+            //System.out.println("BACK 2 BACK");
         } else if(combo){
             score += comboCount * 50 * (level);
-            System.out.println(comboCount + " Combo!");
+            //System.out.println(comboCount + " Combo!");
         }
         score += newPoints * (level);
-        System.out.println("Level: " + level + "\tScore: " + score + "\t Lines: " + totalClearedLines);
+        //System.out.println("Level: " + level + "\tScore: " + score + "\t Lines: " + totalClearedLines);
         doLevelUp();
 
         if(difficult){

@@ -3,6 +3,7 @@ package Main;
 import Graphics.MainMenu;
 import Graphics.TetrisMenu;
 import TetrisGame.Game;
+import TetrisGame.Mino;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -85,6 +86,13 @@ public class Main extends Application {
         tetrisMenu = new TetrisMenu();
 
         mainMenu = new MainMenu();
+
+        /*
+        // create training minos
+        System.out.print(Mino.getNextRandom());
+        for (int i = 0; i < 1000; i++) {
+            System.out.print(","+ Mino.getNextRandom());
+        }*/
 
     }
 
