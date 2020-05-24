@@ -28,7 +28,7 @@ public class Game {
     private int dropCounter;
     private Mino[][] board;
     private int score = 0;
-    private int level = 0;
+    private int level = 1;
     private Tetromino hold;
     private Tetromino currentTetromino;
     private ArrayBlockingQueue<Tetromino> next;
@@ -66,11 +66,11 @@ public class Game {
     }
 
     public Game(){
-        reset();
+        reset(1);
     }
 
     private void doLevelUp(){
-        if(totalClearedLines > (level+1) * 10){
+        if(totalClearedLines > (level) * 10){
             level ++;
         }
     }
@@ -216,10 +216,10 @@ public class Game {
             newPoints = newPoints / 2;
             System.out.println("BACK 2 BACK");
         } else if(combo){
-            score += comboCount * 50 * (level + 1);
+            score += comboCount * 50 * (level);
             System.out.println(comboCount + " Combo!");
         }
-        score += newPoints * (level + 1);
+        score += newPoints * (level);
         System.out.println("Level: " + level + "\tScore: " + score + "\t Lines: " + totalClearedLines);
         doLevelUp();
 
@@ -338,9 +338,8 @@ public class Game {
         return gameOver;
     }
 
-    public void reset() {
-
-        gameOver = false;
+    public void reset(int level) {
+        // reset board
         board = new Mino[BOARD_WIDTH][BOARD_HEIGHT];
 
         for (int x = 0; x < BOARD_WIDTH; x++) {
@@ -353,14 +352,32 @@ public class Game {
             }
         }
 
+        //reset vars
+        lockCounter = 0;
+        dropGoal = 0;
+        dropActual = 0;
+        dropCounter = 0;
+        score = 0;
+        this.level = level;
         hold = null;
+        gameOver = false;
         held = false;
+        clearedLines = 0;
+        totalClearedLines = 0;
+        lastMoveWasRotate = false;
+        tSpin = false;
+        miniTSpin = false;
+        backToBack = false;
+        comboCount = 0;
+        combo = false;
+
+        // fill next
         next = new ArrayBlockingQueue<>(6);
         while(next.remainingCapacity() > 0){
             next.add(new Tetromino(Mino.getNextRandom()));
         }
-        currentTetromino = new Tetromino(Mino.getNextRandom());
-        currentTetromino.move(SPAWN_X,SPAWN_Y, board);
+        // start the game with a new tetromino
+        nextTetromino();
     }
 
     public boolean isLineFull(int y){
