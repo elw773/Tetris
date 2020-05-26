@@ -33,16 +33,17 @@ public class AI implements MoveGetter {
         move = new Move();
     }
 
-    private void findBestMove(){
+    private Pair<Double, Pair<Orientation, Integer>> findBestMove(Tetromino tetromino){
+
         Mino[][] boardCopy = game.getBoard().getBoard().clone();
-        Mino currentMinoType = currentTetromino.getMinoType();
+        Mino currentMinoType = tetromino.getMinoType();
 
         moves = new HashMap<>();
 
         for(Orientation orientation: Orientation.values()){
             for (int x = -2; x < game.getBoard().WIDTH-2; x++) {
                 for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT; y++) {
-                    if(!currentTetromino.canMove(x, y+1, orientation, game.getBoard()) && currentTetromino.canMove(x, y, orientation, game.getBoard())){
+                    if(!tetromino.canMove(x, y+1, orientation, game.getBoard()) && tetromino.canMove(x, y, orientation, game.getBoard())){
                         for (int i = 0; i < Tetromino.NUM_MINOS; i++) {
                             int minoX = Tetromino.X_OFFSETS.get(currentMinoType).get(orientation)[i] + x;
                             int minoY = Tetromino.Y_OFFSETS.get(currentMinoType).get(orientation)[i] + y;
@@ -66,9 +67,7 @@ public class AI implements MoveGetter {
                 bestMove = move.getKey();
             }
         }
-        Pair<Orientation, Integer> move = moves.get(bestMove);
-        goalOrientation = move.getKey();
-        goalX = move.getValue();
+        return new  Pair<Double, Pair<Orientation, Integer>>(bestMove, moves.get(bestMove));
     }
 
     private double scoreMove(Mino[][] board){
@@ -139,9 +138,30 @@ public class AI implements MoveGetter {
 
         };
         scoreMove(board);*/
+        long start = System.currentTimeMillis();
+        move.hold = false;
         if(game.getCurrentTetromino() != currentTetromino){
             currentTetromino = game.getCurrentTetromino();
-            findBestMove();
+            Pair<Double, Pair<Orientation, Integer>> currentTetrominoMove = findBestMove(currentTetromino);
+
+            Tetromino alternativeTetromino;
+            if(game.getHold() == null){
+                alternativeTetromino = game.getNext()[0];
+            } else {
+                alternativeTetromino = game.getHold();
+            }
+            Pair<Double, Pair<Orientation, Integer>> alternativeTetrominoMove = findBestMove(alternativeTetromino);
+            if(alternativeTetrominoMove.getKey() > currentTetrominoMove.getKey()){
+                move.hold = true;
+                currentTetromino = alternativeTetromino;
+                goalOrientation = alternativeTetrominoMove.getValue().getKey();
+                goalX = alternativeTetrominoMove.getValue().getValue();
+            } else {
+                goalOrientation = currentTetrominoMove.getValue().getKey();
+                goalX = currentTetrominoMove.getValue().getValue();
+            }
+
+
         }
 
 
@@ -164,8 +184,7 @@ public class AI implements MoveGetter {
         }
 
         move.softDrop = false;
-        move.hold = false;
-
+        //System.out.println("AI took: " + (System.currentTimeMillis() - start)); // average of less than 1 ms
         return move;
     }
 
