@@ -3,13 +3,12 @@ package Graphics;
 import Main.Main;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import Main.InputManager;
 
-public class Button extends Rectangle{
+public class Button extends BorderedRectangle {
     private double fontSize;
     private String text;
     private Color textColor;
