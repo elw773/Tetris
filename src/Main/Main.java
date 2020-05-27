@@ -1,6 +1,7 @@
 package Main;
 
 import Graphics.Button;
+import Graphics.ControlsMenu;
 import Graphics.MainMenu;
 import Graphics.TetrisMenu;
 import TetrisGame.Game;
@@ -33,6 +34,8 @@ public class Main extends Application {
 
     private TetrisMenu tetrisMenu;
     private MainMenu mainMenu;
+    private ControlsMenu controlsMenu;
+
     private Canvas canvas;
     private ProgramState programState;
     private Button menuButton;
@@ -106,7 +109,8 @@ public class Main extends Application {
 
         tetrisMenu = new TetrisMenu(700,800);
         mainMenu = new MainMenu();
-        menuButton = new Button(0,0,100,50,5,20,"MENU", Color.web("#e8f4f8"), ()->Main.getInstance().mainMenu());
+        controlsMenu = new ControlsMenu();
+        menuButton = new Button(0,0,100,50,5,20,"MENU", Color.web("#F3F5FF"), ()->Main.getInstance().mainMenu());
     }
 
     /**
@@ -127,7 +131,7 @@ public class Main extends Application {
 
         switch (programState){
             case MAIN_MENU: mainMenu.doFrame(gc); break;
-            case CONTROLS: /*TODO: controls*/ break;
+            case CONTROLS: controlsMenu.doFrame(gc); break;
             default: tetrisMenu.doFrame(gc);
         }
     }

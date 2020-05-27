@@ -34,7 +34,7 @@ public class TetrisMenu implements Menu{
 
     private int countdown;
 
-    private Color stdColor = Color.web("#e8f4f8");
+    private Color stdColor = Color.web("#F3F5FF");
 
     /**
      * A BorderedRectangle that, when paused, does not draw its contents
