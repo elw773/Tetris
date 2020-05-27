@@ -241,6 +241,19 @@ public class Tetromino {
         return valid;
     }
 
+    /**
+     * FOR TESTING ONLY
+     * unlocks the tetromino from the given board
+     * @param board the board to unlock from
+     */
+    public void unlock(Board board){
+        for (int i = 0; i < NUM_MINOS; i++) {
+            int minoX = getMinoX(i);
+            int minoY = getMinoY(i);
+            board.set(minoX, minoY, Mino.NONE);
+        }
+    }
+
     public int getHeight(){
         return getBitMap(minoType).length;
     }
@@ -427,6 +440,7 @@ public class Tetromino {
             }
 
     }
+
 
 
 }

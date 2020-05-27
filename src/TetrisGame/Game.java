@@ -1,5 +1,6 @@
 package TetrisGame;
 
+import Graphics.TetrisMenu;
 import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
@@ -62,7 +63,7 @@ public class Game {
     }
 
     public Game(){
-        reset(0); // reset initialises the variables
+        reset(1); // reset initialises the variables
     }
 
     /**
@@ -509,5 +510,193 @@ public class Game {
 
     public int getScore(){
         return score;
+    }
+
+
+
+    public static void printBoard(Board board){
+        for (int i = 0; i < board.WIDTH+2; i++) {
+            System.out.print("#");
+        }
+        for (int y = 0; y < board.HEIGHT; y++) {
+            System.out.print("\n#");
+            for (int x = 0; x < board.WIDTH; x++) {
+                if(board.get(x,y) == Mino.NONE){
+                    System.out.print(" ");
+                } else {
+                    System.out.print(board.get(x,y));
+                }
+            }
+            System.out.print("#");
+        }
+        System.out.print("\n");
+        for (int i = 0; i < board.WIDTH+2; i++) {
+            System.out.print("#");
+        }
+        System.out.println();
+    }
+
+
+
+
+    public static void testTSpin(){
+        Game game = new Game();
+        Move move = new Move();
+
+        int bottom = game.getBoard().HEIGHT-1;
+
+        for (int x = 0; x < game.getBoard().WIDTH; x++) {
+            for (int y = bottom-2; y <= bottom; y++) {
+                game.getBoard().set(x,y,Mino.O);
+            }
+        }
+        // clear out area
+        game.getBoard().set(3,bottom-2,Mino.NONE);
+        game.getBoard().set(4,bottom-2,Mino.NONE);
+        game.getBoard().set(3,bottom-1,Mino.NONE);
+        game.getBoard().set(3,bottom,Mino.NONE);
+        game.getBoard().set(4,bottom-1,Mino.NONE);
+        game.getBoard().set(2,bottom-1,Mino.NONE);
+
+        //setup t
+        game.currentTetromino = new Tetromino(Mino.T);
+
+        game.currentTetromino.setOrientation(Orientation.EAST);
+        game.currentTetromino.move(2, bottom-2,game.getBoard());
+
+        game.currentTetromino.lock(game.getBoard());
+        printBoard(game.getBoard());
+        game.currentTetromino.unlock(game.getBoard());
+
+        move.rotation = Move.Direction.RIGHT; // make it spin
+        game.update(move);
+
+        move.rotation = Move.Direction.NONE;
+        for (int i = 0; i <= LOCK_DELAY; i++) { // make it lock
+            game.update(move);
+        }
+
+        printBoard(game.getBoard());
+
+
+    }
+
+    public static void testMiniTSpin(){
+        Game game = new Game();
+        Move move = new Move();
+
+        int bottom = game.getBoard().HEIGHT-1;
+
+        for (int x = 0; x < game.getBoard().WIDTH; x++) {
+            for (int y = bottom-2; y <= bottom; y++) {
+                game.getBoard().set(x,y,Mino.O);
+            }
+        }
+        // clear out area
+        game.getBoard().set(3,bottom-2,Mino.NONE);
+        game.getBoard().set(4,bottom-2,Mino.NONE);
+        game.getBoard().set(3,bottom-1,Mino.NONE);
+        game.getBoard().set(3,bottom,Mino.NONE);
+        game.getBoard().set(4,bottom-1,Mino.NONE);
+        game.getBoard().set(2,bottom-1,Mino.NONE);
+
+        //setup t
+        game.currentTetromino = new Tetromino(Mino.T);
+
+        game.currentTetromino.setOrientation(Orientation.EAST);
+        game.currentTetromino.move(2, bottom-2,game.getBoard());
+
+        game.currentTetromino.lock(game.getBoard());
+        printBoard(game.getBoard());
+        game.currentTetromino.unlock(game.getBoard());
+
+        move.rotation = Move.Direction.LEFT; // make it spin
+        game.update(move);
+
+        move.rotation = Move.Direction.NONE;
+        for (int i = 0; i <= LOCK_DELAY; i++) { // make it lock
+            game.update(move);
+        }
+
+        printBoard(game.getBoard());
+
+
+    }
+
+    private static void tryRotation(int x, int y, Tetromino tetromino, Move.Direction direction, Board board){
+        System.out.println("Trying: " + x + " " + y + " " + direction);
+
+        System.out.println(tetromino.move(x,y,board)); // bottom
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+
+        tetromino.rotate(direction, board);
+
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+    }
+
+    public static void testTetrominos(){
+        Board board = new Board(7,7,0);
+        //wallKicks
+        Tetromino tetromino = new Tetromino(Mino.I);
+        tryRotation(1,5,tetromino, Move.Direction.RIGHT,board); // upwards
+        tryRotation(-2,2,tetromino, Move.Direction.RIGHT,board); // right
+        tryRotation(2,-2,tetromino, Move.Direction.RIGHT,board); // down
+        tryRotation(4,2,tetromino, Move.Direction.RIGHT,board); // left
+
+        //movement
+
+        System.out.println("Falling");
+        System.out.println(tetromino.move(0,4,board)); // one above bottom
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+
+        System.out.println(tetromino.fall(board)); // true
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+        System.out.println(tetromino.fall(board)); // false
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+
+        System.out.println("Translating");
+        System.out.println("Falling");
+        System.out.println(tetromino.move(2,4,board)); // one above bottom
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+
+        System.out.println(tetromino.translate(Move.Direction.LEFT, board)); // true
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+        System.out.println(tetromino.translate(Move.Direction.LEFT, board)); // false
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+
+        System.out.println(tetromino.fall(board)); // true
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+        System.out.println(tetromino.fall(board)); // false
+        tetromino.lock(board);
+        printBoard(board);
+        tetromino.unlock(board);
+    }
+
+
+    public static void main(String[] args) {
+        //testTSpin();
+        testMiniTSpin();
+        //testTetrominos();
     }
 }

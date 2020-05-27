@@ -150,7 +150,7 @@ public class TetrisMenu implements Menu{
         } else if(Main.getInstance().inputManager.isKeyClicked(KeyCode.ENTER)){
             paused = false;
             if(game.gameIsOver()){
-                game.reset(0);
+                game.reset(1);
             }
         }
 
