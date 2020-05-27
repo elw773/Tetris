@@ -1,6 +1,5 @@
 package TetrisGame;
 
-import Main.AI;
 import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
@@ -9,6 +8,9 @@ import javafx.scene.paint.Color;
 import java.util.EnumMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
+/**
+ * Represents a tetris game
+ */
 public class Game {
     public static final int BOARD_WIDTH = 10;
     public static final int BOARD_HEIGHT = 20;
@@ -39,37 +41,47 @@ public class Game {
     private int comboCount;
     private boolean combo;
 
-    private static EnumMap<Orientation, Integer> tSpinCornerX;
-    private static EnumMap<Orientation, Integer> tSpinCornerY;
-    static {
-        tSpinCornerX = new EnumMap<Orientation, Integer>(Orientation.class);
-        tSpinCornerY = new EnumMap<Orientation, Integer>(Orientation.class);
+    // these maps store the x and y coordinates of the square that is to the left of the pointer of a T tetromino
+    private static EnumMap<Orientation, Integer> leftOfPointerX;
+    private static EnumMap<Orientation, Integer> leftOfPointerY;
+    static { // setup the maps to recognize t spins
+        leftOfPointerX = new EnumMap<Orientation, Integer>(Orientation.class);
+        leftOfPointerY = new EnumMap<Orientation, Integer>(Orientation.class);
 
-        tSpinCornerX.put(Orientation.NORTH, 0);
-        tSpinCornerY.put(Orientation.NORTH, 0);
+        leftOfPointerX.put(Orientation.NORTH, 0);
+        leftOfPointerY.put(Orientation.NORTH, 0);
 
-        tSpinCornerX.put(Orientation.EAST, 2);
-        tSpinCornerY.put(Orientation.EAST, 0);
+        leftOfPointerX.put(Orientation.EAST, 2);
+        leftOfPointerY.put(Orientation.EAST, 0);
 
-        tSpinCornerX.put(Orientation.SOUTH, 2);
-        tSpinCornerY.put(Orientation.SOUTH, 2);
+        leftOfPointerX.put(Orientation.SOUTH, 2);
+        leftOfPointerY.put(Orientation.SOUTH, 2);
 
-        tSpinCornerX.put(Orientation.WEST, 0);
-        tSpinCornerY.put(Orientation.WEST, 2);
+        leftOfPointerX.put(Orientation.WEST, 0);
+        leftOfPointerY.put(Orientation.WEST, 2);
     }
 
     public Game(){
-        reset(1);
+        reset(0); // reset initialises the variables
     }
 
+    /**
+     * Increments the level if it is time to
+     * pre- totalLinesCleared is equal to the number of lines cleared this game
+     * post- increments level if the number of lines cleared is greater than 10*level
+     */
     private void doLevelUp(){
         if(totalClearedLines > (level) * 10){
             level ++;
         }
     }
 
+    /**
+     * pre- level equals the current level
+     * @return the drop rate of a tetromino for the given level (cells per frame)
+     */
     private double getDropRate(){
-        int framesPerCell;
+        int framesPerCell; // these are the values according to tetris guidelines
         if(level == 0) {
             framesPerCell = 48;
         } else if(level == 1){
@@ -104,6 +116,10 @@ public class Game {
         return 1.0/framesPerCell;
     }
 
+    /**
+     * Updates the game by one frame
+     * @param move the moves of the player (or ai)
+     */
     public void update(Move move){
         long start = System.currentTimeMillis();
 
@@ -113,6 +129,7 @@ public class Game {
             doLock();
         }
         defaultScore(move);
+
         numUpdates ++;
         totalGameTime += (System.currentTimeMillis() - start);
         double average = (double)totalGameTime/numUpdates;
@@ -123,6 +140,11 @@ public class Game {
 
     }
 
+    /**
+     * Does the default scoring of soft drop and hard drop that should take place every frame
+     * pre- dropCounter is equal to the number of squares that the current tetromino has falled this frame
+     * @param move the move of the current frame
+     */
     private void defaultScore(Move move){
         if(move.hardDrop){
             score += (dropCounter * 2);
@@ -132,6 +154,15 @@ public class Game {
         dropCounter = 0;
     }
 
+    /**
+     * Determines if a t spin or mini t spin took place
+     * pre- lastMoveWasRotate is true if the tetromino was rotated and has not fallen or been translated since
+     *      leftOfPointerX and Y are initialized
+     *      the tetromino was locked this frame
+     *      lines have not been cleared yet
+     * post- tSpin will be true if a full t spin occured
+     *       miniTSpin will be true if a mini t spin occured
+     */
     private void checkTSpins(){
 
         if(lastMoveWasRotate && currentTetromino.getMinoType() == Mino.T){
@@ -141,21 +172,21 @@ public class Game {
 
             Orientation orientation = currentTetromino.getOrientation();
 
-            int pointerCorners = 0;
+            int pointerCorners = 0; // the number of occupied squares next to the pointer
 
-            if(!board.isOpen(x+tSpinCornerX.get(orientation), y+tSpinCornerY.get(orientation))){
+            if(!board.isOpen(x+ leftOfPointerX.get(orientation), y+ leftOfPointerY.get(orientation))){ // left of pointer
                 pointerCorners += 1;
             }
-            if(!board.isOpen(x+tSpinCornerX.get(orientation.cw()), y+tSpinCornerY.get(orientation.cw()))){
+            if(!board.isOpen(x+ leftOfPointerX.get(orientation.cw()), y+ leftOfPointerY.get(orientation.cw()))){ // right of pointer
                 pointerCorners += 1;
             }
 
-            int otherCorners = 0;
+            int otherCorners = 0; // the number of occupied corners on the side opposite the pointer
 
-            if(!board.isOpen(x+tSpinCornerX.get(orientation.ccw()), y+tSpinCornerY.get(orientation.ccw()))){
+            if(!board.isOpen(x+ leftOfPointerX.get(orientation.ccw()), y+ leftOfPointerY.get(orientation.ccw()))){
                 otherCorners += 1;
             }
-            if(!board.isOpen(x+tSpinCornerX.get(orientation.ccw().ccw()), y+tSpinCornerY.get(orientation.ccw().ccw()))){
+            if(!board.isOpen(x+ leftOfPointerX.get(orientation.ccw().ccw()), y+ leftOfPointerY.get(orientation.ccw().ccw()))){
                 otherCorners += 1;
             }
 
@@ -177,6 +208,13 @@ public class Game {
         return totalClearedLines;
     }
 
+    /**
+     * Calculates the new score after a piece has been locked
+     * pre- t spins have been checked
+     *      lines have been cleared
+     *      cleared lines represents the number of lines cleared this frame
+     * post- score will be updated
+     */
     private void lockScore(){
 
         if(clearedLines == 0){
@@ -238,6 +276,11 @@ public class Game {
     }
 
 
+    /**
+     * Does the given moves for one frame
+     * post- lastMoveWasRotate and lockCounter are updated
+     * @param move the moves to do
+     */
     private void doMoves(Move move){
         // soft drop
         if(move.softDrop) {
@@ -274,6 +317,11 @@ public class Game {
 
     }
 
+    /**
+     * Makes the current tetromino fall if it can
+     * post- if it does fall, lock counter is reset, drop counter increments, lastMoveWasRotate is set to false
+     * @return true if it can fall
+     */
     private boolean fall(){
         if(currentTetromino.fall(board)){
             lockCounter = 0;
@@ -285,7 +333,11 @@ public class Game {
         }
     }
 
-
+    /**
+     * Clears lines that are full
+     * pre- a tetromino has been locked this frame (but a new tetromino is not set)
+     * post- full lines will be removed from the board and lines above will fill the gap
+     */
     private void clearLines(){
         //long start = System.currentTimeMillis();
         for (int y = currentTetromino.getY(); board.validY(y) && y < currentTetromino.getY() + currentTetromino.getHeight(); y++) {
@@ -299,6 +351,16 @@ public class Game {
         //System.out.println("Line clearing took " + (System.currentTimeMillis() - start));
     }
 
+    /**
+     * Makes the current tetromino fall if it needs to this frame
+     *
+     * The tetromino falls based on the incrementing dropGoal double, and falls until the dropActual int is equal to
+     * the floor of the dropGoal
+     *
+     * pre- dropAcual represents the number of squares the current tetromino has fallen in total
+     *
+     * @return true if the tetromino fall
+     */
     private boolean doFall(){
         if(currentTetromino.canFall(board)){
             dropGoal += getDropRate();
@@ -309,7 +371,17 @@ public class Game {
         return currentTetromino.canFall(board);
     }
 
-    private void doLock(){
+    /**
+     * Locks the current tetromino if it should this frame
+     *
+     * Locks the tetromino if it has not moven for 30 frames
+     *
+     * post- lines are cleared, the new score is calculated, a new tetromino is spawned
+     *       if the tetromino is locked in the buffer, the game is over
+     *
+     * @return true if the tetromino has locked
+     */
+    private boolean doLock(){
         if(lockCounter > LOCK_DELAY){
             gameOver = !currentTetromino.lock(board);
             lockCounter = 0;
@@ -318,11 +390,19 @@ public class Game {
             lockScore();
 
             nextTetromino();
+            return true;
         } else {
             lockCounter ++;
+            return false;
         }
     }
 
+    /**
+     * Spawns the next tetromino
+     * pre- current tetromino has been locked
+     * post- dropGoal, dropActual, held, lastMoveWasRotate are all reset
+     *       if it cannot be spawned, the game is over
+     */
     private void nextTetromino(){
         currentTetromino = next.remove();
         next.add(new Tetromino(Mino.getNextRandom()));
@@ -339,6 +419,10 @@ public class Game {
         return gameOver;
     }
 
+    /**
+     * Resets the current game
+     * @param level the level to start the game at
+     */
     public void reset(int level) {
         // reset board
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT, BOARD_BUFFER);
@@ -371,6 +455,11 @@ public class Game {
         nextTetromino();
     }
 
+    /***
+     * Determines if the line is full
+     * @param y the line to check
+     * @return true if there are no open squares in the line
+     */
     public boolean isLineFull(int y){
         for (int x = 0; x < board.WIDTH; x++) {
             if(board.isOpen(x, y)){
@@ -380,10 +469,18 @@ public class Game {
         return true;
     }
 
+    /**
+     * Recursively shifts down all lines above to clear this one
+     * @param line the line to clear
+     */
     public void clearLine(int line){
         lowerLine(line-1);
     }
 
+    /**
+     * Recursively shifts down this line and all lines above it
+     * @param line the line to shift down
+     */
     public void lowerLine(int line){
         if(board.validY(line)) {
             for (int x = 0; x < board.WIDTH; x++) {
@@ -412,60 +509,5 @@ public class Game {
 
     public int getScore(){
         return score;
-    }
-
-    public void drawBoard(double boardX, double boardY, double width, GraphicsContext gc){
-        double squareSize = width / 10;
-        double height = width * 2;
-        for (int x = 0; x < board.WIDTH; x++) {
-            for (int y = board.FIRST_VISIBLE_Y; y < board.HEIGHT; y++) {
-                Mino.draw(board.toGraphicX(boardX, x, squareSize), board.toGraphicY(boardY, y, squareSize), squareSize, board.get(x, y), gc);
-            }
-        }
-        currentTetromino.drawGhostRelative(boardX, boardY, squareSize, gc, board);
-
-        currentTetromino.drawRelative(boardX, boardY, squareSize, board, gc);
-
-        gc.clearRect(boardX, boardY-1000, squareSize*10, 1000);
-
-        gc.setFill(Color.BLACK);
-        gc.fillRect(boardX,boardY,squareSize * 10, 1);
-        gc.fillRect(boardX,boardY,1, squareSize * 20);
-        gc.fillRect(boardX,boardY + squareSize * 20,squareSize * 10, 1);
-        gc.fillRect(boardX + squareSize * 10,boardY,1, squareSize * 20);
-
-
-    }
-
-    public void drawNext(double gx, double gy, double width, GraphicsContext gc){
-        double squareSize = width / 6;
-        double height = squareSize * 20;
-
-
-        gc.setFill(Color.BLACK);
-        gc.fillRect(gx, gy, width, height);
-        gc.setFill(Color.WHITE);
-        gc.fillRect(gx+1, gy+1, width-2, height-2);
-
-
-        Tetromino[] next = getNext();
-        for (int i = 0; i < next.length; i++) {
-            next[i].drawAbsolute(gx + squareSize, gy + squareSize + (squareSize * i * 3), squareSize, gc);
-        }
-    }
-
-    public void drawHold(double gx, double gy, double width, GraphicsContext gc){
-        double squareSize = width / 6;
-        double height = squareSize * 4;
-
-
-        gc.setFill(Color.BLACK);
-        gc.fillRect(gx, gy, width, height);
-        gc.setFill(Color.WHITE);
-        gc.fillRect(gx+1, gy+1, width-2, height-2);
-
-        if(hold != null){
-            hold.drawAbsolute(gx + squareSize, gy + squareSize, squareSize, gc);
-        }
     }
 }

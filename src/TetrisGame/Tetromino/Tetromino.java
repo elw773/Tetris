@@ -9,12 +9,14 @@ import javafx.scene.canvas.GraphicsContext;
 import java.util.EnumMap;
 import java.util.function.BinaryOperator;
 
+/**
+ * Represents the tetromios for the tetris game
+ */
 public class Tetromino {
     public static final int NUM_MINOS = 4;
     public static final int[] WALL_KICK_VALUES = {0, 1, 2, -1, -2};
     public static final EnumMap<Mino, EnumMap<Orientation, int[]>> X_OFFSETS;
     public static final EnumMap<Mino, EnumMap<Orientation, int[]>> Y_OFFSETS;
-
 
     /**
      * returns the bitmap of the desired tetromino
@@ -126,11 +128,11 @@ public class Tetromino {
     }
 
     /**
-     *
-     * @param x
-     * @param y
-     * @param board
-     * @return
+     * Moves the tetromino to a given location
+     * @param x the x to move to
+     * @param y the y to move to
+     * @param board the board to move on
+     * @return false if any square of the destination location is occupied or out of bounds
      */
     public boolean move(int x, int y, Board board){
         if(canMove(x, y, board)){
@@ -142,11 +144,11 @@ public class Tetromino {
     }
 
     /**
-     *
-     * @param x
-     * @param y
-     * @param board
-     * @return
+     * Determines if the tetromino can be moved to a given location
+     * @param x the x to move to
+     * @param y the y to move to
+     * @param board the board to move on
+     * @return false if any square of the destination location is occupied or out of bounds
      */
     public boolean canMove(int x, int y, Board board){
         for (int i = 0; i < NUM_MINOS; i++) {
@@ -296,8 +298,14 @@ public class Tetromino {
         return minoType;
     }
 
+    /**
+     * Rotates the tetromino in a given direction, with wall kicks
+     * @param direction the direction to rotate in (right = cw, left = ccw)
+     * @param board the board to rotate on
+     * @return false if the rotation cannot be accomplished, even with wall kicks
+     */
     public boolean rotate(Move.Direction direction, Board board){ //https://tetris.fandom.com/wiki/SRS
-        if(minoType == Mino.O ||  direction == Move.Direction.NONE){
+        if(minoType == Mino.O ||  direction == Move.Direction.NONE){ // O does not rotate
             return true;
         }
 
@@ -317,6 +325,15 @@ public class Tetromino {
 
     }
 
+
+    /**
+     * Determines if the tetromino can be moved to a given location in a given orientation
+     * @param x the x to move to
+     * @param y the y to move to
+     * @param orientation the orientation of the tetromino
+     * @param board the board to move on
+     * @return false if any square of the destination location is occupied or out of bounds
+     */
     public boolean canMove(int x, int y, Orientation orientation, Board board){
         for (int i = 0; i < NUM_MINOS; i++) {
             int newX = x + X_OFFSETS.get(minoType).get(orientation)[i];
@@ -329,6 +346,14 @@ public class Tetromino {
     }
 
 
+    /**
+     * Determines if the tetromino can be ata a given orientation with the given wall kicks
+     * @param orientation the orientation
+     * @param board the board the tetromino is on
+     * @param xKick the horisontal wall kick
+     * @param yKick the vertical wall kick
+     * @return true if all squares in the destination are empty
+     */
     private boolean canRotate(Orientation orientation, Board board, int xKick, int yKick){
         if(minoType == Mino.O){
             return true;
@@ -341,6 +366,17 @@ public class Tetromino {
         return orientation;
     }
 
+    /**
+     * Draws the ghost of the tetromino relative to a board
+     *
+     * the ghost shows where the tetromino will end up if it falls straight down
+     *
+     * @param boardGx the board's x
+     * @param boardGy the board's y
+     * @param squareSize the width of a square on the board
+     * @param gc the graphics context to draw to
+     * @param board the board
+     */
     public void drawGhostRelative(double boardGx, double boardGy, double squareSize, GraphicsContext gc, Board board){
         int fallDist = 0;
         while(canMove(x, y+fallDist, board)){

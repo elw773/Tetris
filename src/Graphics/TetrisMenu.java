@@ -34,7 +34,7 @@ public class TetrisMenu implements Menu{
 
     private int countdown;
 
-    private Color stdColor = Color.web("#d4ebf2");
+    private Color stdColor = Color.web("#e8f4f8");
 
     /**
      * A BorderedRectangle that, when paused, does not draw its contents
@@ -163,7 +163,7 @@ public class TetrisMenu implements Menu{
             interruptText.draw(gc);
         } else if(paused){
             interruptText.setText("Paused");
-        } else if(!paused && countdown > 0){
+        } else if(countdown > 0){
             countdown--;
             interruptText.setText(Integer.toString((countdown/60)+1));
         } else {
@@ -177,7 +177,7 @@ public class TetrisMenu implements Menu{
         next.draw(gamePaused, gc);
         score.draw(gc);
 
-        if(gamePaused){
+        if(gamePaused){ // this must be drawn at the end since the tetrominos need to be visible over the board
             interruptText.draw(gc);
         } else {
             double squareSize = board.getInnerWidth() / game.getBoard().WIDTH;

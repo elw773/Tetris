@@ -7,13 +7,15 @@ import TetrisGame.Tetromino.Orientation;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.util.Pair;
 
-import java.io.FileInputStream;
 import java.util.*;
 
 // I noticed that now, the ai makes a lot of 2 wide wells. This makes sense because these are not considered by the well
 // detection or any other part of the 'move parser' so they are not penalised or incentivised to be removed. However,
 // this dose not appear to have affected perfromance
 
+/**
+ * Creates TetrisGame.Moves according to an algorithm that attempts to determine the best move
+ */
 public class AI implements MoveGetter {
     private Move move;
 
@@ -22,8 +24,6 @@ public class AI implements MoveGetter {
     private Tetromino currentTetromino;
     private Orientation goalOrientation;
     private int goalX;
-
-    private HashMap<Double, Pair<Orientation, Integer>> moves;
 
     private static double kHeight = 0.36864000000000013;
     private static double kClears = 0.46335999999999994;
@@ -37,24 +37,32 @@ public class AI implements MoveGetter {
         move = new Move();
     }
 
+    /**
+     * Determines the best move with the given tetromino given the state of the game
+     *
+     * Finds the best move by iterating through all possible moves, and chosing the one with the highest score from
+     * scoreMove(Mino[][])
+     *
+     * @param tetromino the tetromino to find a best move for
+     * @return the best move as Pair<Double, Pair<Orientation, Integer>> (<score, <orientation, x coordinate>>)
+     */
     private Pair<Double, Pair<Orientation, Integer>> findBestMove(Tetromino tetromino){
-
-        Mino[][] boardCopy = game.getBoard().getBoard().clone();
+        Mino[][] boardCopy = game.getBoard().getBoard().clone(); // clone the board so we don't edit the game
         Mino currentMinoType = tetromino.getMinoType();
 
-        moves = new HashMap<>();
+        HashMap<Double, Pair<Orientation, Integer>> moves = new HashMap<>();
 
-        for(Orientation orientation: Orientation.values()){
-            for (int x = -2; x < game.getBoard().WIDTH-2; x++) {
-                for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT; y++) {
+        for(Orientation orientation: Orientation.values()){ // for all orientations
+            for (int x = -2; x < game.getBoard().WIDTH-2; x++) { // for all x coordinates
+                for (int y = game.getBoard().SPAWN_Y; y < game.getBoard().HEIGHT; y++) { // drop the tetromino until where it will go
                     if(!tetromino.canMove(x, y+1, orientation, game.getBoard()) && tetromino.canMove(x, y, orientation, game.getBoard())){
-                        for (int i = 0; i < Tetromino.NUM_MINOS; i++) {
+                        for (int i = 0; i < Tetromino.NUM_MINOS; i++) { // place the tetromino there
                             int minoX = Tetromino.X_OFFSETS.get(currentMinoType).get(orientation)[i] + x;
                             int minoY = Tetromino.Y_OFFSETS.get(currentMinoType).get(orientation)[i] + y;
                             boardCopy[minoX][minoY] = currentMinoType;
                         }
-                        moves.put(scoreMove(boardCopy), new Pair<Orientation, Integer>(orientation, x));
-                        for (int i = 0; i < Tetromino.NUM_MINOS; i++) {
+                        moves.put(scoreMove(boardCopy), new Pair<Orientation, Integer>(orientation, x)); // score and add the move to the hashmap
+                        for (int i = 0; i < Tetromino.NUM_MINOS; i++) { // remove the tetromino from the board
                             int minoX = Tetromino.X_OFFSETS.get(currentMinoType).get(orientation)[i] + x;
                             int minoY = Tetromino.Y_OFFSETS.get(currentMinoType).get(orientation)[i] + y;
                             boardCopy[minoX][minoY] = Mino.NONE;
@@ -65,7 +73,7 @@ public class AI implements MoveGetter {
             }
         }
 
-        double bestMove = Double.NEGATIVE_INFINITY;
+        double bestMove = Double.NEGATIVE_INFINITY; // the worst possible score
         for (Map.Entry<Double, Pair<Orientation, Integer>> move : moves.entrySet()){
             if(move.getKey() > bestMove){
                 bestMove = move.getKey();
@@ -74,6 +82,14 @@ public class AI implements MoveGetter {
         return new  Pair<Double, Pair<Orientation, Integer>>(bestMove, moves.get(bestMove));
     }
 
+
+    /**
+     * Scores a given board
+     * Scoring is based on highest square, lines cleared, edges, wells and holes, multiplied by their respective
+     * constants that are developed through the training
+     * @param board the board to score
+     * @return the score as a double
+     */
     private double scoreMove(Mino[][] board){
         int height = -1; // bigger number is lower
         int clears = 0;
@@ -101,12 +117,12 @@ public class AI implements MoveGetter {
                     boolean topRight = !isOpen(x+1, y-1, board);
                     boolean bottom = !isOpen(x, y+1, board);
                    if(top){
-                       holes ++;
+                       holes ++; // a hole is when you have a filled square above an empty square
                        //System.out.print("H");
-                   } else if(left && right){
+                   } else if(left && right){ // a well is when you have an empty square with filled squares on both sides
                        wells ++;
                        //System.out.print("W");
-                   } else if((left || right) && bottom && !(topLeft || topRight)){
+                   } else if((left || right) && bottom && !(topLeft || topRight)){ // an edge is when you an empty square next to a single filled square with nothing above it
                        edges ++;
                        //System.out.print("E");
                    } else {
@@ -114,7 +130,7 @@ public class AI implements MoveGetter {
                    }
                 }
             }
-            if(fullRow){
+            if(fullRow){ // if a row is full, it is a clear
                 clears ++;
             }
             //System.out.print("\n");
@@ -125,10 +141,25 @@ public class AI implements MoveGetter {
         return score;
     }
 
+    /**
+     * Checks if a square on a board is empty
+     * @param x
+     * @param y
+     * @param board
+     * @return true if it is empty, false if not or if it is out of bounds
+     */
     private boolean isOpen(int x, int y, Mino[][] board){
         return (0 <= x && x < board.length) && (0 <= y && y < board[x].length) && board[x][y] == Mino.NONE;
     }
 
+    /**
+     * Generates a move
+     *
+     * If the tetromino has changed, a new best move will be calculated
+     * The move will involve translation, rotation or holding, until the piece is in the correct position, then it will hard drop
+     *
+     * @return the move generated by the algorithm
+     */
     @Override
     public Move getMove() {/*
         Mino[][] board = {
@@ -144,7 +175,8 @@ public class AI implements MoveGetter {
         scoreMove(board);*/
         long start = System.currentTimeMillis();
         move.hold = false;
-        if(game.getCurrentTetromino() != currentTetromino){
+        if(game.getCurrentTetromino() != currentTetromino){ // if we have a new tetromino (so we need to find a new best move)
+            // get scores for the current tetromino and one alternative (the one that could be switched to if we hold)
             currentTetromino = game.getCurrentTetromino();
             Pair<Double, Pair<Orientation, Integer>> currentTetrominoMove = findBestMove(currentTetromino);
 
@@ -155,6 +187,8 @@ public class AI implements MoveGetter {
                 alternativeTetromino = game.getHold();
             }
             Pair<Double, Pair<Orientation, Integer>> alternativeTetrominoMove = findBestMove(alternativeTetromino);
+
+            // use the tetromino with the better move
             if(alternativeTetrominoMove.getKey() > currentTetrominoMove.getKey()){
                 move.hold = true;
                 currentTetromino = alternativeTetromino;
@@ -164,8 +198,6 @@ public class AI implements MoveGetter {
                 goalOrientation = currentTetrominoMove.getValue().getKey();
                 goalX = currentTetrominoMove.getValue().getValue();
             }
-
-
         }
 
 
@@ -192,6 +224,9 @@ public class AI implements MoveGetter {
         return move;
     }
 
+    /**
+     * Run the training for the AI
+     */
     static void train(){
         /*
         System.out.println();
@@ -216,13 +251,14 @@ public class AI implements MoveGetter {
         BestArray best = new BestArray(5);
 
 
-        findBestInRange(start, steps, 2, best, 0);
+        findBestInRange(start, steps, 2, best, 0); // generate initial set
         findBestInRangeDeeper(steps, 0.25, 2, best, 5);*/
         double[] start = AI.start;
         double[] steps = AI.steps;
 
         BestArray best = new BestArray(bestCapacity);
 
+        // testing of previous results
         best.add(0, new Pair<Integer, double[]>(4883, new double[]{0.3814400000000001, 0.53632, 0.03295999999999998, -0.17504000000000003, -0.92448}));
         best.add(1, new Pair<Integer, double[]>(4920, new double[]{0.37452799999999997, 0.434176, 0.042175999999999984, -0.15660799999999997, -0.8640639999999997}));
         best.add(2, new Pair<Integer, double[]>(4951, new double[]{0.3855360000000001, 0.5383680000000001, 0.03091199999999998, -0.17299200000000003, -0.9224319999999999}));
@@ -257,7 +293,7 @@ public class AI implements MoveGetter {
     static int secondN = 2;
     static int depth = 7;
     static int nAttempts = 10;
-    private static int MAX_MINOS = 10000;
+    private static int MAX_TETROMINOS = 10000;
     static long numGames = 0;
 
 
@@ -291,8 +327,16 @@ public class AI implements MoveGetter {
         }
     }
 
+    /**
+     * Executes a grid search over the parameters recursively
+     * @param start starting parameters
+     * @param steps value to add to/subtract from parameters each step
+     * @param n the number of steps up and down to take
+     * @param best a BestArray to be updated with the new scores
+     * @param i the current parameter
+     */
     static void findBestInRange(double[] start, double steps[], int n, BestArray best, int i){
-        if(i == 0){
+        if(i == 0){ // print helpful information
             System.out.print("\nSearching ");
             for(double d:start){
                 System.out.print(d + " ");
@@ -301,7 +345,7 @@ public class AI implements MoveGetter {
         }
         if(i < start.length){
             double original = start[i];
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < n; j++) { // steps up
                 start[i] += steps[i];
                 if(start[i] <= 1){
                     findBestInRange(start, steps, n, best, i + 1);
@@ -310,7 +354,7 @@ public class AI implements MoveGetter {
                 }
             }
             start[i] = original;
-            for (int j = 0; j < n; j++) {
+            for (int j = 0; j < n; j++) { // steps down
 
                 start[i] -= steps[i];
 
@@ -321,7 +365,7 @@ public class AI implements MoveGetter {
                 }
             }
             start[i] = original;
-        } else {
+        } else { // once all parameters are set, score this set of parameters
 
 
             int score = attempt(start, nAttempts);
@@ -330,7 +374,12 @@ public class AI implements MoveGetter {
     }
 
 
-
+    /**
+     * Runs n attempts
+     * @param params the parameters for the attempts
+     * @param n number of attempts to run
+     * @return the average score of the attempts
+     */
     static int attempt(double[] params, int n){
         int totalScore = 0;
         for (int i = 0; i < n; i++) {
@@ -340,6 +389,13 @@ public class AI implements MoveGetter {
         return totalScore/n;
     }
 
+    /**
+     * Run an attempt (a game) with the ai
+     * pre- MAX_TETROMINOS is set to the max number of tetrominos before the game is abandoned (to stop it from going forever)
+     * post- numGames is incremented
+     * @param params the parameters to use
+     * @return the number of tetrominos placed before the game was over
+     */
     static int attempt(double[] params){
         kHeight = params[0];
         kClears = params[1];
@@ -351,24 +407,27 @@ public class AI implements MoveGetter {
         AI ai = new AI(game);
 
         Tetromino prevTetromino = game.getCurrentTetromino();
-        int minoCounter = 0;
-        while(!game.gameIsOver() && minoCounter < MAX_MINOS){
+        int tetrominoCounter = 0;
+        while(!game.gameIsOver() && tetrominoCounter < MAX_TETROMINOS){ // keep a limit
             game.update(ai.getMove());
             if(game.getCurrentTetromino() != prevTetromino){
-                minoCounter ++;
+                tetrominoCounter ++;
                 prevTetromino = game.getCurrentTetromino();
 
             }
         }
         numGames ++;
-        System.out.println("Minos " + minoCounter + " Score " + game.getScore() + " Level " + game.getLevel());
-        return minoCounter;
+        System.out.println("Minos " + tetrominoCounter + " Score " + game.getScore() + " Level " + game.getLevel());
+        return tetrominoCounter;
     }
 
     public static void main(String[] args) {
         train();
     }
 
+    /**
+     * Stores the n best scores of the training (n being the given capacity)
+     */
     private static class BestArray extends ArrayList<Pair<Integer, double[]>>{
         int capacity;
         BestArray(int capacity){
@@ -376,18 +435,27 @@ public class AI implements MoveGetter {
             this.capacity = capacity;
         }
 
+        /**
+         * Add a new attempt
+         * post- adds the attempt if it is better or equal to the worst attempt stored
+         * @param score the score of the attempt to add
+         * @param params the parameters of the test to add
+         */
         public void addNewAttempt(int score, double[] params){
             if(this.size() < capacity){
                 this.add(new Pair<>(score, params.clone()));
             } else {
-                if(score >= this.get(0).getKey()){
-                    this.remove(0);
+                if(score >= this.get(0).getKey()){ // if it is good enough
+                    this.remove(0); // remove the worst
+
+                    //insert it (sorted)
                     int i = 0;
                     while(i < this.size() && score > this.get(i).getKey()){
                         i++;
                     }
                     this.add(i, new Pair<>(score, params.clone()));
 
+                    //print helpful info
                     System.out.print("Game " + numGames + " : ");
                     for(double d:params){
                         System.out.print(d + " ");

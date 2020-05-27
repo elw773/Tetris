@@ -31,10 +31,6 @@ public class InputManager {
         keyReleasedMap = new EnumMap<>(KeyCode.class);
         keyClickedMap = new EnumMap<>(KeyCode.class);
 
-
-        //setup EnumMaps
-
-
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
                                      @Override
                                      public void handle(MouseEvent event) {

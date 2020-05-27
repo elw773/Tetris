@@ -7,9 +7,17 @@ import javafx.scene.paint.Paint;
 
 import java.util.Random;
 
+/**
+ * This enum represents the types of minos available in the game
+ */
 public enum Mino {
     I, J, L, O, S, T, Z, NONE;
 
+    /**
+     * Parses a string to a Mino
+     * @param str the string to parse
+     * @return the Mino that coresponds to the string, or Mino.NONE
+     */
     public static Mino toMino(String str){
         switch (str){
             case "I": return I;
@@ -25,8 +33,13 @@ public enum Mino {
 
     private static Mino[] bag;
     private static int i;
-    public static Mino getNextRandom(){
 
+    /**
+     * pre- bag is initialized and shuffled
+     * post- if all minos in the bag have been used, re-shuffle it
+     * @return the next random Mino
+     */
+    public static Mino getNextRandom(){
         if(i > 6){
             shuffleBag();
             i = 0;
@@ -35,6 +48,9 @@ public enum Mino {
     }
     private static Random random;
 
+    /**
+     * Shuffles the bag of minos
+     */
     private static void shuffleBag(){
         //System.out.println("Shuffling");
         Mino temp;
@@ -46,6 +62,9 @@ public enum Mino {
         }
     }
 
+    /**
+     * Initializes the bag of minos
+     */
     static{
         random = new Random();
         bag = new Mino[7];
@@ -55,6 +74,14 @@ public enum Mino {
         shuffleBag();
     }
 
+    /**
+     * Draws the ghost version of the square of the given mino type
+     * @param gx the x to draw it at
+     * @param gy the y to draw it at
+     * @param squareSize the width to draw it with
+     * @param type the type of the mino to draw
+     * @param gc the graphics context to draw on
+     */
     public static void drawGhost(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setStroke(getMid(type));
         gc.setFill(Color.TRANSPARENT);
@@ -65,6 +92,14 @@ public enum Mino {
         //gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
     }
 
+    /**
+     * Draws the square of the given mino type
+     * @param gx the x to draw it at
+     * @param gy the y to draw it at
+     * @param squareSize the width to draw it with
+     * @param type the type of the mino to draw
+     * @param gc the graphics context to draw on
+     */
     public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
         gc.fillRect(gx+2.5, gy+2.5, squareSize-5, squareSize-5);
@@ -76,6 +111,11 @@ public enum Mino {
 
     }
 
+    /**
+     * Gets the dark color asociated with the given mino
+     * @param type
+     * @return the dark color
+     */
     public static Color getDark(Mino type){
         switch (type){
             case I: return Color.web("#70d7c3");
@@ -89,6 +129,12 @@ public enum Mino {
         }
     }
 
+
+    /**
+     * Gets the mid color asociated with the given mino
+     * @param type
+     * @return the mid color
+     */
     public static Color getMid(Mino type){
         switch (type){
             case I: return Color.web("#98e2d4");
@@ -102,6 +148,11 @@ public enum Mino {
         }
     }
 
+    /**
+     * Gets the light color asociated with the given mino
+     * @param type
+     * @return the light color
+     */
     public static Color getLight(Mino type){
         switch (type){
             case I: return Color.web("#c0eee4");
