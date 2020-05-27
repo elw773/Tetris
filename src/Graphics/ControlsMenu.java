@@ -50,15 +50,9 @@ public class ControlsMenu implements Menu {
     @Override
     public void doFrame(GraphicsContext gc) {
         //draw the instructions
-
-
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setFont(Font.font("arial", FontWeight.BOLD, 30));
-
-        gc.setFill(Mino.getDark(Mino.Z));
         gc.fillText("T", 450, 100);
         for (int i = 0; i < rectangles.length; i++) {
-            System.out.println(i);
+            rectangles[i].draw(gc);
         }
     }
 }

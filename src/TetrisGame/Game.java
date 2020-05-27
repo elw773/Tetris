@@ -696,7 +696,7 @@ public class Game {
 
     public static void main(String[] args) {
         //testTSpin();
-        testMiniTSpin();
+        //testMiniTSpin();
         //testTetrominos();
     }
 }

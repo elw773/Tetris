@@ -135,6 +135,8 @@ public class TetrisMenu implements Menu{
     public void newGame(Game game, MoveGetter moveGetter){
         this.game = game;
         this.moveGetter = moveGetter;
+        paused = false;
+        countdown = 0;
     }
 
     /**
