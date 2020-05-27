@@ -10,6 +10,10 @@ import javafx.util.Pair;
 import java.io.FileInputStream;
 import java.util.*;
 
+// I noticed that now, the ai makes a lot of 2 wide wells. This makes sense because these are not considered by the well
+// detection or any other part of the 'move parser' so they are not penalised or incentivised to be removed. However,
+// this dose not appear to have affected perfromance
+
 public class AI implements MoveGetter {
     private Move move;
 

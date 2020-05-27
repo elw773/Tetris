@@ -1,5 +1,6 @@
 package Main;
 
+import Graphics.Button;
 import Graphics.MainMenu;
 import Graphics.TetrisMenu;
 import TetrisGame.Game;
@@ -14,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -30,6 +32,7 @@ public class Main extends Application {
     private MainMenu mainMenu;
     private Canvas canvas;
     private ProgramState programState;
+    private Button menuButton;
 
     /**
      * Represents the state of the program, with which menu is shown
@@ -86,6 +89,7 @@ public class Main extends Application {
         tetrisMenu = new TetrisMenu();
 
         mainMenu = new MainMenu();
+        menuButton = new Button(0,0,100,50,4,20,"MENU", Color.LIGHTGRAY, ()->Main.getInstance().mainMenu());
 
         /*
         // create training minos
@@ -103,16 +107,20 @@ public class Main extends Application {
         canvas.getGraphicsContext2D().clearRect(0,0,700,800);
 
         inputManager.resetClicks();
-
         GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        if(programState != ProgramState.MAIN_MENU) {
+            menuButton.show(gc);
+            menuButton.isClicled();
+        } else {
+            menuButton.hide();
+        }
 
         switch (programState){
             case MAIN_MENU: mainMenu.doFrame(gc); break;
-            case PLAY: tetrisMenu.doFrame(gc); break;
-            case AI: tetrisMenu.doFrame(gc); break;
+            case CONTROLS: /*TODO: controls*/ break;
+            default: tetrisMenu.doFrame(gc);
         }
-
-
     }
 
     long frameStart;
