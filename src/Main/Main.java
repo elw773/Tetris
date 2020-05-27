@@ -89,7 +89,7 @@ public class Main extends Application {
         tetrisMenu = new TetrisMenu(700,800);
 
         mainMenu = new MainMenu();
-        menuButton = new Button(0,0,100,50,5,20,"MENU", Color.WHITE, ()->Main.getInstance().mainMenu());
+        menuButton = new Button(0,0,100,50,5,20,"MENU", Color.web("#d4ebf2"), ()->Main.getInstance().mainMenu());
 
         /*
         // create training minos

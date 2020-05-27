@@ -8,7 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
-public class MainMenu {
+/**
+ * Manages the main menu of the program and its drawing
+ */
+public class MainMenu implements Menu{
     private Button[] buttons;
 
     public MainMenu(){
@@ -20,6 +23,11 @@ public class MainMenu {
 
     }
 
+    /**
+     * Draw the menu and handle the logic for one frame
+     * post- if one of the buttons has been clicked, its respective function in Main will be called (ex: PLAY will call Main.play())
+     * @param gc the graphics context to draw the menu on
+     */
     public void doFrame(GraphicsContext gc){
         drawTetrisLogo(162.5,50,375,gc);
         for(Button button:buttons){
@@ -30,6 +38,13 @@ public class MainMenu {
 
     }
 
+    /**
+     * Draws the tetris logo on the given graphics context
+     * @param x
+     * @param y
+     * @param width
+     * @param gc the graphics context to draw on
+     */
     public void drawTetrisLogo(double x, double y, double width, GraphicsContext gc){
         gc.setFill(Mino.getDark(Mino.J));
         double squareSize = width/3;

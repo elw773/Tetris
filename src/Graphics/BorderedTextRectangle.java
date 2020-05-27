@@ -6,12 +6,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 
+/**
+ * A graphical rectangle with a border and centered text
+ */
 public class BorderedTextRectangle extends BorderedRectangle {
     private double fontSize;
     private String text;
     private Color textColor;
-
-
 
     public BorderedTextRectangle(double x, double y, double width, double height, double outlineSize, double fontSize, String text, Color color){
         super(x,y,width,height,outlineSize,color);
@@ -25,8 +26,10 @@ public class BorderedTextRectangle extends BorderedRectangle {
         this.text = text;
     }
 
-
-
+    /**
+     * Draw the rectangle and the text on the given graphics context
+     * @param gc the graphics context to draw the rectangle to
+     */
     @Override
     public void draw(GraphicsContext gc){
         super.draw(gc);
