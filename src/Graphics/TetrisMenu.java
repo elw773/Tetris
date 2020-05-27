@@ -3,6 +3,7 @@ package Graphics;
 import Main.MoveGetter;
 import TetrisGame.Game;
 import TetrisGame.Mino;
+import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -60,6 +61,20 @@ public class TetrisMenu {
                 }
             }
         };
+
+        next = new BorderedRectangle(unit*11/2, unit, unit, unit*20/6, outlineSize, true, stdColor){
+            @Override
+            public void draw(GraphicsContext gc){
+                super.draw(gc);
+
+                double squareSize = innerWidth / 6;
+
+                Tetromino[] next = game.getNext();
+                for (int i = 0; i < next.length; i++) {
+                    next[i].drawAbsolute(innerX + squareSize, innerY + squareSize + (squareSize * i * 3), squareSize, gc);
+                }
+            }
+        };
     }
 
 
@@ -83,8 +98,9 @@ public class TetrisMenu {
             double gameAvg = (double)totalGameTime/numUpdates;
             board.draw(gc);
             hold.draw(gc);
+            next.draw(gc);
             //game.drawBoard(200,100,300,gc);
-            game.drawNext(550, 100, 100, gc);
+            //game.drawNext(550, 100, 100, gc);
             //game.drawHold(50, 100, 100, gc);
 
             totalTime += (System.currentTimeMillis() - start);
