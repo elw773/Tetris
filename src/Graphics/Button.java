@@ -8,10 +8,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import Main.InputManager;
 
-public class Button extends BorderedRectangle {
-    private double fontSize;
-    private String text;
-    private Color textColor;
+public class Button extends BorderedTextRectangle {
 
     private Runnable runnable;
 
@@ -20,12 +17,9 @@ public class Button extends BorderedRectangle {
 
 
     public Button(double x, double y, double width, double height, double outlineSize, double fontSize, String text, Color color, Runnable runnable){
-        super(x,y,width,height,outlineSize,color);
-        textColor = toContrastColor(color);
+        super(x,y,width,height,outlineSize,fontSize,text,color);
 
         this.runnable = runnable;
-        this.text = text;
-        this.fontSize = fontSize;
     }
 
 
@@ -35,11 +29,6 @@ public class Button extends BorderedRectangle {
         super.draw(gc);
 
         shown = false;
-
-        gc.setFill(textColor);
-        gc.setTextAlign(TextAlignment.CENTER);
-        gc.setFont(Font.font("arial", FontWeight.BOLD, fontSize));
-        gc.fillText(text, x + (width/2), y + ((fontSize * 3/4) + height)/2);
     }
 
     public void hide(){

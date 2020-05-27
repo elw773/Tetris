@@ -60,19 +60,20 @@ public enum Mino {
         gc.setFill(Color.TRANSPARENT);
         gc.setLineWidth(2.5);
 
-        gc.strokeRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
+        gc.strokeRect(gx+2.5, gy+2.5, squareSize-5, squareSize-5);
 
         //gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
     }
 
     public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
         gc.setFill(getMid(type));
+        gc.fillRect(gx+2.5, gy+2.5, squareSize-5, squareSize-5);
 
-        gc.fillRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
+        gc.setStroke(getDark(type));
+        gc.setLineWidth(2.5);
 
-        gc.setFill(getDark(type));
+        gc.strokeRect(gx+2.5, gy+2.5, squareSize-5, squareSize-5);
 
-        gc.fillRect(gx+2, gy+2, squareSize-4, squareSize-4);
     }
 
     public static Color getDark(Mino type){

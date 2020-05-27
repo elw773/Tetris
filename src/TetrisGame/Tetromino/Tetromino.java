@@ -350,7 +350,7 @@ public class Tetromino {
         for (int i = 0; i < NUM_MINOS; i++) {
             double x = board.toGraphicX(boardGx, (getMinoXOffset(i) + this.x), squareSize);
             double y = board.toGraphicY(boardGy, (getMinoYOffset(i) + this.y + fallDist), squareSize);
-            if(y >= board.FIRST_VISIBLE_Y) {
+            if((getMinoYOffset(i) + this.y + fallDist) >= board.FIRST_VISIBLE_Y) {
                 Mino.drawGhost(x, y, squareSize, minoType, gc);
             }
         }
@@ -382,9 +382,10 @@ public class Tetromino {
      */
     public void drawRelative(double boardGx, double boardGy, double squareSize, Board board, GraphicsContext gc){
             for (int i = 0; i < NUM_MINOS; i++) {
-                double x = board.toGraphicX(boardGx, this.x, squareSize) + (getMinoXOffset(i) * squareSize);
-                double y = board.toGraphicY(boardGy, this.y, squareSize) + (getMinoYOffset(i) * squareSize);
-                if(y >= board.FIRST_VISIBLE_Y) {
+                double x = board.toGraphicX(boardGx, getMinoX(i), squareSize);
+                double y = board.toGraphicY(boardGy, getMinoY(i), squareSize);
+
+                if(getMinoY(i) >= board.FIRST_VISIBLE_Y) {
                     Mino.draw(x, y, squareSize, minoType, gc);
                 }
             }
