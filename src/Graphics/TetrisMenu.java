@@ -23,7 +23,7 @@ public class TetrisMenu {
     private BorderedRectangle next;
     private BorderedRectangle score;
 
-    private Color stdColor = Color.LIGHTGRAY;
+    private Color stdColor = Color.WHITESMOKE;
 
     public TetrisMenu(double width, double height){
         this.width = width;
@@ -38,21 +38,26 @@ public class TetrisMenu {
             public void draw(GraphicsContext gc){
                 super.draw(gc);
 
-                double squareSize = (width-(2*this.outlineSize)) / 10;
+                double squareSize = innerWidth / game.getBoard().WIDTH;
+                System.out.println(innerWidth);
                 for (int x = 0; x < game.getBoard().WIDTH; x++) {
                     for (int y = game.getBoard().FIRST_VISIBLE_Y; y < game.getBoard().HEIGHT; y++) {
-                        Mino.draw(game.getBoard().toGraphicX(this.x +outlineSize, x, squareSize), game.getBoard().toGraphicY(this.y+outlineSize, y, squareSize), squareSize, game.getBoard().get(x, y), gc);
+                        Mino.draw(game.getBoard().toGraphicX(innerX, x, squareSize), game.getBoard().toGraphicY(innerY, y, squareSize), squareSize, game.getBoard().get(x, y), gc);
                     }
                 }
             }
         };
 
-        hold = new BorderedRectangle(unit/2, unit, unit*3, unit*6, outlineSize, true, stdColor){
+        hold = new BorderedRectangle(unit/2, unit, unit, unit*4/6, outlineSize, true, stdColor){
             @Override
             public void draw(GraphicsContext gc){
                 super.draw(gc);
 
-                
+                double squareSize = width / 6;
+
+                if(game.getHold() != null){
+                    game.getHold().drawAbsolute(innerX + squareSize, innerY + squareSize, squareSize, gc);
+                }
             }
         };
     }
@@ -77,9 +82,10 @@ public class TetrisMenu {
             totalGameTime += (System.currentTimeMillis() - start);
             double gameAvg = (double)totalGameTime/numUpdates;
             board.draw(gc);
+            hold.draw(gc);
             //game.drawBoard(200,100,300,gc);
             game.drawNext(550, 100, 100, gc);
-            game.drawHold(50, 100, 100, gc);
+            //game.drawHold(50, 100, 100, gc);
 
             totalTime += (System.currentTimeMillis() - start);
             double average = (double)totalTime/numUpdates;

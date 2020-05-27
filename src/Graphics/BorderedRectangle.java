@@ -44,8 +44,8 @@ public class BorderedRectangle {
 
         this.innerX = x + outlineSize;
         this.innerY = y + outlineSize;
-        this.width = width + (2*outlineSize);
-        this.height = height + (2*outlineSize);
+        this.innerWidth = width - (2*outlineSize);
+        this.innerHeight = height - (2*outlineSize);
     }
 
     public BorderedRectangle(double x, double y, double width, double height, double outlineSize, boolean excludeOutline, Color color){
