@@ -65,4 +65,36 @@ public class BorderedRectangle {
         gc.setFill(fillColor);
         gc.fillRect(x+outlineSize, y+outlineSize, width - (outlineSize * 2), height - (outlineSize*2));
     }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public double getInnerHeight() {
+        return innerHeight;
+    }
+
+    public double getInnerWidth() {
+        return innerWidth;
+    }
+
+    public double getInnerX() {
+        return innerX;
+    }
+
+    public double getInnerY() {
+        return innerY;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
 }

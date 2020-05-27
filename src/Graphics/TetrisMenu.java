@@ -124,6 +124,13 @@ public class TetrisMenu {
             hold.draw(gc);
             next.draw(gc);
             score.draw(gc);
+
+            double squareSize = board.getInnerWidth() / 10;
+
+            game.getCurrentTetromino().drawGhostRelative(board.getInnerX(), board.getInnerY(), squareSize, gc, game.getBoard());
+
+            game.getCurrentTetromino().drawRelative(board.getInnerX(), board.getInnerY(), squareSize, game.getBoard(), gc);
+
             //game.drawBoard(200,100,300,gc);
             //game.drawNext(550, 100, 100, gc);
             //game.drawHold(50, 100, 100, gc);

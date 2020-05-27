@@ -56,11 +56,13 @@ public enum Mino {
     }
 
     public static void drawGhost(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
-        gc.setFill(getMid(type));
+        gc.setStroke(getMid(type));
+        gc.setFill(Color.TRANSPARENT);
+        gc.setLineWidth(2.5);
 
-        gc.fillRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
+        gc.strokeRect(gx+0.5, gy+0.5, squareSize-1, squareSize-1);
 
-        gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
+        //gc.clearRect(gx+3, gy+3, squareSize-6, squareSize-6);
     }
 
     public static void draw(double gx, double gy, double squareSize, Mino type, GraphicsContext gc){
