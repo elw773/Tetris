@@ -26,7 +26,7 @@ public class Rectangle {
         return Color.hsb(color.getHue(), color.getSaturation()*0.8, color.getBrightness()*0.5);
     }
 
-    public Rectangle(double x, double y, double width, double height, double outlineSize, double fontSize, String text, Color color, Runnable runnable){
+    public Rectangle(double x, double y, double width, double height, double outlineSize, Color color){
         fillColor = color;
         outlineColor = toOutlineColor(color);
 

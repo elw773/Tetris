@@ -23,7 +23,7 @@ public class MainMenu {
     public void doFrame(GraphicsContext gc){
         drawTetrisLogo(162.5,50,375,gc);
         for(Button button:buttons){
-            button.show(gc);
+            button.draw(gc);
             button.isClicled();
             button.hide();
         }

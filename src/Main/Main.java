@@ -110,7 +110,7 @@ public class Main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         if(programState != ProgramState.MAIN_MENU) {
-            menuButton.show(gc);
+            menuButton.draw(gc);
             menuButton.isClicled();
         } else {
             menuButton.hide();
