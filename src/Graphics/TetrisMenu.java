@@ -6,6 +6,9 @@ import TetrisGame.Mino;
 import TetrisGame.Tetromino.Tetromino;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class TetrisMenu {
     private double width;
@@ -40,7 +43,6 @@ public class TetrisMenu {
                 super.draw(gc);
 
                 double squareSize = innerWidth / game.getBoard().WIDTH;
-                System.out.println(innerWidth);
                 for (int x = 0; x < game.getBoard().WIDTH; x++) {
                     for (int y = game.getBoard().FIRST_VISIBLE_Y; y < game.getBoard().HEIGHT; y++) {
                         Mino.draw(game.getBoard().toGraphicX(innerX, x, squareSize), game.getBoard().toGraphicY(innerY, y, squareSize), squareSize, game.getBoard().get(x, y), gc);
@@ -54,7 +56,7 @@ public class TetrisMenu {
             public void draw(GraphicsContext gc){
                 super.draw(gc);
 
-                double squareSize = width / 6;
+                double squareSize = innerWidth / 6;
 
                 if(game.getHold() != null){
                     game.getHold().drawAbsolute(innerX + squareSize, innerY + squareSize, squareSize, gc);
@@ -73,6 +75,28 @@ public class TetrisMenu {
                 for (int i = 0; i < next.length; i++) {
                     next[i].drawAbsolute(innerX + squareSize, innerY + squareSize + (squareSize * i * 3), squareSize, gc);
                 }
+            }
+        };
+
+        score = new BorderedRectangle(unit/2, unit*4, unit, unit*2, outlineSize, true, stdColor){
+            @Override
+            public void draw(GraphicsContext gc){
+                super.draw(gc);
+
+                gc.setFill(toContrastColor(fillColor));
+                gc.setTextAlign(TextAlignment.CENTER);
+                double fontSize = innerHeight/8;
+                double textY = innerY+(fontSize*3/2);
+                gc.setFont(Font.font("arial", FontWeight.BOLD, fontSize));
+                String text = "Score:\n" + game.getScore() + "\nLevel:\n" + game.getLevel() + "\nLines:\n" + game.getLines();
+                gc.fillText("Score:\n\nLevel:\n" + game.getLevel() + "\nLines:\n" + game.getLines(), x+(width/2), textY);
+
+                double scoreFontSize = fontSize;
+                if(Integer.toString(game.getScore()).length() > 6){
+                    scoreFontSize = fontSize * 6 / Integer.toString(game.getScore()).length();
+                }
+                gc.setFont(Font.font("arial", FontWeight.BOLD, scoreFontSize));
+                gc.fillText(Integer.toString(game.getScore()), x+(width/2), textY + (fontSize*9/8));
             }
         };
     }
@@ -99,6 +123,7 @@ public class TetrisMenu {
             board.draw(gc);
             hold.draw(gc);
             next.draw(gc);
+            score.draw(gc);
             //game.drawBoard(200,100,300,gc);
             //game.drawNext(550, 100, 100, gc);
             //game.drawHold(50, 100, 100, gc);

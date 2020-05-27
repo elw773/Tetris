@@ -21,8 +21,8 @@ public class BorderedRectangle {
 
     protected double outlineSize;
 
-    private Color fillColor;
-    private Color outlineColor;
+    protected Color fillColor;
+    protected Color outlineColor;
 
     protected static Color toOutlineColor(Color color){
         return Color.hsb(color.getHue(), color.getSaturation()*0.8, color.getBrightness()*0.8);

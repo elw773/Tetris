@@ -173,6 +173,10 @@ public class Game {
         return level;
     }
 
+    public int getLines(){
+        return totalClearedLines;
+    }
+
     private void lockScore(){
 
         if(clearedLines == 0){
