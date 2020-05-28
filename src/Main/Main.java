@@ -9,6 +9,7 @@ import TetrisGame.Mino;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -127,6 +128,12 @@ public class Main extends Application {
             menuButton.isClicled();
         } else {
             menuButton.hide();
+            if(inputManager.isKeyClicked(KeyCode.ENTER)){
+                play();
+            } else if(inputManager.isKeyClicked(KeyCode.ESCAPE)){
+                Platform.exit();
+                System.exit(0);
+            }
         }
 
         switch (programState){

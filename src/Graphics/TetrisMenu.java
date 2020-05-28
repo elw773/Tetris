@@ -147,6 +147,9 @@ public class TetrisMenu implements Menu{
      */
     public void doFrame(GraphicsContext gc){
         if(Main.getInstance().inputManager.isKeyClicked(KeyCode.ESCAPE)){
+            if(paused){
+                Main.getInstance().mainMenu();
+            }
             paused = true;
             countdown = 180;
         } else if(Main.getInstance().inputManager.isKeyClicked(KeyCode.ENTER)){
