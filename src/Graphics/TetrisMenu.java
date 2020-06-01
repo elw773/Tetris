@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import Main.InputManager;
 
 public class TetrisMenu implements Menu{
     private double width;
@@ -146,6 +147,51 @@ public class TetrisMenu implements Menu{
      * @param gc the graphics context to draw the menu on
      */
     public void doFrame(GraphicsContext gc){
+        InputManager inputManager = Main.getInstance().inputManager;
+        int level = 0;
+        boolean shift = inputManager.isKeyPressed(KeyCode.SHIFT);
+        if(inputManager.isKeyClicked(KeyCode.DIGIT0)){
+            game.reset(shift?10:0);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT1)){
+            game.reset(shift?11:1);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT2)){
+            game.reset(shift?12:2);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT3)){
+            game.reset(shift?13:3);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT4)){
+            game.reset(shift?14:4);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT5)){
+            game.reset(shift?15:5);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT6)){
+            game.reset(shift?16:6);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT7)){
+            game.reset(shift?17:7);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT8)){
+            game.reset(shift?18:8);
+            countdown = 180;
+            paused = false;
+        } else if(inputManager.isKeyClicked(KeyCode.DIGIT9)){
+            game.reset(shift?19:9);
+            countdown = 180;
+            paused = false;
+        }
+
         if(Main.getInstance().inputManager.isKeyClicked(KeyCode.ESCAPE)){
             if(paused){
                 Main.getInstance().mainMenu();
