@@ -146,8 +146,11 @@ public class Main extends Application {
             } else if(inputManager.isKeyClicked(KeyCode.ESCAPE)){
                 Platform.exit();
                 System.exit(0);
+            } else if(inputManager.isKeyClicked(KeyCode.A)){
+                ai();
             }
         }
+
 
         switch (programState){
             case MAIN_MENU: mainMenu.doFrame(gc); break;
