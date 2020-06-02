@@ -34,7 +34,11 @@ public class BorderedRectangle {
      * @return the outline color
      */
     protected static Color toOutlineColor(Color color){
-        return Color.hsb(color.getHue(), color.getSaturation()*0.8, color.getBrightness()*0.8);
+        double opacity = color.getOpacity()*1.2;
+        if(opacity > 1){
+            opacity = 1;
+        }
+        return Color.hsb(color.getHue(), color.getSaturation()*0.8, color.getBrightness()*0.8, opacity);
     }
 
     /**

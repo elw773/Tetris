@@ -19,6 +19,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 /**
@@ -40,6 +42,7 @@ public class Main extends Application {
     private Canvas canvas;
     private ProgramState programState;
     private Button menuButton;
+    public boolean transparent = true;
 
     /**
      * Represents the state of the program, with which menu is shown
@@ -81,6 +84,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        if(transparent) {
+            primaryStage.initStyle(StageStyle.TRANSPARENT);
+
+        }
         instance = this;
 
         primaryStage.setTitle("Tetris");
@@ -91,6 +98,10 @@ public class Main extends Application {
         Scene scene = new Scene(board);
         board.getChildren().add(canvas);
         primaryStage.setScene(scene);
+        if(transparent) {
+            scene.setFill(null);
+        }
+
 
 
         inputManager = new InputManager(scene);
@@ -124,8 +135,10 @@ public class Main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         if(programState != ProgramState.MAIN_MENU) { // show the menu button unless we are in the main menu
-            menuButton.draw(gc);
-            menuButton.isClicled();
+            if(!transparent) {
+                menuButton.draw(gc);
+                menuButton.isClicled();
+            }
         } else {
             menuButton.hide();
             if(inputManager.isKeyClicked(KeyCode.ENTER)){
