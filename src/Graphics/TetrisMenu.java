@@ -148,6 +148,8 @@ public class TetrisMenu implements Menu{
      */
     public void doFrame(GraphicsContext gc){
         InputManager inputManager = Main.getInstance().inputManager;
+
+        // level selection
         int level = 0;
         boolean shift = inputManager.isKeyPressed(KeyCode.SHIFT);
         if(inputManager.isKeyClicked(KeyCode.DIGIT0)){
@@ -192,6 +194,7 @@ public class TetrisMenu implements Menu{
             paused = false;
         }
 
+        // pause input management
         if(Main.getInstance().inputManager.isKeyClicked(KeyCode.ESCAPE)){
             if(paused){
                 Main.getInstance().mainMenu();
