@@ -27,6 +27,8 @@ import javafx.util.Duration;
  * Is the Main class and manages the menus of the program
  */
 public class Main extends Application {
+    public static boolean transparent = false;
+
     private static Main instance;
     public static Main getInstance(){
         return instance;
@@ -42,7 +44,6 @@ public class Main extends Application {
     private Canvas canvas;
     private ProgramState programState;
     private Button menuButton;
-    public boolean transparent = true;
 
     /**
      * Represents the state of the program, with which menu is shown
